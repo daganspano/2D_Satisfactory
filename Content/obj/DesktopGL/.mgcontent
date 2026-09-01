@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Black.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Bold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-ExtraBold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Images/button_hover.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Images/button_normal.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Images/button_pressed.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File>Orbitron-Black.spritefont</File>
+    <File>Orbitron-Bold.spritefont</File>
+    <File>Orbitron-ExtraBold.spritefont</File>
+    <File>Orbitron-Medium.spritefont</File>
+    <File>Orbitron-Regular.spritefont</File>
+    <File>Orbitron-SemiBold.spritefont</File>
+    <File>button_hover.png</File>
+    <File>button_normal.png</File>
+    <File>button_pressed.png</File>
+  </DestFiles>
+</SourceFileCollection>
