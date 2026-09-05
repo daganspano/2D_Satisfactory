@@ -1,14 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using _2D_Satisfactory.TitleScreenClasses;
+using System;
 
 namespace _2D_Satisfactory;
 
+/// <summary>
+/// Represents the main game class for the 2D Satisfactory game.
+/// </summary>
 public class FactoryGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private Button _exitButton;
+    private TitleScreen _titleScreen;
 
     public FactoryGame()
     {
@@ -17,41 +22,59 @@ public class FactoryGame : Game
         IsMouseVisible = true;
     }
 
+    /// <summary>
+    /// Initializes the game.
+    /// </summary>
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
-        _exitButton = new Button(this, "Exit");
+        int width = GraphicsDevice.PresentationParameters.BackBufferWidth;
+        int height = GraphicsDevice.PresentationParameters.BackBufferHeight;
 
+        // Initialize title screen
+        _titleScreen = new TitleScreen(width, height, Exit);
+
+        // Base initialization
         base.Initialize();
     }
 
+    /// <summary>
+    /// Loads the game content.
+    /// </summary>
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
-        _exitButton.LoadContent();
+        // Load title screen content
+        _titleScreen.LoadContent(Content);
     }
 
+    /// <summary>
+    /// Updates the game.
+    /// </summary>
+    /// <param name="gameTime">The game time information.</param>
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
-        _exitButton.Update();
+        // Update title screen
+        _titleScreen.Update(gameTime);
 
         base.Update(gameTime);
     }
 
+    /// <summary>
+    /// Draws the game.
+    /// </summary>
+    /// <param name="gameTime">The game time information.</param>
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(new Color(0x36, 0x4D, 0x28));
 
-        // TODO: Add your drawing code here
         _spriteBatch.Begin();
 
-        _exitButton.Draw(_spriteBatch);
+        // Draw title screen
+        _titleScreen.Draw(_spriteBatch);
 
         _spriteBatch.End();
 

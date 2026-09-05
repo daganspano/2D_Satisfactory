@@ -35,12 +35,13 @@ C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\refint\2D_Satisfact
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.pdb
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.genruntimeconfig.cache
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\ref\2D_Satisfactory.dll
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_hover.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_normal.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_pressed.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Black.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Bold.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-ExtraBold.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Medium.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Regular.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-SemiBold.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_atlas.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\title_banner.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\construction_workers.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\forest_background.xnb

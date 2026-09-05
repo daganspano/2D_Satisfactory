@@ -1,62 +1,108 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
-namespace _2D_Satisfactory
+namespace _2D_Satisfactory;
+
+/// <summary>
+/// A UI button with a normal, hover, and pressed state.
+/// </summary>
+public class Button
 {
-    /// <summary>
-    /// A UI button with a normal, hover, and pressed state.
-    /// </summary>
-    public class Button
+
+    // Texture and font fields
+    private Texture2D _buttonTexture;
+    private SpriteFont _font;
+
+    // Button fields
+    private readonly float _buttonScale;
+    private readonly int _buttonWidthRaw;
+    private readonly float _buttonWidthScaled;
+    private readonly int _buttonHeightRaw;
+    private readonly float _buttonHeightScaled;
+    private readonly Vector2 _buttonPosition;
+    private Rectangle _sourceRectangle;
+
+    // Text fields
+    private readonly string _text;
+    private Color _textColor;
+    private Vector2 _textPosition;
+
+    // Function to call when the button is clicked
+    private readonly System.Action _onClick;
+    
+    public Button(string text, float buttonScale, int gameWidth, float yPosition, System.Action onClick)
     {
-        private FactoryGame _game;
-        private string _state;
-        private Texture2D _normalTexture;
-        private Texture2D _hoverTexture;
-        private Texture2D _pressedTexture;
-        private string _text;
-        private SpriteFont  _font;
+        _text = text;
+        _buttonScale = buttonScale;
+        _onClick = onClick;
+        
+        // Load button parameters
+        _buttonWidthRaw = 320;
+        _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
+        _buttonHeightRaw = 88;
+        _buttonHeightScaled = _buttonHeightRaw * _buttonScale;
+        _buttonPosition = new Vector2((gameWidth - _buttonWidthScaled) / 2, yPosition);
+    }
 
-        public Button(FactoryGame game, string text)
+    /// <summary>
+    /// Loads the button texture and font, and calculates the text position based on the button size and scale.
+    /// </summary>
+    /// <param name="content">The content manager used to load the button texture and font.</param>
+    public void LoadContent(ContentManager content) 
+    {
+        _buttonTexture = content.Load<Texture2D>("button_atlas");
+        _font = content.Load<SpriteFont>("Orbitron-Bold");
+        
+        Vector2 textSize = _font.MeasureString(_text);
+        _textPosition = _buttonPosition + new Vector2((_buttonWidthScaled - textSize.X) / 2, (_buttonHeightScaled - textSize.Y) / 2);
+    }
+
+    /// <summary>
+    /// Updates the button state based on mouse input and triggers the click action if the button is pressed.
+    /// </summary>
+    public void Update()
+    {
+        MouseState currentMouseState = Mouse.GetState();
+
+        int startX = 0;
+        Color newTextColor = new Color(0x96, 0x52, 0x14);
+
+        if (!(currentMouseState.Position.X < _buttonPosition.X 
+            || currentMouseState.Position.X > _buttonPosition.X + _buttonWidthScaled 
+            || currentMouseState.Position.Y < _buttonPosition.Y 
+            || currentMouseState.Position.Y > _buttonPosition.Y + _buttonHeightScaled
+        ))
         {
-            _game = game;
-            _text = text;
-            _state = "normal";
-        }
-
-        public void LoadContent() 
-        {
-            _normalTexture = _game.Content.Load<Texture2D>("button_normal");
-            _hoverTexture = _game.Content.Load<Texture2D>("button_hover");
-            _pressedTexture = _game.Content.Load<Texture2D>("button_pressed");
-            _font = _game.Content.Load<SpriteFont>("Orbitron-Bold");
-        }
-
-        public void Update()
-        {
-            
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            Texture2D currentBtnTexture;
-
-            if (_state == "hover")
-                currentBtnTexture = _hoverTexture;
-            else if (_state == "pressed")
-                currentBtnTexture = _pressedTexture;
-            else
-                currentBtnTexture = _normalTexture;
-
-            spriteBatch.Draw(currentBtnTexture, Vector2.Zero, Color.White);
-
-            if (!string.IsNullOrEmpty(_text))
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
             {
-                Vector2 textSize = _font.MeasureString(_text);
-                Vector2 textPosition = new Vector2((currentBtnTexture.Width - textSize.X) / 2, (currentBtnTexture.Height - textSize.Y) / 2);
-                spriteBatch.DrawString(_font, _text, textPosition, Color.DarkOrange);
+                startX = 2;
+                newTextColor = new Color(0x6E, 0x3C, 0x12);
+                _onClick();
+            }
+            else 
+            {
+                startX = 1;
+                newTextColor = new Color(0xFF, 0x91, 0x2D);
             }
         }
+
+        _sourceRectangle = new Rectangle(startX * _buttonWidthRaw, 0, _buttonWidthRaw, _buttonHeightRaw);
+        _textColor = newTextColor;
+    }
+
+    /// <summary>
+    /// Draws the button and its text using the provided sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to draw the button and its text.</param>
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        // Draw the button texture
+        spriteBatch.Draw(_buttonTexture, _buttonPosition, _sourceRectangle, Color.White, 0f, Vector2.Zero, _buttonScale, SpriteEffects.None, 0f);
+
+        // Draw the button text
+        spriteBatch.DrawString(_font, _text, _textPosition, _textColor);
     }
 }

@@ -61,7 +61,7 @@
 /processorParam:Version=3.8.5.1
 /build:Fonts/Orbitron-SemiBold.spritefont;Orbitron-SemiBold.spritefont
 
-#begin Images/button_hover.png
+#begin Sprites/button_atlas.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -72,9 +72,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:Images/button_hover.png;button_hover.png
+/build:Sprites/button_atlas.png;button_atlas.png
 
-#begin Images/button_normal.png
+#begin Sprites/construction_workers.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -85,9 +85,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:Images/button_normal.png;button_normal.png
+/build:Sprites/construction_workers.png;construction_workers.png
 
-#begin Images/button_pressed.png
+#begin Sprites/forest_background.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -98,5 +98,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:Images/button_pressed.png;button_pressed.png
+/build:Sprites/forest_background.png;forest_background.png
+
+#begin Sprites/title_banner.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Sprites/title_banner.png;title_banner.png
 
