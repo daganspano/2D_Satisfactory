@@ -2,9 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
-namespace _2D_Satisfactory;
+namespace _2D_Satisfactory.TitleScreenClasses;
 
 /// <summary>
 /// A UI button with a normal, hover, and pressed state.
@@ -32,12 +31,20 @@ public class Button
 
     // Function to call when the button is clicked
     private readonly System.Action _onClick;
+    private bool _isClicked;
+
+
+
+    public Vector2 ButtonPosition => _buttonPosition;
+    public float ButtonWidthScaled => _buttonWidthScaled;
+    public float ButtonHeightScaled => _buttonHeightScaled;
     
     public Button(string text, float buttonScale, int gameWidth, float yPosition, System.Action onClick)
     {
         _text = text;
         _buttonScale = buttonScale;
         _onClick = onClick;
+        _isClicked = false;
         
         // Load button parameters
         _buttonWidthRaw = 320;
@@ -63,24 +70,23 @@ public class Button
     /// <summary>
     /// Updates the button state based on mouse input and triggers the click action if the button is pressed.
     /// </summary>
-    public void Update()
+    public void Update(bool isSelected)
     {
-        MouseState currentMouseState = Mouse.GetState();
-
         int startX = 0;
         Color newTextColor = new Color(0x96, 0x52, 0x14);
 
-        if (!(currentMouseState.Position.X < _buttonPosition.X 
-            || currentMouseState.Position.X > _buttonPosition.X + _buttonWidthScaled 
-            || currentMouseState.Position.Y < _buttonPosition.Y 
-            || currentMouseState.Position.Y > _buttonPosition.Y + _buttonHeightScaled
-        ))
+        if (_isClicked)
         {
-            if (currentMouseState.LeftButton == ButtonState.Pressed)
+            _onClick();
+            _isClicked = false;
+        }
+        else if (isSelected)
+        {
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
             {
                 startX = 2;
                 newTextColor = new Color(0x6E, 0x3C, 0x12);
-                _onClick();
+                _isClicked = true;
             }
             else 
             {

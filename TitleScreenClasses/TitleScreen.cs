@@ -17,9 +17,9 @@ public class TitleScreen
 
     // Sprite Fields
     private Texture2D _backgroundTexture;
-    private Texture2D _titleBanner;
-    private List<Button> _buttons;
     private readonly List<RunningSprite> _runningSprites;
+    private Texture2D _titleBanner;
+    private ButtonGroup _buttonGroup;
 
     // Banner Position & Scale Fields
     private Vector2 _bannerPosition;
@@ -48,17 +48,22 @@ public class TitleScreen
         // Position Fields
         _bannerPosition = new Vector2((_gameWidth - bannerWidthScaled) / 2, (_gameHeight - titleHeight) / 2);
         float buttonStartingYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
-
-        // Initialize buttons
-        _buttons = new List<Button>();
-        List<string> buttonLabels = new() { "Start", "Options", "Exit" };
-        for (int i = 0; i < 3; i++)
-            _buttons.Add(new Button(buttonLabels[i], buttonScale, _gameWidth, buttonStartingYPosition + i * (buttonPadding + buttonHeightScaled), i == 2 ? onExitClick : () => {}));
         
         // Initialize running sprites
         _runningSprites = new List<RunningSprite>();
         for (int i = 0; i < 4; i++) 
             _runningSprites.Add(new RunningSprite(_gameWidth, _gameHeight, i, 50 + i * 30, new Vector2(new Random().Next(i * _gameWidth / 4, (i + 1) * _gameWidth / 4), new Random().Next(200, _gameHeight))));
+
+        // Initialize buttons
+        _buttonGroup = new ButtonGroup(
+            new Dictionary<string, Action>
+            {
+                { "Start", () => {} },
+                { "Options", () => {} },
+                { "Exit", onExitClick }
+            }, 
+            gameWidth, buttonStartingYPosition
+        );
     }
 
     /// <summary>
@@ -70,14 +75,14 @@ public class TitleScreen
         // Load background
         _backgroundTexture = content.Load<Texture2D>("forest_background");
 
+        // Load running character
+        foreach (var runningSprite in _runningSprites) runningSprite.LoadContent(content);
+
         // Load banner
         _titleBanner = content.Load<Texture2D>("title_banner");
 
         // Load buttons
-        foreach (var button in _buttons) button.LoadContent(content);
-
-        // Load running character
-        foreach (var runningSprite in _runningSprites) runningSprite.LoadContent(content);
+        _buttonGroup.LoadContent(content);
 
     }
 
@@ -87,11 +92,11 @@ public class TitleScreen
     /// <param name="gameTime">The game time object containing timing information.</param>
     public void Update(GameTime gameTime)
     {
-        // Update buttons
-        foreach (var button in _buttons) button.Update();
-
         // Update running character
         foreach (var runningSprite in _runningSprites) runningSprite.Update(gameTime);
+
+        // Update buttons
+        _buttonGroup.Update();
     }
 
     /// <summary>
@@ -110,6 +115,6 @@ public class TitleScreen
         spriteBatch.Draw(_titleBanner, _bannerPosition, null, Color.White, 0f, Vector2.Zero, _bannerScale, SpriteEffects.None, 0f);
 
         // Draw buttons
-        foreach (var button in _buttons) button.Draw(spriteBatch);
+        _buttonGroup.Draw(spriteBatch);
     }
 }
