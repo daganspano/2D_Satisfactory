@@ -1,4 +1,4 @@
-namespace _2D_Satisfactory.TitleScreenClasses;
+namespace _2D_Satisfactory.Components.Character;
 
 public enum AnimationFrame
 {

@@ -27,11 +27,11 @@ public class FactoryGame : Game
     /// </summary>
     protected override void Initialize()
     {
-        int width = GraphicsDevice.PresentationParameters.BackBufferWidth;
-        int height = GraphicsDevice.PresentationParameters.BackBufferHeight;
+        Vector2 dimensions = new Vector2(GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+
 
         // Initialize title screen
-        _titleScreen = new TitleScreen(width, height, Exit);
+        _titleScreen = new TitleScreen(dimensions, Exit);
 
         // Base initialization
         base.Initialize();

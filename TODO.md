@@ -2,8 +2,6 @@
 
 ## Character
 
-- Create basic `Character` class.
-- Update `RunningSprite` to use the `Character` class (rename to `TitleCharacter`).
 - Create GameCharacter class that uses the Character class and takes user input.
 - Incorporate collision for characters with objects, other characters, and game screen border.
 

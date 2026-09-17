@@ -11,13 +11,9 @@ namespace _2D_Satisfactory.TitleScreenClasses;
 /// </summary>
 public class TitleScreen
 {
-    // Game Fields
-    private readonly int _gameWidth;
-    private readonly int _gameHeight;
-
     // Sprite Fields
     private Texture2D _backgroundTexture;
-    private readonly List<RunningSprite> _runningSprites;
+    private readonly List<TitleCharacter> _runningSprites;
     private Texture2D _titleBanner;
     private ButtonGroup _buttonGroup;
 
@@ -26,12 +22,8 @@ public class TitleScreen
     private readonly float _bannerScale;
     
 
-    public TitleScreen(int gameWidth, int gameHeight, Action onExitClick)
+    public TitleScreen(Vector2 gameDimensions, Action onExitClick)
     {
-        // Game Fields
-        _gameWidth = gameWidth;
-        _gameHeight = gameHeight;
-
         // Banner Size & Scale Fields
         _bannerScale = 0.4f;
         float bannerWidthScaled = 1147 * _bannerScale;
@@ -46,13 +38,21 @@ public class TitleScreen
         float titleHeight = bannerHeightScaled + 3 * (buttonPadding + buttonHeightScaled);
 
         // Position Fields
-        _bannerPosition = new Vector2((_gameWidth - bannerWidthScaled) / 2, (_gameHeight - titleHeight) / 2);
+        _bannerPosition = new Vector2((gameDimensions.X - bannerWidthScaled) / 2, (gameDimensions.Y - titleHeight) / 2);
         float buttonStartingYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
         
         // Initialize running sprites
-        _runningSprites = new List<RunningSprite>();
+        _runningSprites = new List<TitleCharacter>();
         for (int i = 0; i < 4; i++) 
-            _runningSprites.Add(new RunningSprite(_gameWidth, _gameHeight, i, 50 + i * 30, new Vector2(new Random().Next(i * _gameWidth / 4, (i + 1) * _gameWidth / 4), new Random().Next(200, _gameHeight))));
+        {
+            Vector2 initialPosition = new Vector2(
+                new Random().Next(i * (int)gameDimensions.X / 4, (i + 1) * (int)gameDimensions.X / 4),
+                new Random().Next(200, (int)gameDimensions.Y)
+            ); // Random initial position for each sprite
+            int character = i; // Assign a unique character index for each sprite
+            int speed = 50 + i * 30; // Assign a unique speed for each sprite
+            _runningSprites.Add(new TitleCharacter(gameDimensions, initialPosition, character, speed));
+        }
 
         // Initialize buttons
         _buttonGroup = new ButtonGroup(
@@ -62,7 +62,7 @@ public class TitleScreen
                 { "Options", () => {} },
                 { "Exit", onExitClick }
             }, 
-            gameWidth, buttonStartingYPosition
+            (int)gameDimensions.X, buttonStartingYPosition
         );
     }
 

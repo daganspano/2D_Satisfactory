@@ -22,9 +22,21 @@ None
 
 ### Classes Modified / Added
 
-- `TitleScreen.cs` (Modified): Has a `ButtonGroup` instead of `Button`s.
-- `ButtonGroup.cs` (Added): Contains a group of `Button`s with the specified labels and actions. Allows for mouse, keyboard, and gamepad functionality.
-- `Button.cs` (Modified): Hover logic moved to `ButtonGroup`.
+- `FactoryGame.cs` (Modified): Parameters given to `TitleScreen` are updated.
+
+#### Title Screen
+
+- `TitleScreen.cs` (Modified):
+  - Now has a `ButtonGroup` instead of `Button`s.
+  - Now takes `gameDimensions` as a parameter instead of `gameWidth` and `gameHeight`.
+- `TitleCharacter.cs` (Previously `RunningSprite.cs`) (Modified): Now handles only random direction changing and bouncing off the walls. Additional functionality was moved to `Character`.
+- `ButtonGroup.cs` (Added): Represents a group of `Button`s, allowing navigation and selection using mouse, keyboard, or gamepad input.
+- `Button.cs` (Modified): No longer handles hover logic, as it was moved to `ButtonGroup`.
+
+#### Components
+
+- `Character.cs` (Added): Represents a character in the game, handling its position, animation, and rendering.
+- `FrameEnums.cs` (Modified): Moved location.
 
 ### UI Modifications
 

@@ -7,6 +7,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
 
+/// <summary>
+/// Represents a group of buttons, allowing navigation and selection using mouse, keyboard, or gamepad input.
+/// </summary>
 public class ButtonGroup
 {
     private readonly List<Button> _buttons;

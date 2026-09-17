@@ -79,10 +79,16 @@ public class Button
         {
             _onClick();
             _isClicked = false;
+            startX = 2;
+            newTextColor = new Color(0x6E, 0x3C, 0x12);
         }
         else if (isSelected)
         {
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Enter) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A))
+            if (
+                Mouse.GetState().LeftButton == ButtonState.Pressed || 
+                Keyboard.GetState().IsKeyDown(Keys.Enter) || 
+                GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
+            )
             {
                 startX = 2;
                 newTextColor = new Color(0x6E, 0x3C, 0x12);
