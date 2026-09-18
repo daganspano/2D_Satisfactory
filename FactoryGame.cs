@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using _2D_Satisfactory.MainGameClasses;
+using _2D_Satisfactory.TitleScreenClasses;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using _2D_Satisfactory.TitleScreenClasses;
-using System;
 
 namespace _2D_Satisfactory;
 
@@ -13,11 +13,14 @@ public class FactoryGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private GameState _currentGameState;
     private TitleScreen _titleScreen;
+    private MainGame _mainGame;
 
     public FactoryGame()
     {
         _graphics = new GraphicsDeviceManager(this);
+        _currentGameState = GameState.TitleScreen;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -31,7 +34,15 @@ public class FactoryGame : Game
 
 
         // Initialize title screen
-        _titleScreen = new TitleScreen(dimensions, Exit);
+        _titleScreen = new TitleScreen(
+            dimensions, 
+            () => { _currentGameState = GameState.MainGame; }, 
+            () => { _currentGameState = GameState.TitleScreenOptions; },
+            Exit
+        );
+
+        // Initialize main game
+        _mainGame = new MainGame();
 
         // Base initialization
         base.Initialize();
@@ -46,6 +57,9 @@ public class FactoryGame : Game
 
         // Load title screen content
         _titleScreen.LoadContent(Content);
+
+        // Load main game content
+        _mainGame.LoadContent(Content);
     }
 
     /// <summary>
@@ -57,8 +71,24 @@ public class FactoryGame : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // Update title screen
-        _titleScreen.Update(gameTime);
+        switch (_currentGameState)
+        {
+            case GameState.MainGame:
+                _mainGame.Update(gameTime);
+                // Update main game logic here
+                break;
+            case GameState.MainGameOptions:
+                _mainGame.Update(gameTime);
+                // Update main game options logic here
+                break;
+            case GameState.TitleScreen:
+                _titleScreen.Update(gameTime);
+                break;
+            case GameState.TitleScreenOptions:
+                _titleScreen.Update(gameTime);
+                // Update title screen options logic here
+                break;
+        }
 
         base.Update(gameTime);
     }
@@ -73,8 +103,23 @@ public class FactoryGame : Game
 
         _spriteBatch.Begin();
 
-        // Draw title screen
-        _titleScreen.Draw(_spriteBatch);
+        switch (_currentGameState)
+        {
+            case GameState.MainGame:
+                _mainGame.Draw(_spriteBatch);
+                break;
+            case GameState.MainGameOptions:
+                _mainGame.Draw(_spriteBatch);
+                // Update main game options logic here
+                break;
+            case GameState.TitleScreen:
+                _titleScreen.Draw(_spriteBatch);
+                break;
+            case GameState.TitleScreenOptions:
+                _titleScreen.Draw(_spriteBatch);
+                // Update title screen options logic here
+                break;
+        }
 
         _spriteBatch.End();
 

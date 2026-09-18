@@ -10,9 +10,11 @@ Click the button sprite with with the label "Exit"
 
 ### Interacting with buttons
 
-- Idle state: Don't have your mouse over the button.
-- Hover state: Hover your mouse over the button. It appears to light up.
-- Pressed state: Click the button. It will be slightly smaller and have a darker shade than idle.
+- Idle state: The button isn't selected.
+- Hover state: The button is selected.
+- Pressed state: The button is clicked.
+
+---
 
 ## 0.2.0 (Game Project 1)
 
@@ -22,13 +24,22 @@ None
 
 ### Classes Modified / Added
 
-- `FactoryGame.cs` (Modified): Parameters given to `TitleScreen` are updated.
+- `FactoryGame.cs` (Modified):
+  - Parameters given to `TitleScreen` are updated.
+  - Now has a `GameState`, and `TitleScreen` buttons change the state.
+  - Now has a `MainGame` and updates/draws it when `GameState` is `MainGame` or `MainGameOptions`
+- `GameState.cs` (Added): Enum to represent the different states of the game.
+
+#### Main Game
+
+- `MainGame.cs` (Added): ...
 
 #### Title Screen
 
 - `TitleScreen.cs` (Modified):
   - Now has a `ButtonGroup` instead of `Button`s.
   - Now takes `gameDimensions` as a parameter instead of `gameWidth` and `gameHeight`.
+  - Now takes the `Action`s for the `"Start"` and `"Options"` buttons as parameters (`"Options"` doesn't have functionality yet, but it takes the `Action` on initialization).
 - `TitleCharacter.cs` (Previously `RunningSprite.cs`) (Modified): Now handles only random direction changing and bouncing off the walls. Additional functionality was moved to `Character`.
 - `ButtonGroup.cs` (Added): Represents a group of `Button`s, allowing navigation and selection using mouse, keyboard, or gamepad input.
 - `Button.cs` (Modified): No longer handles hover logic, as it was moved to `ButtonGroup`.
@@ -46,7 +57,9 @@ None
 | ---------- | ------------- | ---------------- | ----------------------------- |
 | Cycle up   | Hovering Over | Tab              | Left Stick Up or D-Pad Up     |
 | Cycle down | Hovering Over | Left-Shift + Tab | Left Stick Down or D-Pad Down |
-| Select     | Left Click    | Enter            | A                             |
+| Click      | Left Click    | Enter            | A                             |
+
+---
 
 ## 0.1.0 (Game Project 0)
 

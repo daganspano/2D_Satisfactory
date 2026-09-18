@@ -22,7 +22,7 @@ public class TitleScreen
     private readonly float _bannerScale;
     
 
-    public TitleScreen(Vector2 gameDimensions, Action onExitClick)
+    public TitleScreen(Vector2 gameDimensions, Action onStartClick, Action onOptionsClick, Action onExitClick)
     {
         // Banner Size & Scale Fields
         _bannerScale = 0.4f;
@@ -58,8 +58,8 @@ public class TitleScreen
         _buttonGroup = new ButtonGroup(
             new Dictionary<string, Action>
             {
-                { "Start", () => {} },
-                { "Options", () => {} },
+                { "Start", onStartClick },
+                { "Options", onOptionsClick },
                 { "Exit", onExitClick }
             }, 
             (int)gameDimensions.X, buttonStartingYPosition
