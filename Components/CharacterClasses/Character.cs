@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _2D_Satisfactory.Components.Character;
+namespace _2D_Satisfactory.Components.CharacterClasses;
 
 /// <summary>
 /// Represents a character in the game, handling its position, animation, and rendering.
@@ -42,6 +42,9 @@ public class Character
         set => _speed = value;
     }
 
+    /// <summary>
+    /// The Position of the Character
+    /// </summary>
     public Vector2 Position
     {
         get => _position;
@@ -71,9 +74,10 @@ public class Character
     }
 
     /// <summary>
-    /// Updates the running sprite's position, direction, and animation based on the elapsed game time.
+    /// Updates the character's position, animation frame, and source rectangle based on the elapsed game time and the provided direction vector.
     /// </summary>
     /// <param name="gameTime">The game time object containing the elapsed time since the last update.</param>
+    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
     public void Update(GameTime gameTime, Vector2 direction)
     {
         // Update frame for the animation and direction based on the current direction vector
@@ -95,6 +99,11 @@ public class Character
         spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, _spriteScale, SpriteEffects.None, 0f);
     }
 
+    /// <summary>
+    /// Checks for collisions with the edges of the game screen based on the character's hit box and the provided direction vector.
+    /// </summary>
+    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
+    /// <returns>A list of strings representing the edges with which the character is colliding.</returns>
     public List<string> CheckEdgeCollisions(Vector2 direction)
     {
         // return Collision.CheckEdgeCollisions(GetHitBox(), direction);
@@ -104,6 +113,8 @@ public class Character
     /// <summary>
     /// Updates the animation frame of the running sprite based on the current frame and previous animation frame.
     /// </summary>
+    /// <param name="gameTime">The game time object containing the elapsed time since the last update.</param>
+    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
     private void UpdateFrame(GameTime gameTime, Vector2 direction)
     {
         // Update the animation timer

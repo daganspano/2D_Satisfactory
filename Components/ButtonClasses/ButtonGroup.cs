@@ -35,11 +35,18 @@ public class ButtonGroup
         }
     }
 
+    /// <summary>
+    /// Loads the content for all buttons in the group.
+    /// </summary>
+    /// <param name="content">The content manager used to load the button textures and fonts.</param>
     public void LoadContent(ContentManager content)
     {
         foreach (var button in _buttons) button.LoadContent(content);
     }
 
+    /// <summary>
+    /// Updates the state of the button group, handling input from mouse, keyboard, and gamepad to navigate and select buttons.
+    /// </summary>
     public void Update()
     {
         Point currentMousePosition = Mouse.GetState().Position;
@@ -52,11 +59,19 @@ public class ButtonGroup
         for (int i = 0; i < _buttons.Count; i++) _buttons[i].Update(_selectedButtonIndex == i);
     }
 
+    /// <summary>
+    /// Draws all buttons in the group to the specified sprite batch.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to draw the buttons.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
         foreach (var button in _buttons) button.Draw(spriteBatch);
     }
 
+    /// <summary>
+    /// Updates the selected button based on the current mouse position, checking if the mouse is over any button in the group.
+    /// </summary>
+    /// <param name="currentMousePosition">The current position of the mouse cursor.</param>
     private void UpdateSelectedButtonWithMouse(Point currentMousePosition)
     {
         _selectedButtonIndex = -1;
@@ -76,6 +91,9 @@ public class ButtonGroup
         }
     }
 
+    /// <summary>
+    /// Updates the selected button based on keyboard and gamepad input, allowing navigation through the buttons without using the mouse.
+    /// </summary>
     private void UpdateSelectedButtonWithoutMouse()
     {
         // Get whether the user is pressing up or down on the keyboard
@@ -99,6 +117,10 @@ public class ButtonGroup
         _wasPreviouslyUp = isUp;
     }
 
+    /// <summary>
+    /// Gets the current state of keyboard input, determining if the user is pressing up or down keys.
+    /// </summary>
+    /// <returns>A tuple containing two booleans: the first indicates if the down key is pressed, and the second indicates if the up key is pressed.</returns>
     private (bool, bool) GetKeyboardInputState()
     {
         KeyboardState keyboardState = Keyboard.GetState();
@@ -109,6 +131,10 @@ public class ButtonGroup
         return (isKeyboardDown, isKeyboardUp);
     }
 
+    /// <summary>
+    /// Gets the current state of gamepad input, determining if the user is pressing up or down on the D-pad or left thumbstick.
+    /// </summary>
+    /// <returns>A tuple containing two booleans: the first indicates if the down button is pressed, and the second indicates if the up button is pressed.</returns>
     private (bool, bool) GetGamePadInputState()
     {
         GamePadState currentGamePadState = GamePad.GetState(PlayerIndex.One);

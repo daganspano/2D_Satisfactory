@@ -8,6 +8,9 @@ using System;
 
 namespace _2D_Satisfactory.MainGameClasses;
 
+/// <summary>
+/// Represents the main game class that handles the game loop, including updating and drawing the game state, character, and UI elements.
+/// </summary>
 public class MainGame
 {
     // Sprite Fields
@@ -45,6 +48,10 @@ public class MainGame
         );
     }
 
+    /// <summary>
+    /// Loads the content for the main game, including the background texture, character, and buttons.
+    /// </summary>
+    /// <param name="content">The content manager used to load the game's assets.</param>
     public void LoadContent(ContentManager content)
     {
         // Load background
@@ -57,6 +64,10 @@ public class MainGame
         _buttonGroup.LoadContent(content);
     }
 
+    /// <summary>
+    /// Updates the game state, including character movement, collision detection, and button interactions based on the current game state.
+    /// </summary>
+    /// <param name="gameTime">The game time object containing timing information for the current frame.</param>
     public void Update(GameTime gameTime)
     {
         bool isEscPressed = GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape);
@@ -70,6 +81,10 @@ public class MainGame
         if (_state == MainGameState.Paused) _buttonGroup.Update();
     }
 
+    /// <summary>
+    /// Draws the game elements, including the background, character, and buttons, based on the current game state.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used to draw the game elements.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
         // Draw background

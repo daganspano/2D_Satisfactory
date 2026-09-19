@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using _2D_Satisfactory.Components.Character;
+using _2D_Satisfactory.Components.CharacterClasses;
 using _2D_Satisfactory.Components.ButtonClasses;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
@@ -24,7 +24,6 @@ public class TitleScreen
     private Vector2 _bannerPosition;
     private readonly float _bannerScale;
     
-
     public TitleScreen(Action onStartClick, Action onOptionsClick, Action onExitClick)
     {
         // Banner Size & Scale Fields

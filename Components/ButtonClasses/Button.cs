@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace _2D_Satisfactory.Components.ButtonClasses;
 
 /// <summary>
-/// A UI button with a normal, hover, and pressed state.
+/// Represents a button in the game, handling its appearance, text, and click functionality.
 /// </summary>
 public class Button
 {
@@ -34,10 +34,19 @@ public class Button
     private bool _isClicked;
     private bool _wasPreviouslyPressed;
 
-
-
+    /// <summary>
+    /// The position of the button on the screen.
+    /// </summary>
     public Vector2 ButtonPosition => _buttonPosition;
+
+    /// <summary>
+    /// The width of the button after scaling.
+    /// </summary>
     public float ButtonWidthScaled => _buttonWidthScaled;
+
+    /// <summary>
+    /// The height of the button after scaling.
+    /// </summary>
     public float ButtonHeightScaled => _buttonHeightScaled;
     
     public Button(string text, float buttonScale, float yPosition, System.Action onClick)
@@ -46,8 +55,6 @@ public class Button
         _buttonScale = buttonScale;
         _onClick = onClick;
         _isClicked = false;
-        
-        // Load button parameters
         _buttonWidthRaw = 320;
         _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
         _buttonHeightRaw = 88;
@@ -69,8 +76,9 @@ public class Button
     }
 
     /// <summary>
-    /// Updates the button state based on mouse input and triggers the click action if the button is pressed.
+    /// Updates the button's state based on user input, changing its appearance and triggering the click action if necessary.
     /// </summary>
+    /// <param name="isSelected">Indicates whether the button is currently selected.</param>
     public void Update(bool isSelected)
     {
         int startX = 0;

@@ -2,10 +2,19 @@ using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace _2D_Satisfactory.Components.Character;
+namespace _2D_Satisfactory.Components.CharacterClasses;
 
+/// <summary>
+/// Provides static methods for checking collisions between characters and the edges of the game screen, as well as between characters themselves.
+/// </summary>
 public static class Collision
 {
+    /// <summary>
+    /// Checks for collisions between a character's hit box and the edges of the game screen based on the provided direction vector.
+    /// </summary>
+    /// <param name="hitBox">The hit box of the character.</param>
+    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
+    /// <returns>A list of strings representing the edges with which the character is colliding.</returns>
     public static List<string> CheckEdgeCollisions(Rectangle hitBox, Vector2 direction)
     {
         List<string> collisions = new List<string>();
@@ -26,6 +35,11 @@ public static class Collision
         return collisions;
     }
 
+    /// <summary>
+    /// Checks for collisions between multiple characters based on their hit boxes and direction vectors.
+    /// </summary>
+    /// <param name="hitBoxesAndDirections">A list of tuples, each containing a character's hit box and direction vector.</param>
+    /// <returns>A dictionary mapping each character's index to a list of collision sides and the indices of the characters they are colliding with.</returns>
     public static Dictionary<int, List<(string, int)>> CheckSpriteCollisions(List<(Rectangle, Vector2)> hitBoxesAndDirections)
     {
         Dictionary<int, List<(string, int)>> collisionSides = new Dictionary<int, List<(string, int)>>();
@@ -82,6 +96,15 @@ public static class Collision
         return collisionSides;
     }
 
+    /// <summary>
+    /// Calculates the overlaps for two colliding hit boxes based on their centers, direction vectors, and the total overlap.
+    /// </summary>
+    /// <param name="center1">The center coordinate of the first hit box along the relevant axis (X or Y).</param>
+    /// <param name="direction1">The movement direction of the first hit box along the relevant axis (X or Y).</param>
+    /// <param name="center2">The center coordinate of the second hit box along the relevant axis (X or Y).</param>
+    /// <param name="direction2">The movement direction of the second hit box along the relevant axis (X or Y).</param>
+    /// <param name="overlap">The total overlap between the two hit boxes along the relevant axis (X or Y).</param>
+    /// <returns>A tuple containing the overlaps for the first and second hit boxes along the relevant axis.</returns>
     private static (int, int) CalculateOverlaps(int center1, float direction1, int center2, float direction2, int overlap)
     {
         bool isHB1MovingToHB2 = (center1 < center2 && direction1 > 0) || (center1 > center2 && direction1 < 0);
@@ -117,6 +140,13 @@ public static class Collision
         return (overlap1, overlap2);
     }
 
+    /// <summary>
+    /// Adds a collision side to the dictionary for a specific character index, ensuring that duplicate sides are not added.
+    /// </summary>
+    /// <param name="collisionSides">The dictionary containing collision sides for each character index.</param>
+    /// <param name="index">The index of the character for which the collision side is being added.</param>
+    /// <param name="side">The side of the character that is colliding (e.g., "top", "bottom", "left", "right").</param>
+    /// <param name="overlap">The overlap distance for the collision side.</param>
     private static void AddCollisionSide(Dictionary<int, List<(string, int)>> collisionSides, int index, string side, int overlap)
     {
         if (!collisionSides.TryGetValue(index, out List<(string, int)> sides))

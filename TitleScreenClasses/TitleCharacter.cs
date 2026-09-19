@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using _2D_Satisfactory.Components.Character;
+using _2D_Satisfactory.Components.CharacterClasses;
 using System.Collections.Generic;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
@@ -20,7 +20,14 @@ public class TitleCharacter
     private Vector2 _direction;
     private Character _character;
 
+    /// <summary>
+    /// Gets the hit box of the running sprite based on its current position and sprite size.
+    /// </summary>
     public Rectangle HitBox => _character.HitBox;
+
+    /// <summary>
+    /// Gets or sets the direction of the running sprite, represented as a 2D vector.
+    /// </summary>
     public Vector2 Direction => _direction;
     
     public TitleCharacter(Vector2 initialPosition, int character, int speed)
@@ -44,6 +51,10 @@ public class TitleCharacter
         _character.LoadContent(content);
     }
 
+    /// <summary>
+    /// Updates the running sprite's position, direction, and animation based on the elapsed game time.
+    /// </summary>
+    /// <param name="gameTime">The game time object containing timing information for the current frame.</param>
     public void Update(GameTime gameTime)
     {
         // Update the frame timers
@@ -59,6 +70,10 @@ public class TitleCharacter
         _character.Update(gameTime, _direction);
     }
 
+    /// <summary>
+    /// Resolves collisions between the running sprite and other sprites by adjusting its position and direction based on the collision sides and overlaps.
+    /// </summary>
+    /// <param name="collisionSides">A list of tuples containing the sides of the collision and the overlap amount.</param>
     public void ResolveSpriteCollision(List<(string, int)> collisionSides)
     {
         if (collisionSides.Count <= 0) return;
@@ -104,11 +119,8 @@ public class TitleCharacter
     }
 
     /// <summary>
-    /// Changes the direction of the running sprite to a random angle and resets the direction timer.
+    /// Changes the direction of the running sprite to a random direction by generating a random angle and updating the direction vector accordingly. The direction timer is reset after changing the direction.
     /// </summary>
-    /// <remarks>
-    /// This method randomly selects a new direction for the sprite to move in.
-    /// </remarks>
     private void ChangeDirection()
     {
         double angle = new Random().NextDouble() * Math.PI * 2.0;
@@ -118,8 +130,9 @@ public class TitleCharacter
     }
 
     /// <summary>
-    /// Bounces the running sprite off the edges of the screen by reversing its direction when it reaches the boundaries.
+    /// Bounces the running sprite off the edges of the screen by reversing its direction along the x or y axis based on the detected collisions. The method checks for collisions with the edges and adjusts the direction vector accordingly.
     /// </summary>
+    /// <param name="collisions">A list of strings representing the edges where collisions occurred ("x" for horizontal edges, "y" for vertical edges).</param>
     private void BounceOffEdges(List<string> collisions)
     {
         if (collisions.Contains("x")) _direction.X = -_direction.X;
