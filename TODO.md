@@ -1,12 +1,4 @@
-# GAME PROJECT 1 TO-DO'S
-
-## Main Game
-
-- Add `ButtonGroup` to MainGame when `"Esc"` is pressed (remove `"Esc"` press from `FactoryGame`).
-
-## **CRUCIAL**
-
-- Comment out testing FPS.
+# GAME PROJECT 2 TO-DO'S
 
 ## Background (_NOT CRUCIAL_)
 

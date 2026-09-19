@@ -17,11 +17,11 @@ public class FactoryGame : Game
     private TitleScreen _titleScreen;
     private MainGame _mainGame;
 
-    // FPS Fields for testing purposes
-    private SpriteFont _font;
-    private float _fps = 0f;
-    private int _framesPerInterval = 0;
-    private double _elapsedTime = 0;
+    // // FPS Fields for testing purposes
+    // private SpriteFont _font;
+    // private float _fps = 0f;
+    // private int _framesPerInterval = 0;
+    // private double _elapsedTime = 0;
 
     public FactoryGame()
     {
@@ -69,7 +69,7 @@ public class FactoryGame : Game
         _mainGame.LoadContent(Content);
 
         // Load font for displaying FPS for testing purposes
-        _font = Content.Load<SpriteFont>("Orbitron-Regular");
+        // _font = Content.Load<SpriteFont>("Orbitron-Regular");
     }
 
     /// <summary>
@@ -88,15 +88,15 @@ public class FactoryGame : Game
                 break;
         }
 
-        // Update FPS calculation for testing purposes
-        _framesPerInterval++;
-        _elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-        if (_elapsedTime >= 1.0)
-        {
-            _fps = _framesPerInterval / (float)_elapsedTime;
-            _framesPerInterval = 0;
-            _elapsedTime = 0;
-        }
+        // // Update FPS calculation for testing purposes
+        // _framesPerInterval++;
+        // _elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+        // if (_elapsedTime >= 1.0)
+        // {
+        //     _fps = _framesPerInterval / (float)_elapsedTime;
+        //     _framesPerInterval = 0;
+        //     _elapsedTime = 0;
+        // }
 
         base.Update(gameTime);
     }
@@ -122,8 +122,8 @@ public class FactoryGame : Game
                 break;
         }
 
-        // Draw FPS for testing purposes
-        _spriteBatch.DrawString(_font, $"FPS: {_fps:0.0}", new Vector2(10, 10), Color.White);
+        // // Draw FPS for testing purposes
+        // _spriteBatch.DrawString(_font, $"FPS: {_fps:0.0}", new Vector2(10, 10), Color.White);
 
         _spriteBatch.End();
 
