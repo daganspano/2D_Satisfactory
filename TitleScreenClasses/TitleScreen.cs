@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using _2D_Satisfactory.Components.CharacterClasses;
+using _2D_Satisfactory.Components.ButtonClasses;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
 
@@ -11,27 +14,18 @@ namespace _2D_Satisfactory.TitleScreenClasses;
 /// </summary>
 public class TitleScreen
 {
-    // Game Fields
-    private readonly int _gameWidth;
-    private readonly int _gameHeight;
-
     // Sprite Fields
     private Texture2D _backgroundTexture;
+    private readonly List<TitleCharacter> _titleCharacters;
     private Texture2D _titleBanner;
-    private List<Button> _buttons;
-    private readonly List<RunningSprite> _runningSprites;
+    private ButtonGroup _buttonGroup;
 
     // Banner Position & Scale Fields
     private Vector2 _bannerPosition;
     private readonly float _bannerScale;
     
-
-    public TitleScreen(int gameWidth, int gameHeight, Action onExitClick)
+    public TitleScreen(Action onStartClick, Action onOptionsClick, Action onExitClick)
     {
-        // Game Fields
-        _gameWidth = gameWidth;
-        _gameHeight = gameHeight;
-
         // Banner Size & Scale Fields
         _bannerScale = 0.4f;
         float bannerWidthScaled = 1147 * _bannerScale;
@@ -46,19 +40,32 @@ public class TitleScreen
         float titleHeight = bannerHeightScaled + 3 * (buttonPadding + buttonHeightScaled);
 
         // Position Fields
-        _bannerPosition = new Vector2((_gameWidth - bannerWidthScaled) / 2, (_gameHeight - titleHeight) / 2);
-        float buttonStartingYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
-
-        // Initialize buttons
-        _buttons = new List<Button>();
-        List<string> buttonLabels = new() { "Start", "Options", "Exit" };
-        for (int i = 0; i < 3; i++)
-            _buttons.Add(new Button(buttonLabels[i], buttonScale, _gameWidth, buttonStartingYPosition + i * (buttonPadding + buttonHeightScaled), i == 2 ? onExitClick : () => {}));
+        _bannerPosition = new Vector2((GameDimensions.X - bannerWidthScaled) / 2, (GameDimensions.Y - titleHeight) / 2);
+        float buttonGroupYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
         
         // Initialize running sprites
-        _runningSprites = new List<RunningSprite>();
+        _titleCharacters = new List<TitleCharacter>();
         for (int i = 0; i < 4; i++) 
-            _runningSprites.Add(new RunningSprite(_gameWidth, _gameHeight, i, 50 + i * 30, new Vector2(new Random().Next(i * _gameWidth / 4, (i + 1) * _gameWidth / 4), new Random().Next(200, _gameHeight))));
+        {
+            Vector2 initialPosition = new Vector2(
+                new Random().Next((int)(i * GameDimensions.X / 4), (int)((i + 1) * GameDimensions.X / 4)),
+                new Random().Next(200, (int)GameDimensions.Y)
+            ); // Random initial position for each sprite
+            int character = i; // Assign a unique character index for each sprite
+            int speed = 50 + i * 30; // Assign a unique speed for each sprite
+            _titleCharacters.Add(new TitleCharacter(initialPosition, character, speed));
+        }
+
+        // Buttons
+        _buttonGroup = new ButtonGroup(
+            new Dictionary<string, Action>
+            {
+                { "Start", onStartClick },
+                { "Options", onOptionsClick },
+                { "Exit", onExitClick }
+            }, 
+            buttonGroupYPosition
+        );
     }
 
     /// <summary>
@@ -70,14 +77,14 @@ public class TitleScreen
         // Load background
         _backgroundTexture = content.Load<Texture2D>("forest_background");
 
+        // Load running character
+        foreach (var c in _titleCharacters) c.LoadContent(content);
+
         // Load banner
         _titleBanner = content.Load<Texture2D>("title_banner");
 
         // Load buttons
-        foreach (var button in _buttons) button.LoadContent(content);
-
-        // Load running character
-        foreach (var runningSprite in _runningSprites) runningSprite.LoadContent(content);
+        _buttonGroup.LoadContent(content);
 
     }
 
@@ -87,11 +94,24 @@ public class TitleScreen
     /// <param name="gameTime">The game time object containing timing information.</param>
     public void Update(GameTime gameTime)
     {
-        // Update buttons
-        foreach (var button in _buttons) button.Update();
-
         // Update running character
-        foreach (var runningSprite in _runningSprites) runningSprite.Update(gameTime);
+        foreach (TitleCharacter c in _titleCharacters) c.Update(gameTime);
+
+        List<(Rectangle, Vector2)> hitBoxesAndDirections = _titleCharacters.Select(c => (c.HitBox, c.Direction)).ToList();
+
+        Dictionary<int, List<(string, int)>> collisionSides = Collision.CheckSpriteCollisions(hitBoxesAndDirections);
+
+        for (int i = 0; i < _titleCharacters.Count; i++)
+        {
+            if (collisionSides.TryGetValue(i, out List<(string, int)> sides))
+            {
+                TitleCharacter titleCharacter = _titleCharacters[i];
+                titleCharacter.ResolveSpriteCollision(sides);
+            }
+        }
+
+        // Update buttons
+        _buttonGroup.Update();
     }
 
     /// <summary>
@@ -104,12 +124,12 @@ public class TitleScreen
         spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
 
         // Draw running character
-        foreach (var runningSprite in _runningSprites) runningSprite.Draw(spriteBatch);
+        foreach (var c in _titleCharacters) c.Draw(spriteBatch);
 
         // Draw banner
         spriteBatch.Draw(_titleBanner, _bannerPosition, null, Color.White, 0f, Vector2.Zero, _bannerScale, SpriteEffects.None, 0f);
 
         // Draw buttons
-        foreach (var button in _buttons) button.Draw(spriteBatch);
+        _buttonGroup.Draw(spriteBatch);
     }
 }

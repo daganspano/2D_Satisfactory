@@ -4,16 +4,16 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Black.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Bold.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-ExtraBold.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/button_atlas.png</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/construction_workers.png</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/forest_background.png</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/title_banner.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Black.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Bold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-ExtraBold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/button_atlas.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/construction_workers.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/forest_background.png</File>
+    <File>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/title_banner.png</File>
   </SourceFiles>
   <DestFiles>
     <File>Orbitron-Black.spritefont</File>

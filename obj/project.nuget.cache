@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "egQ5wiEv0iE=",
+  "dgSpecHash": "WqnrZPWKc6M=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
+  "projectFilePath": "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ds032\\.nuget\\packages\\monogame.content.builder.task\\3.8.5.1\\monogame.content.builder.task.3.8.5.1.nupkg.sha512",
     "C:\\Users\\ds032\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.5.1\\monogame.framework.desktopgl.3.8.5.1.nupkg.sha512",

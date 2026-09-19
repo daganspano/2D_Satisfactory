@@ -25,8 +25,6 @@ C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\runtimes\win-x64\na
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\mgcb.tool.restore
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.csproj.AssemblyReference.cache
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfoInputs.cache
-C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfo.cs
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.csproj.CoreCompileInputs.cache
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.sourcelink.json
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satis.75B50396.Up2Date
@@ -45,3 +43,5 @@ C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_atla
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\title_banner.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\construction_workers.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\forest_background.xnb
+c:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfoInputs.cache
+c:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfo.cs
