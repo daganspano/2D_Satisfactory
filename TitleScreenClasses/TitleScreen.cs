@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using _2D_Satisfactory.Components.Character;
+using _2D_Satisfactory.Components.ButtonClasses;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
 
@@ -56,7 +57,7 @@ public class TitleScreen
             _titleCharacters.Add(new TitleCharacter(initialPosition, character, speed));
         }
 
-        // Initialize buttons
+        // Buttons
         _buttonGroup = new ButtonGroup(
             new Dictionary<string, Action>
             {

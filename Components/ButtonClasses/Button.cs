@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-namespace _2D_Satisfactory.TitleScreenClasses;
+namespace _2D_Satisfactory.Components.ButtonClasses;
 
 /// <summary>
 /// A UI button with a normal, hover, and pressed state.
@@ -32,6 +32,7 @@ public class Button
     // Function to call when the button is clicked
     private readonly System.Action _onClick;
     private bool _isClicked;
+    private bool _wasPreviouslyPressed;
 
 
 
@@ -75,6 +76,13 @@ public class Button
         int startX = 0;
         Color newTextColor = new Color(0x96, 0x52, 0x14);
 
+        // Check current input state
+        bool isCurrentlyPressed = isSelected && (
+            Mouse.GetState().LeftButton == ButtonState.Pressed || 
+            Keyboard.GetState().IsKeyDown(Keys.Enter) || 
+            GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
+        );
+
         if (_isClicked)
         {
             _onClick();
@@ -84,15 +92,17 @@ public class Button
         }
         else if (isSelected)
         {
-            if (
-                Mouse.GetState().LeftButton == ButtonState.Pressed || 
-                Keyboard.GetState().IsKeyDown(Keys.Enter) || 
-                GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
-            )
+            // Only trigger click on transition from unpressed to pressed
+            if (isCurrentlyPressed && !_wasPreviouslyPressed)
             {
                 startX = 2;
                 newTextColor = new Color(0x6E, 0x3C, 0x12);
                 _isClicked = true;
+            }
+            else if (isCurrentlyPressed)
+            {
+                startX = 2;
+                newTextColor = new Color(0x6E, 0x3C, 0x12);
             }
             else 
             {
@@ -101,6 +111,7 @@ public class Button
             }
         }
 
+        _wasPreviouslyPressed = isCurrentlyPressed;
         _sourceRectangle = new Rectangle(startX * _buttonWidthRaw, 0, _buttonWidthRaw, _buttonHeightRaw);
         _textColor = newTextColor;
     }

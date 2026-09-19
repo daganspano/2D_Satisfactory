@@ -13,7 +13,7 @@ public class FactoryGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private GameState _currentGameState;
+    private FactoryGameState _state;
     private TitleScreen _titleScreen;
     private MainGame _mainGame;
 
@@ -26,7 +26,7 @@ public class FactoryGame : Game
     public FactoryGame()
     {
         _graphics = new GraphicsDeviceManager(this);
-        _currentGameState = GameState.TitleScreen;
+        _state = FactoryGameState.TitleScreen;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -40,13 +40,16 @@ public class FactoryGame : Game
 
         // Initialize title screen
         _titleScreen = new TitleScreen(
-            () => { _currentGameState = GameState.MainGame; }, 
-            () => { _currentGameState = GameState.TitleScreenOptions; },
+            () => { _state = FactoryGameState.MainGame; }, 
+            () => { },
             Exit
         );
 
         // Initialize main game
-        _mainGame = new MainGame();
+        _mainGame = new MainGame(
+            () => { _state = FactoryGameState.TitleScreen; },
+            Exit
+        );
 
         // Base initialization
         base.Initialize();
@@ -75,25 +78,13 @@ public class FactoryGame : Game
     /// <param name="gameTime">The game time information.</param>
     protected override void Update(GameTime gameTime)
     {
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            Exit();
-
-        switch (_currentGameState)
+        switch (_state)
         {
-            case GameState.MainGame:
+            case FactoryGameState.MainGame:
                 _mainGame.Update(gameTime);
-                // Update main game logic here
                 break;
-            case GameState.MainGameOptions:
-                _mainGame.Update(gameTime);
-                // Update main game options logic here
-                break;
-            case GameState.TitleScreen:
+            case FactoryGameState.TitleScreen:
                 _titleScreen.Update(gameTime);
-                break;
-            case GameState.TitleScreenOptions:
-                _titleScreen.Update(gameTime);
-                // Update title screen options logic here
                 break;
         }
 
@@ -121,21 +112,13 @@ public class FactoryGame : Game
         _spriteBatch.Begin();
 
         // Draw the current game state
-        switch (_currentGameState)
+        switch (_state)
         {
-            case GameState.MainGame:
+            case FactoryGameState.MainGame:
                 _mainGame.Draw(_spriteBatch);
                 break;
-            case GameState.MainGameOptions:
-                _mainGame.Draw(_spriteBatch);
-                // Update main game options logic here
-                break;
-            case GameState.TitleScreen:
+            case FactoryGameState.TitleScreen:
                 _titleScreen.Draw(_spriteBatch);
-                break;
-            case GameState.TitleScreenOptions:
-                _titleScreen.Draw(_spriteBatch);
-                // Update title screen options logic here
                 break;
         }
 

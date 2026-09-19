@@ -3,10 +3,8 @@ namespace _2D_Satisfactory;
 /// <summary>
 /// Represents the different states of the game.
 /// </summary>
-public enum GameState
+public enum FactoryGameState
 {
     MainGame,
-    MainGameOptions,
     TitleScreen,
-    TitleScreenOptions,
 }

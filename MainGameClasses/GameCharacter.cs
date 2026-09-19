@@ -14,7 +14,7 @@ public class GameCharacter
 
     public GameCharacter(Vector2 initialPosition, int character, int speed)
     {
-        _character = new Character(initialPosition, character, 200);
+        _character = new Character(initialPosition, character, speed);
     }
 
     public void LoadContent(ContentManager content)

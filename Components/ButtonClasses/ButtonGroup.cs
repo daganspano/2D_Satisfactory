@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
-namespace _2D_Satisfactory.TitleScreenClasses;
+namespace _2D_Satisfactory.Components.ButtonClasses;
 
 /// <summary>
 /// Represents a group of buttons, allowing navigation and selection using mouse, keyboard, or gamepad input.
