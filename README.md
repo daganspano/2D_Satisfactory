@@ -51,7 +51,9 @@ None
 
 ### UI Modifications
 
-- Title Screen: The buttons now have keyboard and gamepad functionality.
+#### Title Screen
+
+The buttons now have keyboard and gamepad functionality:
 
 | Action     | Mouse         | Keyboard         | Gamepad                       |
 | ---------- | ------------- | ---------------- | ----------------------------- |

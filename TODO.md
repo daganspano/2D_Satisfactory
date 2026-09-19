@@ -1,18 +1,8 @@
 # GAME PROJECT 1 TO-DO'S
 
-## Character
+## **CRUCIAL**
 
-- Create GameCharacter class that uses the Character class and takes user input.
-- Incorporate collision for characters with objects, other characters, and game screen border.
-
-## Game
-
-- Add `GameCharacter`
-- Create functionality for `Game` class
-
-## Title Screen
-
-- Add collision for `TitleCharacter`s
+- Comment out testing FPS
 
 ## Background (_NOT CRUCIAL_)
 

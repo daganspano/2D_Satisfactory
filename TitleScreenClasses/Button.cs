@@ -39,7 +39,7 @@ public class Button
     public float ButtonWidthScaled => _buttonWidthScaled;
     public float ButtonHeightScaled => _buttonHeightScaled;
     
-    public Button(string text, float buttonScale, int gameWidth, float yPosition, System.Action onClick)
+    public Button(string text, float buttonScale, float yPosition, System.Action onClick)
     {
         _text = text;
         _buttonScale = buttonScale;
@@ -51,7 +51,7 @@ public class Button
         _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
         _buttonHeightRaw = 88;
         _buttonHeightScaled = _buttonHeightRaw * _buttonScale;
-        _buttonPosition = new Vector2((gameWidth - _buttonWidthScaled) / 2, yPosition);
+        _buttonPosition = new Vector2((GameDimensions.Width - _buttonWidthScaled) / 2, yPosition);
     }
 
     /// <summary>

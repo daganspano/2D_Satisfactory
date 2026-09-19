@@ -18,7 +18,7 @@ public class ButtonGroup
     private bool _wasPreviouslyUp;
     private Point _previousMousePosition;
 
-    public ButtonGroup(Dictionary<string, Action> labelsAndActions, int gameWidth, float buttonStartingYPosition)
+    public ButtonGroup(Dictionary<string, Action> labelsAndActions, float yPosition)
     {
         _selectedButtonIndex = -1;
 
@@ -30,7 +30,7 @@ public class ButtonGroup
         int i = 0;
         foreach (var label in labelsAndActions.Keys)
         {
-            _buttons.Add(new Button(label, buttonScale, gameWidth, buttonStartingYPosition + i * (buttonPadding + buttonHeightScaled), labelsAndActions[label]));
+            _buttons.Add(new Button(label, buttonScale, yPosition + i * (buttonPadding + buttonHeightScaled), labelsAndActions[label]));
             i++;
         }
     }

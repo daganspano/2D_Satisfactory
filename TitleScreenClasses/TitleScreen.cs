@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using _2D_Satisfactory.Components.Character;
 
 namespace _2D_Satisfactory.TitleScreenClasses;
 
@@ -13,7 +15,7 @@ public class TitleScreen
 {
     // Sprite Fields
     private Texture2D _backgroundTexture;
-    private readonly List<TitleCharacter> _runningSprites;
+    private readonly List<TitleCharacter> _titleCharacters;
     private Texture2D _titleBanner;
     private ButtonGroup _buttonGroup;
 
@@ -22,7 +24,7 @@ public class TitleScreen
     private readonly float _bannerScale;
     
 
-    public TitleScreen(Vector2 gameDimensions, Action onStartClick, Action onOptionsClick, Action onExitClick)
+    public TitleScreen(Action onStartClick, Action onOptionsClick, Action onExitClick)
     {
         // Banner Size & Scale Fields
         _bannerScale = 0.4f;
@@ -38,20 +40,20 @@ public class TitleScreen
         float titleHeight = bannerHeightScaled + 3 * (buttonPadding + buttonHeightScaled);
 
         // Position Fields
-        _bannerPosition = new Vector2((gameDimensions.X - bannerWidthScaled) / 2, (gameDimensions.Y - titleHeight) / 2);
-        float buttonStartingYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
+        _bannerPosition = new Vector2((GameDimensions.X - bannerWidthScaled) / 2, (GameDimensions.Y - titleHeight) / 2);
+        float buttonGroupYPosition = _bannerPosition.Y + bannerHeightScaled + buttonPadding;
         
         // Initialize running sprites
-        _runningSprites = new List<TitleCharacter>();
+        _titleCharacters = new List<TitleCharacter>();
         for (int i = 0; i < 4; i++) 
         {
             Vector2 initialPosition = new Vector2(
-                new Random().Next(i * (int)gameDimensions.X / 4, (i + 1) * (int)gameDimensions.X / 4),
-                new Random().Next(200, (int)gameDimensions.Y)
+                new Random().Next((int)(i * GameDimensions.X / 4), (int)((i + 1) * GameDimensions.X / 4)),
+                new Random().Next(200, (int)GameDimensions.Y)
             ); // Random initial position for each sprite
             int character = i; // Assign a unique character index for each sprite
             int speed = 50 + i * 30; // Assign a unique speed for each sprite
-            _runningSprites.Add(new TitleCharacter(gameDimensions, initialPosition, character, speed));
+            _titleCharacters.Add(new TitleCharacter(initialPosition, character, speed));
         }
 
         // Initialize buttons
@@ -62,7 +64,7 @@ public class TitleScreen
                 { "Options", onOptionsClick },
                 { "Exit", onExitClick }
             }, 
-            (int)gameDimensions.X, buttonStartingYPosition
+            buttonGroupYPosition
         );
     }
 
@@ -76,7 +78,7 @@ public class TitleScreen
         _backgroundTexture = content.Load<Texture2D>("forest_background");
 
         // Load running character
-        foreach (var runningSprite in _runningSprites) runningSprite.LoadContent(content);
+        foreach (var c in _titleCharacters) c.LoadContent(content);
 
         // Load banner
         _titleBanner = content.Load<Texture2D>("title_banner");
@@ -93,7 +95,20 @@ public class TitleScreen
     public void Update(GameTime gameTime)
     {
         // Update running character
-        foreach (var runningSprite in _runningSprites) runningSprite.Update(gameTime);
+        foreach (TitleCharacter c in _titleCharacters) c.Update(gameTime);
+
+        List<(Rectangle, Vector2)> hitBoxesAndDirections = _titleCharacters.Select(c => (c.HitBox, c.Direction)).ToList();
+
+        Dictionary<int, List<(string, int)>> collisionSides = Collision.CheckSpriteCollisions(hitBoxesAndDirections);
+
+        for (int i = 0; i < _titleCharacters.Count; i++)
+        {
+            if (collisionSides.TryGetValue(i, out List<(string, int)> sides))
+            {
+                TitleCharacter titleCharacter = _titleCharacters[i];
+                titleCharacter.ResolveSpriteCollision(sides);
+            }
+        }
 
         // Update buttons
         _buttonGroup.Update();
@@ -109,7 +124,7 @@ public class TitleScreen
         spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
 
         // Draw running character
-        foreach (var runningSprite in _runningSprites) runningSprite.Draw(spriteBatch);
+        foreach (var c in _titleCharacters) c.Draw(spriteBatch);
 
         // Draw banner
         spriteBatch.Draw(_titleBanner, _bannerPosition, null, Color.White, 0f, Vector2.Zero, _bannerScale, SpriteEffects.None, 0f);

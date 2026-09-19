@@ -12,9 +12,6 @@ namespace _2D_Satisfactory.Components.Character;
 /// </summary>
 public class Character
 {
-    // Game Dimensions
-    private readonly Vector2 _gameDimensions;
-
     // Timer Fields
     private double _animationTimer;
 
@@ -25,10 +22,17 @@ public class Character
 
     // Frame Fields
     private readonly Point _spriteSize;
+    private readonly float _spriteScale;
     private Point _frame;
     private int _previousAnimationFrame;
+    private Vector2 _previousDirection;
     private Rectangle _sourceRectangle;
     private Vector2 _position;
+
+    /// <summary>
+    /// The hit box of the character based on its current position and sprite size.
+    /// </summary>
+    public Rectangle HitBox => new Rectangle(_position.ToPoint(), (_spriteSize.ToVector2() * _spriteScale).ToPoint());
 
     /// <summary>
     /// The Speed of the Character
@@ -37,12 +41,18 @@ public class Character
     {
         set => _speed = value;
     }
-    
-    public Character(Vector2 gameDimensions, Vector2 initialPosition, int character, int speed)
+
+    public Vector2 Position
     {
-        _gameDimensions = gameDimensions;
+        get => _position;
+        set => _position = value;
+    }
+
+    public Character(Vector2 initialPosition, int character, int speed)
+    {
         _position = initialPosition;
         _spriteSize = new Point(16, 23);
+        _spriteScale = 1.8f;
         _sourceRectangle = new Rectangle(Point.Zero, _spriteSize);
         _speed = speed;
         _character = new Point(character % 4, character / 4);
@@ -82,20 +92,13 @@ public class Character
     /// <param name="spriteBatch">The sprite batch used to draw the running sprite.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
+        spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, _spriteScale, SpriteEffects.None, 0f);
     }
 
-    /// <summary>
-    /// Detects if the character is colliding with the edges of the game area based on its current position and direction.
-    /// </summary>
-    /// <param name="direction">The direction vector of the character's movement.</param>
-    /// <returns>The edge of the game area the character is colliding with, or null if no collision.</returns>
-    public List<string> CheckForCollision(Vector2 direction)
+    public List<string> CheckEdgeCollisions(Vector2 direction)
     {
-        List<string> collisions = new List<string>();
-        if ((_position.X <= 0 && direction.X < 0) || (_position.X >= _gameDimensions.X - _spriteSize.X && direction.X > 0)) collisions.Add("x");
-        if ((_position.Y <= 200 && direction.Y < 0) || (_position.Y >= _gameDimensions.Y - _spriteSize.Y && direction.Y > 0)) collisions.Add("y");
-        return collisions;
+        // return Collision.CheckEdgeCollisions(GetHitBox(), direction);
+        return Collision.CheckEdgeCollisions(HitBox, direction);
     }
  
     /// <summary>
@@ -110,8 +113,13 @@ public class Character
         if (direction == Vector2.Zero)
         {
             _frame.X = (int)AnimationFrame.Stationary;
+            _animationTimer = 0;
+            _previousDirection = Vector2.Zero;
             return;
         }
+
+        // Start the running animation immediately when the character starts moving
+        if (_previousDirection == Vector2.Zero) _animationTimer = animationSpeed;
 
         // Update the animation
         if (_animationTimer > animationSpeed)
@@ -133,6 +141,8 @@ public class Character
         // Update the direction
         if (Math.Abs(direction.X) > Math.Abs(direction.Y)) _frame.Y = direction.X > 0 ? (int)DirectionFrame.Right : (int)DirectionFrame.Left;
         else _frame.Y = direction.Y > 0 ? (int)DirectionFrame.Down : (int)DirectionFrame.Up;
+
+        _previousDirection = direction;
     }
 
     /// <summary>

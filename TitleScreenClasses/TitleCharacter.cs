@@ -18,11 +18,12 @@ public class TitleCharacter
 
     // Position Fields
     private Vector2 _direction;
-
-
     private Character _character;
+
+    public Rectangle HitBox => _character.HitBox;
+    public Vector2 Direction => _direction;
     
-    public TitleCharacter(Vector2 gameDimensions, Vector2 initialPosition, int character, int speed)
+    public TitleCharacter(Vector2 initialPosition, int character, int speed)
     {
         // Timer Fields
         _directionTimer = 2;
@@ -31,7 +32,7 @@ public class TitleCharacter
         // Position Fields
         _direction = Vector2.Zero;
 
-        _character = new Character(gameDimensions, initialPosition, character, speed);
+        _character = new Character(initialPosition, character, speed);
     }
 
     /// <summary>
@@ -43,10 +44,6 @@ public class TitleCharacter
         _character.LoadContent(content);
     }
 
-    /// <summary>
-    /// Updates the running sprite's position, direction, and animation based on the elapsed game time.
-    /// </summary>
-    /// <param name="gameTime">The game time object containing the elapsed time since the last update.</param>
     public void Update(GameTime gameTime)
     {
         // Update the frame timers
@@ -56,10 +53,45 @@ public class TitleCharacter
         if (_directionTimer > _directionChangeInterval) ChangeDirection();
 
         // Bounce off edges of the screen
-        List<string> collisions = _character.CheckForCollision(_direction);
+        List<string> collisions = _character.CheckEdgeCollisions(_direction);
         if (collisions.Count > 0) BounceOffEdges(collisions);
 
         _character.Update(gameTime, _direction);
+    }
+
+    public void ResolveSpriteCollision(List<(string, int)> collisionSides)
+    {
+        if (collisionSides.Count <= 0) return;
+
+        foreach ((string side, int overlap) in collisionSides)
+        {
+            switch (side)
+            {
+                case "right":
+                    if (_direction.X > 0)
+                        _direction.X = -Math.Abs(_direction.X);
+                    _character.Position += new Vector2(-overlap, 0);
+                    break;
+
+                case "left":
+                    if (_direction.X < 0)
+                        _direction.X = Math.Abs(_direction.X);
+                    _character.Position += new Vector2(overlap, 0);
+                    break;
+
+                case "bottom":
+                    if (_direction.Y > 0)
+                        _direction.Y = -Math.Abs(_direction.Y);
+                    _character.Position += new Vector2(0, -overlap);
+                    break;
+
+                case "top":
+                    if (_direction.Y < 0)
+                        _direction.Y = Math.Abs(_direction.Y);
+                    _character.Position += new Vector2(0, overlap);
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -88,9 +120,9 @@ public class TitleCharacter
     /// <summary>
     /// Bounces the running sprite off the edges of the screen by reversing its direction when it reaches the boundaries.
     /// </summary>
-    private void BounceOffEdges(List<string> collision)
+    private void BounceOffEdges(List<string> collisions)
     {
-        if (collision.Contains("x")) _direction.X = -_direction.X;
-        if (collision.Contains("y")) _direction.Y = -_direction.Y;
+        if (collisions.Contains("x")) _direction.X = -_direction.X;
+        if (collisions.Contains("y")) _direction.Y = -_direction.Y;
     }
 }
