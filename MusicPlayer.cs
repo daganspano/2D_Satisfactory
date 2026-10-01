@@ -27,7 +27,7 @@ public class MusicPlayer : GameComponent
 
         // Start MediaPlayer with the title screen music
         MediaPlayer.IsRepeating = true;
-        MediaPlayer.Volume = 0.05f;
+        MediaPlayer.Volume = 0.08f;
         MediaPlayer.Play(_titleScreenMusic);
     }
 

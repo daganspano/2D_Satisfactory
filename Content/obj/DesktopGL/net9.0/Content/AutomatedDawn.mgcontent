@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AutomatedDawn.mp3</SourceFile>
-  <SourceTime>2026-09-30T17:10:15.6328644-05:00</SourceTime>
-  <DestFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/Content/AutomatedDawn.xnb</DestFile>
-  <DestTime>2026-10-01T12:39:42.6238128-05:00</DestTime>
+  <SourceFile>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sound/AutomatedDawn.mp3</SourceFile>
+  <SourceTime>2026-10-01T13:35:47.707876-05:00</SourceTime>
+  <DestFile>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/bin/DesktopGL/Content/AutomatedDawn.xnb</DestFile>
+  <DestTime>2026-10-01T13:42:01.0363158-05:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2026-08-14T16:50:10-05:00</ImporterTime>
   <Processor>SongProcessor</Processor>
@@ -19,6 +19,6 @@
   <Dependencies />
   <BuildAsset />
   <BuildOutput>
-    <string>C:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/Content/AutomatedDawn.ogg</string>
+    <string>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/bin/DesktopGL/Content/AutomatedDawn.ogg</string>
   </BuildOutput>
 </PipelineBuildEvent>
