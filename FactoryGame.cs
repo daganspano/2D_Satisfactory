@@ -13,7 +13,7 @@ public class FactoryGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private FactoryGameState _state;
+    public FactoryGameState State { get; private set; }
     private TitleScreen _titleScreen;
     private MainGame _mainGame;
 
@@ -26,9 +26,10 @@ public class FactoryGame : Game
     public FactoryGame()
     {
         _graphics = new GraphicsDeviceManager(this);
-        _state = FactoryGameState.TitleScreen;
+        State = FactoryGameState.TitleScreen;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+        Components.Add(new MusicPlayer(this));
     }
 
     /// <summary>
@@ -40,14 +41,14 @@ public class FactoryGame : Game
 
         // Initialize title screen
         _titleScreen = new TitleScreen(
-            () => { _state = FactoryGameState.MainGame; }, 
+            () => { State = FactoryGameState.MainGame; }, 
             () => { },
             Exit
         );
 
         // Initialize main game
         _mainGame = new MainGame(
-            () => { _state = FactoryGameState.TitleScreen; },
+            () => { State = FactoryGameState.TitleScreen; },
             Exit
         );
 
@@ -78,7 +79,7 @@ public class FactoryGame : Game
     /// <param name="gameTime">The game time information.</param>
     protected override void Update(GameTime gameTime)
     {
-        switch (_state)
+        switch (State)
         {
             case FactoryGameState.MainGame:
                 _mainGame.Update(gameTime);
@@ -112,7 +113,7 @@ public class FactoryGame : Game
         _spriteBatch.Begin();
 
         // Draw the current game state
-        switch (_state)
+        switch (State)
         {
             case FactoryGameState.MainGame:
                 _mainGame.Draw(_spriteBatch);

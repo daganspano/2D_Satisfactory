@@ -61,6 +61,34 @@
 /processorParam:Version=3.8.5.1
 /build:Fonts/Orbitron-SemiBold.spritefont;Orbitron-SemiBold.spritefont
 
+#begin Sound/Assembly Line Trance.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/Assembly Line Trance.mp3;Assembly Line Trance.mp3
+
+#begin Sound/Automated Dawn.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/Automated Dawn.mp3;Automated Dawn.mp3
+
+#begin Sound/Conveyor Dawn Horizon.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/Conveyor Dawn Horizon.mp3;Conveyor Dawn Horizon.mp3
+
+#begin Sound/single_foot_step_on__#1-1790817949141.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/single_foot_step_on__#1-1790817949141.mp3;single_foot_step_on__#1-1790817949141.mp3
+
 #begin Sprites/button_atlas.png
 /importer:TextureImporter
 /processor:TextureProcessor
