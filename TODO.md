@@ -2,10 +2,6 @@
 
 ## Requirements
 
-- Add background music
-  - Title Screen
-  - Game (2-3 different songs)
-
 - Add sounds effects:
   - Grass run sound effect
 

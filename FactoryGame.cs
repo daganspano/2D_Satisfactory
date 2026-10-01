@@ -1,6 +1,7 @@
 ﻿using _2D_Satisfactory.MainGameClasses;
 using _2D_Satisfactory.TitleScreenClasses;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 

@@ -45,11 +45,10 @@ C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\constructio
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\forest_background.xnb
 c:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfoInputs.cache
 c:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.AssemblyInfo.cs
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Assembly Line Trance.ogg
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Assembly Line Trance.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Automated Dawn.ogg
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Automated Dawn.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Conveyor Dawn Horizon.ogg
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Conveyor Dawn Horizon.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\single_foot_step_on__#1-1790817949141.ogg
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\single_foot_step_on__#1-1790817949141.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\AssemblyLineTrance.ogg
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\AssemblyLineTrance.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\AutomatedDawn.ogg
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\AutomatedDawn.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\ConveyorDawnHorizon.ogg
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\ConveyorDawnHorizon.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\grassFootSteps.xnb

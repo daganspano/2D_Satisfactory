@@ -10,10 +10,10 @@
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/Assembly Line Trance.mp3</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/Automated Dawn.mp3</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/Conveyor Dawn Horizon.mp3</File>
-    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/single_foot_step_on__#1-1790817949141.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AssemblyLineTrance.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AutomatedDawn.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/ConveyorDawnHorizon.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/grassFootSteps.wav</File>
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/button_atlas.png</File>
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/construction_workers.png</File>
     <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/forest_background.png</File>
@@ -26,10 +26,10 @@
     <File>Orbitron-Medium.spritefont</File>
     <File>Orbitron-Regular.spritefont</File>
     <File>Orbitron-SemiBold.spritefont</File>
-    <File>Assembly Line Trance.mp3</File>
-    <File>Automated Dawn.mp3</File>
-    <File>Conveyor Dawn Horizon.mp3</File>
-    <File>single_foot_step_on__#1-1790817949141.mp3</File>
+    <File>AssemblyLineTrance.mp3</File>
+    <File>AutomatedDawn.mp3</File>
+    <File>ConveyorDawnHorizon.mp3</File>
+    <File>grassFootSteps.wav</File>
     <File>button_atlas.png</File>
     <File>construction_workers.png</File>
     <File>forest_background.png</File>

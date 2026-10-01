@@ -1,7 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +14,9 @@ public class Character
 {
     // Timer Fields
     private double _animationTimer;
+    private double _animationSpeed;
+    private double _soundTimer;
+    private double _soundSpeed;
 
     // Sprite Fields
     private Texture2D _texture;
@@ -29,6 +32,9 @@ public class Character
     private Rectangle _sourceRectangle;
     private Vector2 _position;
 
+    // Sound Effect Fields
+    private SoundEffect _walkingSoundEffect;
+    private readonly bool _disableWalkingSound;
     /// <summary>
     /// The hit box of the character based on its current position and sprite size.
     /// </summary>
@@ -51,7 +57,7 @@ public class Character
         set => _position = value;
     }
 
-    public Character(Vector2 initialPosition, int character, int speed)
+    public Character(Vector2 initialPosition, int character, int speed, bool? disableWalkingSound = false)
     {
         _position = initialPosition;
         _spriteSize = new Point(16, 23);
@@ -61,7 +67,11 @@ public class Character
         _character = new Point(character % 4, character / 4);
         _frame = new Point((int)AnimationFrame.Stationary, (int)DirectionFrame.Down);
         _animationTimer = 0;
+        _animationSpeed = 0.2 * 100 / 140 * Math.Sqrt(140.0 / _speed);
+        _soundTimer = 0;
+        _soundSpeed = 2 * _animationSpeed;
         _previousAnimationFrame = 0;
+        _disableWalkingSound = disableWalkingSound ?? false;
     }
 
     /// <summary>
@@ -71,6 +81,7 @@ public class Character
     public void LoadContent(ContentManager content)
     {
         _texture = content.Load<Texture2D>("construction_workers");
+        _walkingSoundEffect = content.Load<SoundEffect>("grassFootSteps");
     }
 
     /// <summary>
@@ -80,12 +91,15 @@ public class Character
     /// <param name="direction">The direction vector indicating the character's movement direction.</param>
     public void Update(GameTime gameTime, Vector2 direction)
     {
+        // Play walking sound effect
+        PlayWalkingSound(gameTime, direction);
+
         // Update frame for the animation and direction based on the current direction vector
         UpdateFrame(gameTime, direction);
 
         // Update the source rectangle based on the current frame and character
         UpdateSourceRectangle();
-
+            
         // Update the position and direction frame
         _position += direction * _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
@@ -119,7 +133,6 @@ public class Character
     {
         // Update the animation timer
         _animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-        double animationSpeed = 0.15 * 100 / 140 * Math.Sqrt(140.0 / _speed);
 
         if (direction == Vector2.Zero)
         {
@@ -130,10 +143,10 @@ public class Character
         }
 
         // Start the running animation immediately when the character starts moving
-        if (_previousDirection == Vector2.Zero) _animationTimer = animationSpeed;
+        if (_previousDirection == Vector2.Zero) _animationTimer = _animationSpeed;
 
         // Update the animation
-        if (_animationTimer > animationSpeed)
+        if (_animationTimer > _animationSpeed)
         {
             switch (_frame.X)
             {
@@ -146,7 +159,7 @@ public class Character
                     _previousAnimationFrame = _frame.X;
                     break;
             }
-            _animationTimer -= animationSpeed;
+            _animationTimer -= _animationSpeed;
         }
         
         // Update the direction
@@ -167,5 +180,30 @@ public class Character
 
         // Start point + character position + frame position
         _sourceRectangle.Location = startPoint + _character * characterOffset + _frame * frameOffset;
+    }
+
+    private void PlayWalkingSound(GameTime gameTime, Vector2 direction)
+    {   
+        if (!_disableWalkingSound) 
+        {
+            // Update the sound timer
+            _soundTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (direction == Vector2.Zero)
+            {
+                _soundTimer = 0;
+                return;
+            }
+
+            // Start the walking sound immediately when the character starts moving
+            if (_previousDirection == Vector2.Zero) _soundTimer = _soundSpeed;
+
+            // Play the sound effect
+            if (_soundTimer > _soundSpeed)
+            {
+                _walkingSoundEffect.Play(volume: 0.25f, pitch: -0.125f, pan: 0f);
+                _soundTimer -= 2 * _animationSpeed;
+            }
+        }
     }
 }

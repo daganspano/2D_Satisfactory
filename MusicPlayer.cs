@@ -15,9 +15,9 @@ public class MusicPlayer : GameComponent
         _game = (FactoryGame)game;
 
         // Load the music content
-        _titleScreenMusic = _game.Content.Load<Song>("Automated Dawn");
-        Song song2 = _game.Content.Load<Song>("Assembly Line Trance");
-        Song song3 = _game.Content.Load<Song>("Conveyor Dawn Horizon");
+        _titleScreenMusic = _game.Content.Load<Song>("AutomatedDawn");
+        Song song2 = _game.Content.Load<Song>("AssemblyLineTrance");
+        Song song3 = _game.Content.Load<Song>("ConveyorDawnHorizon");
 
         // Create a collection of game music
         _gameMusic = SongCollection.Empty;
