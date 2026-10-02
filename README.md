@@ -19,11 +19,12 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 ### Main Game
 
 - Move the `GameCharacter` with WASD or the arrow keys on the keyboard, or use the left joystick on the gamepad.
+- Stand on the iron ore deposit and hold "E" on keyboard or "X" on the gamepad to collect iron ore.
 - Press "Esc" on the keyboard or "Start" on the gamepad to open and close the pause menu.
-- Click the "Resume" `Button` to close the pause menu and continue playing.
-- Click the "Exit to Menu" `Button` to return to the title screen.
-- Click the "Exit to Desktop" `Button` to exit the game.
-- The "Options" `Button` is present but currently has no implemented functionality.
+  - Click the "Resume" `Button` to close the pause menu and continue playing.
+  - Click the "Exit to Menu" `Button` to return to the title screen.
+  - Click the "Exit to Desktop" `Button` to exit the game.
+  - The "Options" `Button` is present but currently has no implemented functionality.
 
 ### Interacting with buttons
 
@@ -36,6 +37,61 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 | Cycle up   | Hovering Over | Tab              | Left Stick Up or D-Pad Up     |
 | Cycle down | Hovering Over | Left-Shift + Tab | Left Stick Down or D-Pad Down |
 | Click      | Left Click    | Enter            | A                             |
+
+---
+
+## 0.3.0 (Game Project 2)
+
+### Assets Added
+
+#### Sounds
+
+- `AssemblyLineTrance.mp3`
+- `AutomatedDawn.mp3`
+- `ConveyorDawnHorizon.mp3`
+- `grassFootSteps.wav`
+
+#### Sprites
+
+- `iron_ore_deposit.png`
+
+### Classes Modified / Added
+
+- `FactoryGame.cs` (Modified):
+  - Added the new `MusicPlayer` component.
+  - Now exposes the current `FactoryGameState` as a public `State` property so other components can react to it..
+- `MusicPlayer.cs` (Added): A game component that manages background music for the game.
+
+#### Main Game Classes
+
+- `MainGame.cs` (Modified):
+  - Added an `IronOreDeposit`
+  - Now lets the player hand-mine iron ore by holding "E" on keyboard or "X" on the gamepad while colliding with the deposit
+  - Now tracks a simple inventory
+  - Now draws the inventory and contextual control hints to the screen.
+- `GameCharacter.cs` (Modified): Now exposes the character's `HitBox` so other classes can perform collision checks against it.
+- `IronOreDeposits.cs` (Added): Represents an iron ore deposit in the game world.
+  - `OvalHitBox` (Added): Represents an oval-shaped hitbox for collision detection.
+
+#### Title Screen Classes
+
+- `TitleScreen.cs` (Modified): Minor cleanup.
+- `TitleCharacter.cs` (Modified): Disables the new walking sound effect for title screen characters.
+
+#### Components / Character Classes
+
+- `Character.cs` (Modified):
+  - Added a footstep sound effect that plays while the character moves (toggleable via a new constructor parameter)
+  - Refactored the animation speed into a reusable field shared with the new sound timing logic.
+
+### UI Modifications
+
+#### Main Game
+
+- There is now an iron ore deposit on the screen.
+  - Standing on it (colliding with it) shows text at the bottom showing that "E" mines iron ore.
+  - Standing on it and holding "E" adds an iron ore into the user's inventory every 0.5 seconds.
+- There is now a temporary inventory display in the top left.
 
 ---
 

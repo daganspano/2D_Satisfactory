@@ -61,6 +61,34 @@
 /processorParam:Version=3.8.5.1
 /build:Fonts/Orbitron-SemiBold.spritefont;Orbitron-SemiBold.spritefont
 
+#begin Sound/AssemblyLineTrance.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/AssemblyLineTrance.mp3;AssemblyLineTrance.mp3
+
+#begin Sound/AutomatedDawn.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/AutomatedDawn.mp3;AutomatedDawn.mp3
+
+#begin Sound/ConveyorDawnHorizon.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/ConveyorDawnHorizon.mp3;ConveyorDawnHorizon.mp3
+
+#begin Sound/grassFootSteps.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:Sound/grassFootSteps.wav;grassFootSteps.wav
+
 #begin Sprites/button_atlas.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -99,6 +127,19 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:Sprites/forest_background.png;forest_background.png
+
+#begin Sprites/iron_ore_deposit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Sprites/iron_ore_deposit.png;iron_ore_deposit.png
 
 #begin Sprites/title_banner.png
 /importer:TextureImporter

@@ -85,7 +85,6 @@ public class TitleScreen
 
         // Load buttons
         _buttonGroup.LoadContent(content);
-
     }
 
     /// <summary>

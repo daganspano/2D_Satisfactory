@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/grassFootSteps.wav</SourceFile>
+  <SourceTime>2026-10-01T12:58:55.7022636-05:00</SourceTime>
+  <DestFile>c:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/grassFootSteps.xnb</DestFile>
+  <DestTime>2026-10-01T15:13:49.3372859-05:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2026-08-14T16:50:10-05:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2026-08-14T16:50:10-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Parameters>
+    <Key>Version</Key>
+    <Value>3.8.5.1</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

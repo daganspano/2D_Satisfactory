@@ -39,7 +39,7 @@ public class TitleCharacter
         // Position Fields
         _direction = Vector2.Zero;
 
-        _character = new Character(initialPosition, character, speed);
+        _character = new Character(initialPosition, character, speed, disableWalkingSound: true);
     }
 
     /// <summary>
