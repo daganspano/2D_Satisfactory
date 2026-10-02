@@ -49,6 +49,7 @@ public class FactoryGame : Game
 
         // Initialize main game
         _mainGame = new MainGame(
+            this,
             () => { State = FactoryGameState.TitleScreen; },
             Exit
         );

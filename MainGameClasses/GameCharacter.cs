@@ -14,6 +14,8 @@ namespace _2D_Satisfactory.MainGameClasses;
 public class GameCharacter
 {
     private readonly Character _character;
+    
+    public Rectangle HitBox => _character.HitBox;
 
     public GameCharacter(Vector2 initialPosition, int character, int speed)
     {

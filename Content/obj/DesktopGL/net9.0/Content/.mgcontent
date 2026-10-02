@@ -4,20 +4,21 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-Black.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-Bold.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-ExtraBold.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sound/AssemblyLineTrance.mp3</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sound/AutomatedDawn.mp3</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sound/ConveyorDawnHorizon.mp3</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sound/grassFootSteps.wav</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sprites/button_atlas.png</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sprites/construction_workers.png</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sprites/forest_background.png</File>
-    <File>/home/daganspano/Documents/GithubRepos/2D_Satisfactory/Content/Sprites/title_banner.png</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Black.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Bold.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-ExtraBold.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Medium.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-Regular.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Fonts/Orbitron-SemiBold.spritefont</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AssemblyLineTrance.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AutomatedDawn.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/ConveyorDawnHorizon.mp3</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/grassFootSteps.wav</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/button_atlas.png</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/construction_workers.png</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/forest_background.png</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/iron_ore_deposit.png</File>
+    <File>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/title_banner.png</File>
   </SourceFiles>
   <DestFiles>
     <File>Orbitron-Black.spritefont</File>
@@ -33,6 +34,7 @@
     <File>button_atlas.png</File>
     <File>construction_workers.png</File>
     <File>forest_background.png</File>
+    <File>iron_ore_deposit.png</File>
     <File>title_banner.png</File>
   </DestFiles>
 </SourceFileCollection>

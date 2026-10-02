@@ -165,7 +165,6 @@ public class Character
         // Update the direction
         if (Math.Abs(direction.X) > Math.Abs(direction.Y)) _frame.Y = direction.X > 0 ? (int)DirectionFrame.Right : (int)DirectionFrame.Left;
         else _frame.Y = direction.Y > 0 ? (int)DirectionFrame.Down : (int)DirectionFrame.Up;
-
         _previousDirection = direction;
     }
 

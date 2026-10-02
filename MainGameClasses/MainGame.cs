@@ -15,19 +15,28 @@ public class MainGame
 {
     // Sprite Fields
     private Texture2D _backgroundTexture;
+    private IronOreDeposit _ironOreDeposit;
     private GameCharacter _character;
     private ButtonGroup _buttonGroup;
+    private SpriteFont _font;
+
+    private string _controlsText;
+    private Dictionary<string, string> _controls;
     private MainGameState _state;
     private bool _wasPreviouslyEscPressed;
 
-    public MainGame(Action exitToMenu, Action exitToDesktop)
+    private Dictionary<string, int> _inventory;
+    private double _actionTimer;
+    private double _miningSpeed;
+
+    public MainGame(Game game, Action exitToMenu, Action exitToDesktop)
     {
         Vector2 initialPosition = new Vector2(GameDimensions.X / 2, GameDimensions.Y / 2);
         int character = 2;
         int speed = 100;
+        _ironOreDeposit = new IronOreDeposit(game);
         _character = new GameCharacter(initialPosition, character, speed);
-        _state = MainGameState.Idle;
-
+        
         // Get button group y position
         const float buttonScale = 0.7f;
         float buttonHeightScaled = 88 * buttonScale;
@@ -46,6 +55,16 @@ public class MainGame
             }, 
             buttonGroupYPosition
         );
+        
+        _controls = new Dictionary<string, string>
+        {
+            { "Mine_Ore", "Mine iron ore: E" }
+        };
+        _state = MainGameState.Idle;
+
+        _inventory = new Dictionary<string, int>();
+        _actionTimer = 0f;
+        _miningSpeed = 0.5f;
     }
 
     /// <summary>
@@ -62,6 +81,8 @@ public class MainGame
 
         // Load buttons
         _buttonGroup.LoadContent(content);
+
+        _font = content.Load<SpriteFont>("Orbitron-Regular");
     }
 
     /// <summary>
@@ -70,15 +91,44 @@ public class MainGame
     /// <param name="gameTime">The game time object containing timing information for the current frame.</param>
     public void Update(GameTime gameTime)
     {
-        bool isEscPressed = GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape);
+        KeyboardState keyboardState = Keyboard.GetState();
+
+        bool isEscPressed = GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape);
         if (isEscPressed && !_wasPreviouslyEscPressed) _state = _state == MainGameState.Idle ? MainGameState.Paused : MainGameState.Idle;
         _wasPreviouslyEscPressed = isEscPressed;
+
+        // Update Iron Ore Deposit
+        _ironOreDeposit.Update(gameTime);
 
         // Update character
         if (_state == MainGameState.Idle) _character.Update(gameTime);
 
         // Update buttons when the game is paused
         if (_state == MainGameState.Paused) _buttonGroup.Update();
+
+        _controlsText = " ";
+
+        // Check for collision between character and Iron Ore Deposit
+        if (_ironOreDeposit.CollidesWith(_character.HitBox))
+        {
+            _controlsText += _controls["Mine_Ore"] + " ";
+            
+            if (keyboardState.IsKeyDown(Keys.E))
+            {
+                _actionTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (_actionTimer >= _miningSpeed)
+                {
+                    // Add iron ore to inventory
+                    if (!_inventory.ContainsKey("Iron Ore")) _inventory["Iron Ore"] = 0;
+                    _inventory["Iron Ore"]++;
+                    _actionTimer -= _miningSpeed;
+                }
+            }
+            else
+            {
+                _actionTimer = 0f;
+            }
+        }
     }
 
     /// <summary>
@@ -90,10 +140,30 @@ public class MainGame
         // Draw background
         spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
 
+        // Draw Iron Ore Deposit
+        _ironOreDeposit.Draw(spriteBatch);
+
         // Draw character
         _character.Draw(spriteBatch);
 
         // Draw buttons when the game is paused
         if (_state == MainGameState.Paused) _buttonGroup.Draw(spriteBatch);
+
+        // Draw inventory
+        Vector2 inventoryPosition = new Vector2(10, 10);
+        spriteBatch.DrawString(_font, "Inventory:", inventoryPosition, Color.White);
+        foreach (var item in _inventory)
+        {
+            if (item.Value > 0)
+            {
+                inventoryPosition.Y += 30;
+                spriteBatch.DrawString(_font, $"   {item.Key}: {item.Value}", inventoryPosition, Color.White);
+            }
+        }
+
+        // Draw game controls
+        Vector2 textSize = _font.MeasureString(_controlsText ?? " ");
+        Vector2 textPosition = new Vector2((GameDimensions.Width - textSize.X) / 2, GameDimensions.Height - textSize.Y - 10);
+        spriteBatch.DrawString(_font, _controlsText ?? " ", textPosition, Color.White);
     }
 }

@@ -1,19 +1,21 @@
-# GAME PROJECT 2 TO-DO'S
-
-## Requirements
-
-- Add sounds effects:
-  - Grass run sound effect
+# FACTORY GAME TO-DO'S
 
 ## New Content
 
-- Ore Deposits
-  - Add 1 Iron ore deposit
-  - Allow Mining (`"e"`)
-
 - Crafting Bench
-  - Add a crafting bench (open with `"e"`)
-  - Allow Iron Plate crafting
+  - Get crafting bench sprite.
+  - Add 1 sprite onto screen.
+  - Allow user to hand-craft by pressing `"e"`.
+    - One hit is 0.25 seconds.
+    - Iron ingots craft 1 iron ore -> 1 iron ingot every 3 hits.
+    - Iron rods craft 1 iron ingot -> 1 iron rods every 1 hit.
+    - Iron plates craft 3 iron ingot -> 2 iron plates every 3 hits.
+
+- Inventory
+  - Make an inventory popup that opens when pressing tab.
+
+- Options
+  - Add popup when "Options" button is clicked.
 
 - Background
   - Create a map sprite that's at least the current game size
