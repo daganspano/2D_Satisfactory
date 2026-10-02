@@ -92,8 +92,9 @@ public class MainGame
     public void Update(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
+        GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
 
-        bool isEscPressed = GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape);
+        bool isEscPressed = gamePadState.Buttons.Start == ButtonState.Pressed || keyboardState.IsKeyDown(Keys.Escape);
         if (isEscPressed && !_wasPreviouslyEscPressed) _state = _state == MainGameState.Idle ? MainGameState.Paused : MainGameState.Idle;
         _wasPreviouslyEscPressed = isEscPressed;
 
@@ -113,7 +114,7 @@ public class MainGame
         {
             _controlsText += _controls["Mine_Ore"] + " ";
             
-            if (keyboardState.IsKeyDown(Keys.E))
+            if (keyboardState.IsKeyDown(Keys.E) || gamePadState.Buttons.X == ButtonState.Pressed)
             {
                 _actionTimer += gameTime.ElapsedGameTime.TotalSeconds;
                 if (_actionTimer >= _miningSpeed)

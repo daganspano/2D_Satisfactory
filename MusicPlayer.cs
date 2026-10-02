@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace _2D_Satisfactory;
 
+/// <summary>
+/// A game component that manages background music for the game.
+/// </summary>
 public class MusicPlayer : GameComponent
 {
     private SongCollection _gameMusic;
@@ -28,6 +31,10 @@ public class MusicPlayer : GameComponent
         MediaPlayer.Play(_titleScreenMusic);
     }
 
+    /// <summary>
+    /// Updates the music playback based on the current game state.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Update(GameTime gameTime)
     {
         switch (((FactoryGame)Game).State)

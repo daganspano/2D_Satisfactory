@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj": {}
+    "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj": {
+    "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
+        "projectUniqueName": "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
         "projectName": "2D_Satisfactory",
-        "projectPath": "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
+        "projectPath": "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\2D_Satisfactory.csproj",
         "packagesPath": "C:\\Users\\ds032\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\obj\\",
+        "outputPath": "c:\\Users\\ds032\\source\\repos\\2D_Satisfactory\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

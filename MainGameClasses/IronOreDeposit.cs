@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _2D_Satisfactory.MainGameClasses;
 
+/// <summary>
+/// Represents an oval-shaped hitbox for collision detection.
+/// </summary>
 public struct OvalHitBox
 {
     private Vector2 _center;
@@ -17,6 +20,11 @@ public struct OvalHitBox
         _radiusY = radiusY;
     }
 
+    /// <summary>
+    /// Determines whether the specified rectangle collides with this oval hitbox.
+    /// </summary>
+    /// <param name="rectangle">The rectangle to check for collision.</param>
+    /// <returns>True if the rectangle collides with the oval hitbox; otherwise, false.</returns>
     public bool CollidesWith(Rectangle rectangle)
     {
         // Check if the rectangle's corners are inside the oval
@@ -45,6 +53,9 @@ public struct OvalHitBox
     }
 }
 
+/// <summary>
+/// Represents an iron ore deposit in the game world.
+/// </summary>
 public class IronOreDeposit : DrawableGameComponent
 {
     // private SpriteBatch _spriteBatch;
@@ -65,30 +76,37 @@ public class IronOreDeposit : DrawableGameComponent
         _hitBox = new OvalHitBox(center, radiusX, radiusY);
     }
 
+    /// <summary>
+    /// Loads the content for the iron ore deposit, including its texture.
+    /// </summary>
     protected override void LoadContent()
     {
-        // _spriteBatch = new SpriteBatch(GraphicsDevice);
         _texture = Game.Content.Load<Texture2D>("iron_ore_deposit");
     }
 
+    /// <summary>
+    /// Updates the iron ore deposit's visibility based on the current game state.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Update(GameTime gameTime)
     {
         Visible = ((FactoryGame)Game).State == FactoryGameState.MainGame;
-
-        // Add logic for whether player is near the iron ore deposit and can mine it
     }
 
+    /// <summary>
+    /// Draws the iron ore deposit on the screen if it is visible.
+    /// </summary>
+    /// <param name="spriteBatch">The sprite batch used for drawing.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
-        // _spriteBatch.Begin();
-
-        
-
         spriteBatch.Draw(_texture, new Vector2(GameDimensions.Width - _texture.Width * 1.2f, GameDimensions.Height * 0.5f), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
-
-        // spriteBatch.End();
     }
 
+    /// <summary>
+    /// Determines whether the specified rectangle collides with the iron ore deposit's hitbox.
+    /// </summary>
+    /// <param name="rectangle">The rectangle to check for collision.</param>
+    /// <returns>True if the rectangle collides with the iron ore deposit's hitbox; otherwise, false.</returns>
     public bool CollidesWith(Rectangle rectangle)
     {
         return _hitBox.CollidesWith(rectangle);
