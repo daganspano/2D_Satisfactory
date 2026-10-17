@@ -26,6 +26,7 @@ public class HandMiningParticleSystem : ParticleSystem
 
         float angle = (float)random.NextDouble() * MathHelper.TwoPi;
         var velocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * ((float)random.NextDouble() * 100 + 20);
+        // var velocity = Vector2.Zero;
 
         var lifetime = (float)random.NextDouble() * 0.25f + 0.25f;
 

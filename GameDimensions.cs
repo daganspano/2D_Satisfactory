@@ -1,3 +1,5 @@
+using Microsoft.Xna.Framework;
+
 namespace _2D_Satisfactory;
 
 /// <summary>
@@ -27,6 +29,8 @@ public static class GameDimensions
     /// The Y dimension of the game window, representing the height.
     /// </summary>
     public static float Y => _height;
+
+    public static Vector2 Center => new Vector2(_width / 2, _height / 2);
 
     /// <summary>
     /// Sets the dimensions of the game window by specifying the width and height. This method allows for updating both dimensions simultaneously.

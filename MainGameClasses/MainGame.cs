@@ -13,15 +13,17 @@ namespace _2D_Satisfactory.MainGameClasses;
 /// <summary>
 /// Represents the main game class that handles the game loop, including updating and drawing the game state, character, and UI elements.
 /// </summary>
-public class MainGame
+public class MainGame: DrawableGameComponent
 {
     // Sprite Fields
+    private static SpriteBatch _spriteBatch;
     private Texture2D _backgroundTexture;
     private IronOreDeposit _ironOreDeposit;
     private GameCharacter _character;
     private ButtonGroup _buttonGroup;
     private SpriteFont _font;
 
+    private Vector2 _offset;
     private string _controlsText;
     private Dictionary<string, string> _controls;
     private MainGameState _state;
@@ -32,7 +34,7 @@ public class MainGame
     private double _miningSpeed;
     private HandMiningParticleSystem _miningParticles;
 
-    public MainGame(Game game, Action exitToMenu, Action exitToDesktop)
+    public MainGame(Game game, Action exitToMenu, Action exitToDesktop): base(game)
     {
         Vector2 initialPosition = new Vector2(GameDimensions.X / 2, GameDimensions.Y / 2);
         int character = 2;
@@ -62,6 +64,7 @@ public class MainGame
             buttonGroupYPosition
         );
         
+        _offset = Vector2.Zero;
         _controls = new Dictionary<string, string>
         {
             { "Mine_Ore", "Mine iron ore: E" }
@@ -77,25 +80,29 @@ public class MainGame
     /// Loads the content for the main game, including the background texture, character, and buttons.
     /// </summary>
     /// <param name="content">The content manager used to load the game's assets.</param>
-    public void LoadContent(ContentManager content)
+    protected override void LoadContent()
     {
+        _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+
         // Load background
-        _backgroundTexture = content.Load<Texture2D>("forest_background");
+        _backgroundTexture = Game.Content.Load<Texture2D>("forest_background");
 
         // Load character
-        _character.LoadContent(content);
+        _character.LoadContent(Game.Content);
 
         // Load buttons
-        _buttonGroup.LoadContent(content);
+        _buttonGroup.LoadContent(Game.Content);
 
-        _font = content.Load<SpriteFont>("Orbitron-Regular");
+        _font = Game.Content.Load<SpriteFont>("Orbitron-Regular");
     }
+
+    public void InitializeGame() => LoadContent();
 
     /// <summary>
     /// Updates the game state, including character movement, collision detection, and button interactions based on the current game state.
     /// </summary>
     /// <param name="gameTime">The game time object containing timing information for the current frame.</param>
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
         GamePadState gamePadState = GamePad.GetState(PlayerIndex.One);
@@ -109,6 +116,10 @@ public class MainGame
 
         // Update character
         if (_state == MainGameState.Idle) _character.Update(gameTime);
+
+        // Update draw offset based on character position
+        _offset.X = (GameDimensions.Width / 2) - _character.HitBox.Center.X;
+        _offset.Y = (GameDimensions.Height / 2) - _character.HitBox.Center.Y;
 
         // Update buttons when the game is paused
         if (_state == MainGameState.Paused) _buttonGroup.Update();
@@ -138,7 +149,7 @@ public class MainGame
                         DirectionFrame.Right => new Vector2(_character.HitBox.Width * 0.75f, _character.HitBox.Height * 0.25f),
                         _ => Vector2.Zero
                     };
-                    _miningParticles.PlaceParticles(_character.HitBox.Center.ToVector2() + particleDisplacement);
+                    _miningParticles.PlaceParticles(GameDimensions.Center + particleDisplacement);
                 }
             }
             else
@@ -152,35 +163,44 @@ public class MainGame
     /// Draws the game elements, including the background, character, and buttons, based on the current game state.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to draw the game elements.</param>
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(GameTime gameTime)
     {
+        Matrix transform = Matrix.CreateTranslation(_offset.X, _offset.Y, 0f);
+        _spriteBatch.Begin(transformMatrix: transform);
+
         // Draw background
-        spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
+        _spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
 
         // Draw Iron Ore Deposit
-        _ironOreDeposit.Draw(spriteBatch);
+        _ironOreDeposit.Draw(_spriteBatch);
 
         // Draw character
-        _character.Draw(spriteBatch);
+        _character.Draw(_spriteBatch);
 
         // Draw buttons when the game is paused
-        if (_state == MainGameState.Paused) _buttonGroup.Draw(spriteBatch);
+        if (_state == MainGameState.Paused) _buttonGroup.Draw(_spriteBatch);
+
+        _spriteBatch.End();
+
+        _spriteBatch.Begin();
 
         // Draw inventory
         Vector2 inventoryPosition = new Vector2(10, 10);
-        spriteBatch.DrawString(_font, "Inventory:", inventoryPosition, Color.White);
+        _spriteBatch.DrawString(_font, "Inventory:", inventoryPosition, Color.White);
         foreach (var item in _inventory)
         {
             if (item.Value > 0)
             {
                 inventoryPosition.Y += 30;
-                spriteBatch.DrawString(_font, $"   {item.Key}: {item.Value}", inventoryPosition, Color.White);
+                _spriteBatch.DrawString(_font, $"   {item.Key}: {item.Value}", inventoryPosition, Color.White);
             }
         }
 
         // Draw game controls
         Vector2 textSize = _font.MeasureString(_controlsText ?? " ");
         Vector2 textPosition = new Vector2((GameDimensions.Width - textSize.X) / 2, GameDimensions.Height - textSize.Y - 10);
-        spriteBatch.DrawString(_font, _controlsText ?? " ", textPosition, Color.White);
+        _spriteBatch.DrawString(_font, _controlsText ?? " ", textPosition, Color.White);
+        
+        _spriteBatch.End();
     }
 }

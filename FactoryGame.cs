@@ -54,6 +54,8 @@ public class FactoryGame : Game
             Exit
         );
 
+        _mainGame.InitializeGame();
+
         // Base initialization
         base.Initialize();
     }
@@ -67,9 +69,6 @@ public class FactoryGame : Game
 
         // Load title screen content
         _titleScreen.LoadContent(Content);
-
-        // Load main game content
-        _mainGame.LoadContent(Content);
 
         // Load font for displaying FPS for testing purposes
         // _font = Content.Load<SpriteFont>("Orbitron-Regular");
@@ -118,7 +117,7 @@ public class FactoryGame : Game
         switch (State)
         {
             case FactoryGameState.MainGame:
-                _mainGame.Draw(_spriteBatch);
+                _mainGame.Draw(gameTime);
                 break;
             case FactoryGameState.TitleScreen:
                 _titleScreen.Draw(_spriteBatch);
