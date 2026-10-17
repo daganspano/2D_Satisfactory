@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 using _2D_Satisfactory.Components.ButtonClasses;
 using System.Collections.Generic;
 using System;
+using _2D_Satisfactory.ParticleClasses;
+using _2D_Satisfactory.Components.CharacterClasses;
 
 namespace _2D_Satisfactory.MainGameClasses;
 
@@ -28,6 +30,7 @@ public class MainGame
     private Dictionary<string, int> _inventory;
     private double _actionTimer;
     private double _miningSpeed;
+    private HandMiningParticleSystem _miningParticles;
 
     public MainGame(Game game, Action exitToMenu, Action exitToDesktop)
     {
@@ -37,6 +40,9 @@ public class MainGame
         _ironOreDeposit = new IronOreDeposit(game);
         _character = new GameCharacter(initialPosition, character, speed);
         
+        _miningParticles = new HandMiningParticleSystem(game, 20);
+        game.Components.Add(_miningParticles);
+
         // Get button group y position
         const float buttonScale = 0.7f;
         float buttonHeightScaled = 88 * buttonScale;
@@ -123,6 +129,16 @@ public class MainGame
                     if (!_inventory.ContainsKey("Iron Ore")) _inventory["Iron Ore"] = 0;
                     _inventory["Iron Ore"]++;
                     _actionTimer -= _miningSpeed;
+
+                    // Emit mining particles
+                    var particleDisplacement = _character.FacingDirection switch
+                    {
+                        DirectionFrame.Down => new Vector2(0, _character.HitBox.Height * 0.75f),
+                        DirectionFrame.Left => new Vector2(-_character.HitBox.Width * 0.75f, _character.HitBox.Height * 0.25f),
+                        DirectionFrame.Right => new Vector2(_character.HitBox.Width * 0.75f, _character.HitBox.Height * 0.25f),
+                        _ => Vector2.Zero
+                    };
+                    _miningParticles.PlaceParticles(_character.HitBox.Center.ToVector2() + particleDisplacement);
                 }
             }
             else

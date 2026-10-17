@@ -161,3 +161,4 @@ C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.pdb
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.genruntimeconfig.cache
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\ref\2D_Satisfactory.dll
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\iron_ore_deposit.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\particle.xnb

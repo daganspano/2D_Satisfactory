@@ -40,6 +40,8 @@ public class Character
     /// </summary>
     public Rectangle HitBox => new Rectangle(_position.ToPoint(), (_spriteSize.ToVector2() * _spriteScale).ToPoint());
 
+    public DirectionFrame FacingDirection { get; private set; }
+
     /// <summary>
     /// The Speed of the Character
     /// </summary>
@@ -165,6 +167,8 @@ public class Character
         // Update the direction
         if (Math.Abs(direction.X) > Math.Abs(direction.Y)) _frame.Y = direction.X > 0 ? (int)DirectionFrame.Right : (int)DirectionFrame.Left;
         else _frame.Y = direction.Y > 0 ? (int)DirectionFrame.Down : (int)DirectionFrame.Up;
+        
+        FacingDirection = (DirectionFrame)_frame.Y;
         _previousDirection = direction;
     }
 

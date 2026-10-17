@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>c:/Users/ds032/source/repos/2D_Satisfactory/Content/Sound/AssemblyLineTrance.mp3</SourceFile>
-  <SourceTime>2026-09-30T17:10:07.6217766-05:00</SourceTime>
+  <SourceTime>2026-10-02T12:18:03.3482495-05:00</SourceTime>
   <DestFile>c:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/AssemblyLineTrance.xnb</DestFile>
-  <DestTime>2026-10-01T15:13:44.5496968-05:00</DestTime>
+  <DestTime>2026-10-16T15:59:08.2527739-05:00</DestTime>
   <Importer>Mp3Importer</Importer>
   <ImporterTime>2026-08-14T16:50:10-05:00</ImporterTime>
   <Processor>SongProcessor</Processor>

@@ -17,6 +17,8 @@ public class GameCharacter
     
     public Rectangle HitBox => _character.HitBox;
 
+    public DirectionFrame FacingDirection => _character.FacingDirection;
+
     public GameCharacter(Vector2 initialPosition, int character, int speed)
     {
         _character = new Character(initialPosition, character, speed);

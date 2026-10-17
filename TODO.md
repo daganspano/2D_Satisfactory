@@ -1,5 +1,12 @@
 # FACTORY GAME TO-DO'S
 
+## Required
+
+- Transform
+- Rotation
+- Recolor
+- Alpha Blending
+
 ## New Content
 
 - Crafting Bench
