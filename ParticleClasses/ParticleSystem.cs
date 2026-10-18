@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _2D_Satisfactory.ParticleClasses;
 
+/// <summary>
+/// An abstract base class for particle systems, providing functionality to manage and render a collection of particles with properties such as position, velocity, acceleration, color, rotation, scale, and lifetime. Subclasses can define specific particle behaviors and appearances by overriding methods for initialization and updating.
+/// </summary>
 public abstract class ParticleSystem : DrawableGameComponent
 {
     #region Fields
@@ -104,6 +107,11 @@ public abstract class ParticleSystem : DrawableGameComponent
         p.Initialize(where);
     }
 
+    /// <summary>
+    /// UpdateParticle is called by the Update method on every particle that is currently active. It updates the particle's position, velocity, rotation, and other properties based on the elapsed time (dt). Subclasses can override this method to implement custom behavior for particles.
+    /// </summary>
+    /// <param name="particle">The particle to update.</param>
+    /// <param name="dt">The elapsed time since the last update, in seconds.</param>
     protected virtual void UpdateParticle(ref Particle particle, float dt)
     {
         // Update particle's linear motion values
@@ -122,6 +130,9 @@ public abstract class ParticleSystem : DrawableGameComponent
 
     #region Override Methods
 
+    /// <summary>
+    /// Loads the content for the particle system, including the texture specified by the `textureFilename` property. This method also initializes the shared static `ContentManager` and `SpriteBatch` if they haven't been created yet. Subclasses must ensure that `textureFilename` is set before calling this method, or an `InvalidOperationException` will be thrown.
+    /// </summary>
     protected override void LoadContent()
     {
         // create the shared static ContentManager and SpriteBatch,
@@ -149,6 +160,10 @@ public abstract class ParticleSystem : DrawableGameComponent
         base.LoadContent();
     }
 
+    /// <summary>
+    /// Updates the particle system by iterating through all particles, updating their properties based on elapsed time, and managing the queue of free particles. This method is called automatically by the game loop and should not be called directly. Subclasses can override this method to implement custom update behavior for the particle system.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Update(GameTime gameTime)
     {
         float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -170,6 +185,10 @@ public abstract class ParticleSystem : DrawableGameComponent
         base.Update(gameTime);
     }
 
+    /// <summary>
+    /// Draws the active particles in the particle system using the specified SpriteBatch and BlendState. This method is called automatically by the game loop and should not be called directly. Subclasses can override this method to implement custom drawing behavior for the particle system.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Draw(GameTime gameTime)
     {
         spriteBatch.Begin(blendState: blendState);
@@ -188,6 +207,10 @@ public abstract class ParticleSystem : DrawableGameComponent
 
     #region Add Particle Method
 
+    /// <summary>
+    /// Adds a random number of particles to the particle system at the specified position. The number of particles added is determined by generating a random integer between the `minNumParticles` and `maxNumParticles` properties. Each new particle is initialized using the `InitializeParticle` method, which can be overridden by subclasses to customize particle behavior. This method is typically called when an event occurs that should trigger particle effects, such as an explosion or collision.
+    /// </summary>
+    /// <param name="position">The position where the particles should be added.</param>
     protected void AddParticle(Vector2 position)
     {
         // the number of particles we want for this effect is a random number

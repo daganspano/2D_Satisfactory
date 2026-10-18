@@ -30,6 +30,9 @@ public static class GameDimensions
     /// </summary>
     public static float Y => _height;
 
+    /// <summary>
+    /// Gets the center point of the game window as a Vector2, calculated as half of the width and height. This property is useful for positioning elements relative to the center of the game window.
+    /// </summary>
     public static Vector2 Center => new Vector2(_width / 2, _height / 2);
 
     /// <summary>

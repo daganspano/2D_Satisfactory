@@ -2,6 +2,9 @@ using Microsoft.Xna.Framework;
 
 namespace _2D_Satisfactory.ParticleClasses;
 
+/// <summary>
+/// Represents a single particle in a particle system, encapsulating properties such as position, velocity, acceleration, color, rotation, scale, and lifetime. This struct is used to define the behavior and appearance of individual particles within a particle system.
+/// </summary>
 public struct Particle
 {
     /// <summary>

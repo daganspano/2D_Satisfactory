@@ -40,6 +40,70 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 
 ---
 
+## 0.4.0 (Game Project 3)
+
+### Assets Added / Removed
+
+#### Sprites
+
+- `background_atlas.png` (Added)
+- `forest_background.png` (Removed)
+- `iron_ore_deposit.png` (Removed)
+- `particle.png` (Added)
+
+### Classes Modified / Added / Removed
+
+- `FactoryGame.cs` (Modified):
+  - Changed background color.
+  - Made changes for children's changed parameters.
+- `GameDimensions.cs` (Modified): Added Center property.
+- `Map.cs` (Added): Represents the map of the game, including its dimensions, tile size, and tile data. This class provides properties and methods to access the map's characteristics and check for collisions with specific tile types, such as iron ore deposits.
+- `Tilemap.cs` (Added): Represents a tilemap component in the game, responsible for rendering the map's tiles and handling interactions with specific tile types, such as iron ore deposits. This class extends DrawableGameComponent and provides methods to load the map, update its offset, and draw the tiles on the screen.
+
+#### Main Game Classes
+
+- `GameCharacter.cs` (Modified): Added `FacingDirection` that gives the `Character`'s `FacingDirection`.
+- `IronOreDeposit.cs` (Removed): Tilemap now has iron ore deposits built in.
+- `MainGame.cs` (Modified):
+  - Converted to be a `DrawableGameComponent`.
+  - Removed background texture and `IronOreDeposit` and gave their logic to added `Tilemap`.
+  - Added logic for offset transforming.
+  - Added a `HandMiningParticleSystem` and the logic to have it function when hand mining.
+
+#### Title Screen Classes
+
+- `TitleScreen.cs` (Modified):
+  - Converted to be a `DrawableGameComponent`.
+  - Removed background texture and gave its logic to added `Tilemap`.
+
+#### Particle Classes
+
+- `HandMiningParticleSystem.cs` (Added): A particle system for hand mining effects, generating particles that simulate debris or dust when a player mines resources by hand.
+- `Particle.cs` (Added): Represents a single particle in a particle system, encapsulating properties such as position, velocity, acceleration, color, rotation, scale, and lifetime. This struct is used to define the behavior and appearance of individual particles within a particle system.
+- `ParticleSystem.cs` (Added): An abstract base class for particle systems, providing functionality to manage and render a collection of particles with properties such as position, velocity, acceleration, color, rotation, scale, and lifetime. Subclasses can define specific particle behaviors and appearances by overriding methods for initialization and updating.
+
+#### Components / Character Classes
+
+- `Character.cs` (Modified):
+  - Changed scale from 1.8 to 1.0.
+  - Added `FacingDirection` to give the current facing direction of the character based on its movement.
+- `Collision.cs` (Modified): Removed 200px border on top of screen since the background with trees was removed.
+
+### UI Modifications
+
+### Title Screen
+
+- Now uses a tile map instead of the old forest background.
+- Now allows characters to run on the top of the screen.
+
+### Main Game
+
+- Now uses a tile map instead of the old forest background.
+- Now allows character to run on the top of the screen.
+- Now has the iron ore deposit built into the tile map. The functionality is still the same as the old deposit.
+
+---
+
 ## 0.3.0 (Game Project 2)
 
 ### Assets Added

@@ -34,11 +34,15 @@ public class Character
     // Sound Effect Fields
     private SoundEffect _walkingSoundEffect;
     private readonly bool _disableWalkingSound;
+
     /// <summary>
     /// The hit box of the character based on its current position and sprite size.
     /// </summary>
     public Rectangle HitBox => new Rectangle(_position.ToPoint(), _spriteSize);
 
+    /// <summary>
+    /// The current facing direction of the character based on its movement.
+    /// </summary>
     public DirectionFrame FacingDirection { get; private set; }
 
     /// <summary>

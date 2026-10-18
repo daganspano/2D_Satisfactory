@@ -80,7 +80,6 @@ public class MainGame: DrawableGameComponent
     /// <summary>
     /// Loads the content for the main game, including the background texture, character, and buttons.
     /// </summary>
-    /// <param name="content">The content manager used to load the game's assets.</param>
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
@@ -162,7 +161,7 @@ public class MainGame: DrawableGameComponent
     /// <summary>
     /// Draws the game elements, including the background, character, and buttons, based on the current game state.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to draw the game elements.</param>
+    /// <param name="gameTime">The game time object containing timing information for the current frame.</param>
     public override void Draw(GameTime gameTime)
     {
         Matrix transform = Matrix.CreateTranslation(_offset.X, _offset.Y, 0f);
@@ -176,9 +175,6 @@ public class MainGame: DrawableGameComponent
 
         // Draw character
         _character.Draw(_spriteBatch);
-
-        // Draw buttons when the game is paused
-        if (_state == MainGameState.Paused) _buttonGroup.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
@@ -201,6 +197,9 @@ public class MainGame: DrawableGameComponent
         Vector2 textPosition = new Vector2((GameDimensions.Width - textSize.X) / 2, GameDimensions.Height - textSize.Y - 10);
         _spriteBatch.DrawString(_font, _controlsText ?? " ", textPosition, Color.White);
         
+        // Draw buttons when the game is paused
+        if (_state == MainGameState.Paused) _buttonGroup.Draw(_spriteBatch);
+
         _spriteBatch.End();
     }
 }
