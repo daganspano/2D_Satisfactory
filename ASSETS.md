@@ -17,9 +17,8 @@ This file lists all assets used in the game, with their provenance and license (
 | ConveyorDawnHorizon.mp3  | Wondera.ai                                                                                            | Public Domain                                         |
 | grassFootSteps.wav       | IIElevenLabs                                                                                          | Public Domain                                         |
 | **Sprites**              |                                                                                                       |                                                       |
+| background_atlas.png     | Dagan Spano (Self Created)                                                                            | Public Domain                                         |
 | button_atlas.png         | Claude Sonnet                                                                                         | Public Domain                                         |
 | construction_workers.png | [Screen Smith](https://screensmith.itch.io/pokemon-style-npcs-miners-and-construction-workers)        | [CC0](https://creativecommons.org/public-domain/#cc0) |
-| forest_background.png    | [Screen Smith](https://itch.io/queue/c/4240964/openmon-assets?game_id=4477391&password=)              | [CC0](https://creativecommons.org/public-domain/#cc0) |
-| iron_ore_deposit.png     | AutoSprite                                                                                            | Public Domain                                         |
 | particle.png             | Nathan Bean                                                                                           | Public Domain                                         |
 | title_banner.png         | Claude Sonnet                                                                                         | Public Domain                                         |

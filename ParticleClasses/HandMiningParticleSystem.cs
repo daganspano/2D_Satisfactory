@@ -25,8 +25,7 @@ public class HandMiningParticleSystem : ParticleSystem
         Random random = new Random();
 
         float angle = (float)random.NextDouble() * MathHelper.TwoPi;
-        var velocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * ((float)random.NextDouble() * 100 + 20);
-        // var velocity = Vector2.Zero;
+        var velocity = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * ((float)random.NextDouble() * 60 + 10);
 
         var lifetime = (float)random.NextDouble() * 0.25f + 0.25f;
 
@@ -39,7 +38,7 @@ public class HandMiningParticleSystem : ParticleSystem
 
         var angularVelocity = (float)random.NextDouble() * MathHelper.PiOver2 - MathHelper.PiOver4;
 
-        var scale = (float)random.NextDouble() * 0.3f + 0.3f;
+        var scale = (float)random.NextDouble() * 0.2f + 0.2f;
 
         p.Initialize(where, velocity, acceleration, color, lifetime: lifetime, rotation: rotation, angularVelocity: angularVelocity, scale: scale);
     }

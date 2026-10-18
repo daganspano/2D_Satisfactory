@@ -17,8 +17,7 @@ public class MainGame: DrawableGameComponent
 {
     // Sprite Fields
     private static SpriteBatch _spriteBatch;
-    private Texture2D _backgroundTexture;
-    private IronOreDeposit _ironOreDeposit;
+    private Tilemap _tilemap;
     private GameCharacter _character;
     private ButtonGroup _buttonGroup;
     private SpriteFont _font;
@@ -37,9 +36,11 @@ public class MainGame: DrawableGameComponent
     public MainGame(Game game, Action exitToMenu, Action exitToDesktop): base(game)
     {
         Vector2 initialPosition = new Vector2(GameDimensions.X / 2, GameDimensions.Y / 2);
-        int character = 2;
-        int speed = 100;
-        _ironOreDeposit = new IronOreDeposit(game);
+        int character = 12;
+        int speed = 200;
+        _character = new GameCharacter(initialPosition, character, speed);
+        initialPosition.X -= _character.HitBox.Width / 2;
+        initialPosition.Y -= _character.HitBox.Height / 2;
         _character = new GameCharacter(initialPosition, character, speed);
         
         _miningParticles = new HandMiningParticleSystem(game, 20);
@@ -84,8 +85,9 @@ public class MainGame: DrawableGameComponent
     {
         _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
-        // Load background
-        _backgroundTexture = Game.Content.Load<Texture2D>("forest_background");
+        // Load tilemap
+        _tilemap = new Tilemap(Game);
+        _tilemap.LoadMap();
 
         // Load character
         _character.LoadContent(Game.Content);
@@ -95,8 +97,6 @@ public class MainGame: DrawableGameComponent
 
         _font = Game.Content.Load<SpriteFont>("Orbitron-Regular");
     }
-
-    public void InitializeGame() => LoadContent();
 
     /// <summary>
     /// Updates the game state, including character movement, collision detection, and button interactions based on the current game state.
@@ -111,9 +111,6 @@ public class MainGame: DrawableGameComponent
         if (isEscPressed && !_wasPreviouslyEscPressed) _state = _state == MainGameState.Idle ? MainGameState.Paused : MainGameState.Idle;
         _wasPreviouslyEscPressed = isEscPressed;
 
-        // Update Iron Ore Deposit
-        _ironOreDeposit.Update(gameTime);
-
         // Update character
         if (_state == MainGameState.Idle) _character.Update(gameTime);
 
@@ -121,13 +118,16 @@ public class MainGame: DrawableGameComponent
         _offset.X = (GameDimensions.Width / 2) - _character.HitBox.Center.X;
         _offset.Y = (GameDimensions.Height / 2) - _character.HitBox.Center.Y;
 
+        // Update tilemap offset
+        // _tilemap.UpdateOffset(_offset);
+
         // Update buttons when the game is paused
         if (_state == MainGameState.Paused) _buttonGroup.Update();
 
         _controlsText = " ";
 
         // Check for collision between character and Iron Ore Deposit
-        if (_ironOreDeposit.CollidesWith(_character.HitBox))
+        if (_tilemap.CanMineIronOre(_character.HitBox))
         {
             _controlsText += _controls["Mine_Ore"] + " ";
             
@@ -168,11 +168,11 @@ public class MainGame: DrawableGameComponent
         Matrix transform = Matrix.CreateTranslation(_offset.X, _offset.Y, 0f);
         _spriteBatch.Begin(transformMatrix: transform);
 
-        // Draw background
-        _spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
+        // Draw tilemap
+        _tilemap.Draw(_spriteBatch);
 
         // Draw Iron Ore Deposit
-        _ironOreDeposit.Draw(_spriteBatch);
+        // _ironOreDeposit.Draw(_spriteBatch);
 
         // Draw character
         _character.Draw(_spriteBatch);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/iron_ore_deposit.png</SourceFile>
-  <SourceTime>2026-10-02T12:18:03.4014813-05:00</SourceTime>
-  <DestFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/Content/iron_ore_deposit.xnb</DestFile>
-  <DestTime>2026-10-16T14:46:28.8727297-05:00</DestTime>
+  <SourceFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/Sprites/background_atlas.png</SourceFile>
+  <SourceTime>2026-10-17T18:36:34.1046937-05:00</SourceTime>
+  <DestFile>C:/Users/ds032/source/repos/2D_Satisfactory/Content/bin/DesktopGL/Content/background_atlas.xnb</DestFile>
+  <DestTime>2026-10-17T18:37:30.4482201-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2026-08-14T16:50:10-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
