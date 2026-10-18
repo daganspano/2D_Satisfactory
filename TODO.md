@@ -1,5 +1,9 @@
 # FACTORY GAME TO-DO'S
 
+## Refactoring
+
+- Convert classes to `GameComponent`s, `DrawableGameComponent`s, and `GameScreen`s
+
 ## New Content
 
 - Crafting Bench
@@ -16,12 +20,3 @@
 
 - Options
   - Add popup when "Options" button is clicked.
-
-- Background
-  - Create a map sprite that's at least the current game size
-  - Create Background class to contain the map sprite (will later allow moving the map instead of the character).
-  - Update the Character sprite to be 1x scale.
-
-## Refactoring
-
-- Convert classes to `GameComponent`s, `DrawableGameComponent`s, and `GameScreen`s

@@ -12,10 +12,11 @@ namespace _2D_Satisfactory.TitleScreenClasses;
 /// <summary>
 /// Represents the title screen of the game.
 /// </summary>
-public class TitleScreen
+public class TitleScreen: DrawableGameComponent
 {
     // Sprite Fields
-    private Texture2D _backgroundTexture;
+    private static SpriteBatch _spriteBatch;
+    private Tilemap _tilemap;
     private readonly List<TitleCharacter> _titleCharacters;
     private Texture2D _titleBanner;
     private ButtonGroup _buttonGroup;
@@ -24,7 +25,7 @@ public class TitleScreen
     private Vector2 _bannerPosition;
     private readonly float _bannerScale;
     
-    public TitleScreen(Action onStartClick, Action onOptionsClick, Action onExitClick)
+    public TitleScreen(Game game, Action onStartClick, Action onOptionsClick, Action onExitClick): base(game)
     {
         // Banner Size & Scale Fields
         _bannerScale = 0.4f;
@@ -68,30 +69,35 @@ public class TitleScreen
         );
     }
 
+    public void LoadTitleScreen() => LoadContent();
+
     /// <summary>
     /// Loads the content for the title screen.
     /// </summary>
     /// <param name="content">The content manager used to load assets.</param>
-    public void LoadContent(ContentManager content)
+    protected override void LoadContent()
     {
-        // Load background
-        _backgroundTexture = content.Load<Texture2D>("forest_background");
+        _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+
+        // Load tilemap
+        _tilemap = new Tilemap(Game);
+        _tilemap.LoadMap();
 
         // Load running character
-        foreach (var c in _titleCharacters) c.LoadContent(content);
+        foreach (var c in _titleCharacters) c.LoadContent(Game.Content);
 
         // Load banner
-        _titleBanner = content.Load<Texture2D>("title_banner");
+        _titleBanner = Game.Content.Load<Texture2D>("title_banner");
 
         // Load buttons
-        _buttonGroup.LoadContent(content);
+        _buttonGroup.LoadContent(Game.Content);
     }
 
     /// <summary>
     /// Updates the buttons and running characters on the title screen.
     /// </summary>
     /// <param name="gameTime">The game time object containing timing information.</param>
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         // Update running character
         foreach (TitleCharacter c in _titleCharacters) c.Update(gameTime);
@@ -117,18 +123,22 @@ public class TitleScreen
     /// Draws the title screen.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to draw textures.</param>
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(GameTime gameTime)
     {
-        // Draw background
-        spriteBatch.Draw(_backgroundTexture, new Vector2(0, 0), null, Color.White, 0f, Vector2.Zero, 1.8f, SpriteEffects.None, 0f);
+        _spriteBatch.Begin();
+
+        // Draw tilemap
+        _tilemap.Draw(_spriteBatch);
 
         // Draw running character
-        foreach (var c in _titleCharacters) c.Draw(spriteBatch);
+        foreach (var c in _titleCharacters) c.Draw(_spriteBatch);
 
         // Draw banner
-        spriteBatch.Draw(_titleBanner, _bannerPosition, null, Color.White, 0f, Vector2.Zero, _bannerScale, SpriteEffects.None, 0f);
+        _spriteBatch.Draw(_titleBanner, _bannerPosition, null, Color.White, 0f, Vector2.Zero, _bannerScale, SpriteEffects.None, 0f);
 
         // Draw buttons
-        _buttonGroup.Draw(spriteBatch);
+        _buttonGroup.Draw(_spriteBatch);
+
+        _spriteBatch.End();
     }
 }

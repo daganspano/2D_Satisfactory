@@ -1,9 +1,8 @@
-﻿using _2D_Satisfactory.MainGameClasses;
+﻿using System;
+using _2D_Satisfactory.MainGameClasses;
 using _2D_Satisfactory.TitleScreenClasses;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace _2D_Satisfactory;
 
@@ -17,12 +16,6 @@ public class FactoryGame : Game
     public FactoryGameState State { get; private set; }
     private TitleScreen _titleScreen;
     private MainGame _mainGame;
-
-    // // FPS Fields for testing purposes
-    // private SpriteFont _font;
-    // private float _fps = 0f;
-    // private int _framesPerInterval = 0;
-    // private double _elapsedTime = 0;
 
     public FactoryGame()
     {
@@ -42,6 +35,7 @@ public class FactoryGame : Game
 
         // Initialize title screen
         _titleScreen = new TitleScreen(
+            this,
             () => { State = FactoryGameState.MainGame; }, 
             () => { },
             Exit
@@ -53,6 +47,8 @@ public class FactoryGame : Game
             () => { State = FactoryGameState.TitleScreen; },
             Exit
         );
+
+        _mainGame.Initialize();
 
         // Base initialization
         base.Initialize();
@@ -66,13 +62,7 @@ public class FactoryGame : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // Load title screen content
-        _titleScreen.LoadContent(Content);
-
-        // Load main game content
-        _mainGame.LoadContent(Content);
-
-        // Load font for displaying FPS for testing purposes
-        // _font = Content.Load<SpriteFont>("Orbitron-Regular");
+        _titleScreen.LoadTitleScreen();
     }
 
     /// <summary>
@@ -91,16 +81,6 @@ public class FactoryGame : Game
                 break;
         }
 
-        // // Update FPS calculation for testing purposes
-        // _framesPerInterval++;
-        // _elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-        // if (_elapsedTime >= 1.0)
-        // {
-        //     _fps = _framesPerInterval / (float)_elapsedTime;
-        //     _framesPerInterval = 0;
-        //     _elapsedTime = 0;
-        // }
-
         base.Update(gameTime);
     }
 
@@ -110,7 +90,7 @@ public class FactoryGame : Game
     /// <param name="gameTime">The game time information.</param>
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(new Color(0x36, 0x4D, 0x28));
+        GraphicsDevice.Clear(Color.SkyBlue);
 
         _spriteBatch.Begin();
 
@@ -118,15 +98,12 @@ public class FactoryGame : Game
         switch (State)
         {
             case FactoryGameState.MainGame:
-                _mainGame.Draw(_spriteBatch);
+                _mainGame.Draw(gameTime);
                 break;
             case FactoryGameState.TitleScreen:
-                _titleScreen.Draw(_spriteBatch);
+                _titleScreen.Draw(gameTime);
                 break;
         }
-
-        // // Draw FPS for testing purposes
-        // _spriteBatch.DrawString(_font, $"FPS: {_fps:0.0}", new Vector2(10, 10), Color.White);
 
         _spriteBatch.End();
 

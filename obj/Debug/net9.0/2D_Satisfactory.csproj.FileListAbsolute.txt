@@ -42,7 +42,6 @@ C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/Orbitron-Se
 C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/button_atlas.xnb
 C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/title_banner.xnb
 C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/construction_workers.xnb
-C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/forest_background.xnb
 c:/Users/ds032/source/repos/2D_Satisfactory/obj/Debug/net9.0/2D_Satisfactory.AssemblyInfoInputs.cache
 c:/Users/ds032/source/repos/2D_Satisfactory/obj/Debug/net9.0/2D_Satisfactory.AssemblyInfo.cs
 C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/AssemblyLineTrance.ogg
@@ -114,7 +113,6 @@ C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\button_atla
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\construction_workers.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\ConveyorDawnHorizon.ogg
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\ConveyorDawnHorizon.xnb
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\forest_background.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\grassFootSteps.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Black.xnb
 C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\Orbitron-Bold.xnb
@@ -160,4 +158,5 @@ C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\refint\2D_Satisfact
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.pdb
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\2D_Satisfactory.genruntimeconfig.cache
 C:\Users\ds032\source\repos\2D_Satisfactory\obj\Debug\net9.0\ref\2D_Satisfactory.dll
-C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\iron_ore_deposit.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\particle.xnb
+C:\Users\ds032\source\repos\2D_Satisfactory\bin\Debug\net9.0\Content\background_atlas.xnb

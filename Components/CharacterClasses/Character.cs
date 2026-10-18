@@ -25,7 +25,6 @@ public class Character
 
     // Frame Fields
     private readonly Point _spriteSize;
-    private readonly float _spriteScale;
     private Point _frame;
     private int _previousAnimationFrame;
     private Vector2 _previousDirection;
@@ -35,10 +34,16 @@ public class Character
     // Sound Effect Fields
     private SoundEffect _walkingSoundEffect;
     private readonly bool _disableWalkingSound;
+
     /// <summary>
     /// The hit box of the character based on its current position and sprite size.
     /// </summary>
-    public Rectangle HitBox => new Rectangle(_position.ToPoint(), (_spriteSize.ToVector2() * _spriteScale).ToPoint());
+    public Rectangle HitBox => new Rectangle(_position.ToPoint(), _spriteSize);
+
+    /// <summary>
+    /// The current facing direction of the character based on its movement.
+    /// </summary>
+    public DirectionFrame FacingDirection { get; private set; }
 
     /// <summary>
     /// The Speed of the Character
@@ -61,7 +66,6 @@ public class Character
     {
         _position = initialPosition;
         _spriteSize = new Point(16, 23);
-        _spriteScale = 1.8f;
         _sourceRectangle = new Rectangle(Point.Zero, _spriteSize);
         _speed = speed;
         _character = new Point(character % 4, character / 4);
@@ -110,7 +114,7 @@ public class Character
     /// <param name="spriteBatch">The sprite batch used to draw the running sprite.</param>
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, _spriteScale, SpriteEffects.None, 0f);
+        spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
     }
 
     /// <summary>
@@ -165,6 +169,8 @@ public class Character
         // Update the direction
         if (Math.Abs(direction.X) > Math.Abs(direction.Y)) _frame.Y = direction.X > 0 ? (int)DirectionFrame.Right : (int)DirectionFrame.Left;
         else _frame.Y = direction.Y > 0 ? (int)DirectionFrame.Down : (int)DirectionFrame.Up;
+        
+        FacingDirection = (DirectionFrame)_frame.Y;
         _previousDirection = direction;
     }
 

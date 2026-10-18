@@ -27,7 +27,7 @@ public static class Collision
             collisions.Add("x");
 
         if (
-            (hitBox.Top <= 200 && direction.Y < 0) || 
+            (hitBox.Top <= 0 && direction.Y < 0) || 
             (hitBox.Bottom >= GameDimensions.Y && direction.Y > 0)
         ) 
             collisions.Add("y");

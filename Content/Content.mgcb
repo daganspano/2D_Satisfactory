@@ -89,6 +89,19 @@
 /processorParam:Version=3.8.5.1
 /build:Sound/grassFootSteps.wav;grassFootSteps.wav
 
+#begin Sprites/background_atlas.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/processorParam:Version=3.8.5.1
+/build:Sprites/background_atlas.png;background_atlas.png
+
 #begin Sprites/button_atlas.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -115,7 +128,7 @@
 /processorParam:Version=3.8.5.1
 /build:Sprites/construction_workers.png;construction_workers.png
 
-#begin Sprites/forest_background.png
+#begin Sprites/particle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -126,20 +139,7 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:Sprites/forest_background.png;forest_background.png
-
-#begin Sprites/iron_ore_deposit.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/processorParam:Version=3.8.5.1
-/build:Sprites/iron_ore_deposit.png;iron_ore_deposit.png
+/build:Sprites/particle.png;particle.png
 
 #begin Sprites/title_banner.png
 /importer:TextureImporter
