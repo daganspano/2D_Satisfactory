@@ -1,5 +1,9 @@
 # FACTORY GAME TO-DO'S
 
+## REQUIRED
+
+- Serialization of game state to create/load from a save file
+
 ## Refactoring
 
 - Convert classes to `GameComponent`s, `DrawableGameComponent`s, and `GameScreen`s

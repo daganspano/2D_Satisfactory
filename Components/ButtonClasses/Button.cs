@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using _2D_Satisfactory.Screens.MainGame;
 
 namespace _2D_Satisfactory.Components.ButtonClasses;
 
@@ -59,7 +60,7 @@ public class Button
         _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
         _buttonHeightRaw = 88;
         _buttonHeightScaled = _buttonHeightRaw * _buttonScale;
-        _buttonPosition = new Vector2((GameDimensions.Width - _buttonWidthScaled) / 2, yPosition);
+        _buttonPosition = new Vector2((GameData.ScreenSize.X - _buttonWidthScaled) / 2, yPosition);
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -191,7 +192,8 @@ public abstract class ParticleSystem : DrawableGameComponent
     /// <param name="gameTime">The current game time.</param>
     public override void Draw(GameTime gameTime)
     {
-        spriteBatch.Begin(blendState: blendState);
+        Matrix transform = Matrix.CreateTranslation(GameData.DrawOffset.X, GameData.DrawOffset.Y, 0f);
+        spriteBatch.Begin(blendState: blendState, transformMatrix: transform);
 
         foreach (Particle p in particles)
         {

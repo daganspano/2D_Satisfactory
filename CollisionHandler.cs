@@ -1,13 +1,14 @@
 using System;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using _2D_Satisfactory.Screens.MainGame;
 
 namespace _2D_Satisfactory.Components.CharacterClasses;
 
 /// <summary>
 /// Provides static methods for checking collisions between characters and the edges of the game screen, as well as between characters themselves.
 /// </summary>
-public static class Collision
+public static class CollisionHandler
 {
     /// <summary>
     /// Checks for collisions between a character's hit box and the edges of the game screen based on the provided direction vector.
@@ -22,13 +23,13 @@ public static class Collision
 
         if (
             (hitBox.Left <= 0 && direction.X < 0) || 
-            (hitBox.Right >= GameDimensions.X && direction.X > 0)
+            (hitBox.Right >= GameData.ScreenSize.X && direction.X > 0)
         ) 
             collisions.Add("x");
 
         if (
             (hitBox.Top <= 0 && direction.Y < 0) || 
-            (hitBox.Bottom >= GameDimensions.Y && direction.Y > 0)
+            (hitBox.Bottom >= GameData.ScreenSize.Y && direction.Y > 0)
         ) 
             collisions.Add("y");
 
