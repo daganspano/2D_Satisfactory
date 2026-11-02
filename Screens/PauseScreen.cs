@@ -6,18 +6,19 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens;
 
+public delegate void ExitDelegate(bool toDesktop);
+
 public class PauseScreen : Screen
 {
-    public PauseScreen(Game game, Action onResume, Action onOpenOptions, Action onExitToMenu) : base(ScreenState.Inactive)
+    public PauseScreen(Game game, Action onResume, ExitDelegate onExit) : base(ScreenState.Inactive)
     {
-        float buttonGroupYPosition = (GameData.ScreenSize.Y - ButtonGroup.GetHeight(4)) / 2;
+        float buttonGroupYPosition = (GameData.ScreenSize.Y - ButtonGroup.GetHeight(3)) / 2;
 
         Components.Add(new ButtonGroup(game, new Dictionary<string, Action>
         {
             { "Resume", onResume },
-            { "Options", onOpenOptions },
-            { "Exit to Menu", onExitToMenu },
-            { "Exit to Desktop", game.Exit }
+            { "Exit to Menu", () => onExit(toDesktop: false) },
+            { "Exit to Desktop", () => onExit(toDesktop: true) }
         }, buttonGroupYPosition));
     }
 }

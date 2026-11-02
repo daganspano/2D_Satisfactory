@@ -90,10 +90,10 @@ public abstract class Character : DrawableGameComponent
     {
         _spriteBatch.Begin();
 
-        // HitBox
-        var pixel = new Texture2D(Game.GraphicsDevice, 1, 1);
-        pixel.SetData([ Color.White ]);
-        _spriteBatch.Draw(pixel, new Rectangle(Position.ToPoint(), GameData.PlayerHitBox.Size), new Color(255, 0, 0, 50));
+        // // HitBox
+        // var pixel = new Texture2D(Game.GraphicsDevice, 1, 1);
+        // pixel.SetData([ Color.White ]);
+        // _spriteBatch.Draw(pixel, new Rectangle(Position.ToPoint(), GameData.PlayerHitBox.Size), new Color(255, 0, 0, 50));
 
         // Character
         _spriteBatch.Draw(_texture, Position, _sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

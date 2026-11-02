@@ -21,7 +21,7 @@ public static class GameData
     /// <summary>
     /// The size of the player sprite.
     /// </summary>
-    public static Point SpriteSize { get; set; } = new Point(16, 23);
+    public static Point SpriteSize => new Point(16, 23);
 
     /// <summary>
     /// The character index for the player sprite.
@@ -55,12 +55,7 @@ public static class GameData
 
     public static DirectionFrame PlayerDirection { get; set; } = DirectionFrame.Down;
 
-    public static Dictionary<string, int> PlayerInventory {get; set;} = new Dictionary<string, int>()
-    {
-        { "Iron Ore", 0 },
-        { "Copper Ore", 0 },
-        { "Coal", 0 }
-    };
+    public static Dictionary<string, int> PlayerInventory {get; set;} = new Dictionary<string, int>();
 
     /// <summary>
     /// Whether the player is currently moving.
@@ -77,6 +72,55 @@ public static class GameData
     /// The draw offset for rendering the game world based on the player's position.
     /// </summary>
     public static Vector2 DrawOffset => (0.5f * ScreenSize) - PlayerHitBox.Location.ToVector2();
+
+    #endregion
+
+    #region Storage Methods
+
+    public static void NewGame()
+    {
+        Character = 12;
+        PlayerSpeed = 200;
+        PlayerPosition = (0.5f * ScreenSize).ToPoint();
+        PlayerDirection = DirectionFrame.Down;
+        PlayerInventory = new Dictionary<string, int>();
+
+        SaveData defaultData = new SaveData()
+        {
+            Character = Character,
+            PlayerSpeed = PlayerSpeed,
+            PlayerPosition = PlayerPosition,
+            PlayerDirection = PlayerDirection,
+            PlayerInventory = PlayerInventory
+        };
+        
+        FileManager.SaveGame(defaultData);
+    }
+
+    public static void LoadGame()
+    {
+        SaveData saveData = FileManager.LoadGame();
+
+        Character = saveData.Character;
+        PlayerSpeed = saveData.PlayerSpeed;
+        PlayerPosition = saveData.PlayerPosition;
+        PlayerDirection = saveData.PlayerDirection;
+        PlayerInventory = saveData.PlayerInventory;
+    }
+
+    public static void SaveGame()
+    {
+        SaveData saveData = new SaveData()
+        {
+            Character = Character,
+            PlayerSpeed = PlayerSpeed,
+            PlayerPosition = PlayerPosition,
+            PlayerDirection = PlayerDirection,
+            PlayerInventory = PlayerInventory
+        };
+
+        FileManager.SaveGame(saveData);
+    }
 
     #endregion
 }
