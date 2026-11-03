@@ -11,20 +11,22 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 
 ### Title Screen
 
-- Click the "Start" `Button` to begin the main game.
+- Click the "Continue" `Button` to continue your previous game.
+- Click the "Start" or "Resume" `Button` to begin a new game (Will remove the previous game save).
 - Click the "Exit" `Button` to close the game.
 - Watch the `TitleCharacter`s bounce around the screen and collide with one another and the screen borders.
-- The "Options" `Button` is present but currently has no implemented functionality.
 
-### Main Game
+### Game Screen
 
 - Move the `GameCharacter` with WASD or the arrow keys on the keyboard, or use the left joystick on the gamepad.
 - Stand on the iron ore deposit and hold "E" on keyboard or "X" on the gamepad to collect iron ore.
 - Press "Esc" on the keyboard or "Start" on the gamepad to open and close the pause menu.
-  - Click the "Resume" `Button` to close the pause menu and continue playing.
-  - Click the "Exit to Menu" `Button` to return to the title screen.
-  - Click the "Exit to Desktop" `Button` to exit the game.
-  - The "Options" `Button` is present but currently has no implemented functionality.
+
+### Pause Menu
+
+- Click the "Resume" `Button` to close the pause menu and continue playing.
+- Click the "Exit to Menu" `Button` to return to the title screen.
+- Click the "Exit to Desktop" `Button` to exit the game.
 
 ### Interacting with buttons
 
@@ -97,18 +99,18 @@ During this project. Significant restructuring was done to improve maintainabili
 
 ### UI Modifications
 
-### Title Screen
+#### Title Screen
 
 - Buttons are now:
   - `"Continue"`: Only shown if there is a save file. Will open the save a continue the game.
   - `"Start"` / `"Restart"`: Will create a new save file (removing the old one if it existed).
   - `"Exit"`: Exits the game.
 
-### Game Screen
+#### Game Screen
 
 - Additional Controls are shown.
 
-### Pause Screen
+#### Pause Screen
 
 - Removed Options button (Will be added back when a options screen is added).
 
