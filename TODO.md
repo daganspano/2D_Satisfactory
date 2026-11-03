@@ -1,9 +1,5 @@
 # FACTORY GAME TO-DO'S
 
-## Refactoring
-
-- Convert classes to `GameComponent`s, `DrawableGameComponent`s, and `GameScreen`s
-
 ## New Content
 
 - Crafting Bench

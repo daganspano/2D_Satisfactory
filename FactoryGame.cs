@@ -1,112 +1,46 @@
-﻿using System;
-using _2D_Satisfactory.MainGameClasses;
-using _2D_Satisfactory.TitleScreenClasses;
+﻿using _2D_Satisfactory.Screens;
+using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace _2D_Satisfactory;
 
 /// <summary>
-/// Represents the main game class for the 2D Satisfactory game.
+/// Represents the main game class for the 2D Satisfactory game, responsible for 
+/// initializing and managing the game's graphics, content, and screens.
 /// </summary>
 public class FactoryGame : Game
 {
+    /// <summary>
+    /// The graphics device manager used to manage the graphics settings and device for the game.
+    /// </summary>
     private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
-    public FactoryGameState State { get; private set; }
-    private TitleScreen _titleScreen;
-    private MainGame _mainGame;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FactoryGame"/> class, setting up the 
+    /// graphics device manager, content root directory, and game components.
+    /// </summary>
     public FactoryGame()
     {
         _graphics = new GraphicsDeviceManager(this);
-        State = FactoryGameState.TitleScreen;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
-        Components.Add(new MusicPlayer(this));
+
+        GameData.ScreenSize = new Vector2(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+        GameData.PlayerPosition = (0.5f * GameData.ScreenSize).ToPoint();
+
+        MusicPlayer musicPlayer = new MusicPlayer(this);
+        Components.Add(new ScreenManager(this, musicPlayer.SetState));
+        Components.Add(musicPlayer);
     }
 
     /// <summary>
-    /// Initializes the game.
+    /// Draws the game screen, clearing it with a sky blue color before rendering the game's components.
     /// </summary>
-    protected override void Initialize()
-    {
-        GameDimensions.Set(GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
-
-        // Initialize title screen
-        _titleScreen = new TitleScreen(
-            this,
-            () => { State = FactoryGameState.MainGame; }, 
-            () => { },
-            Exit
-        );
-
-        // Initialize main game
-        _mainGame = new MainGame(
-            this,
-            () => { State = FactoryGameState.TitleScreen; },
-            Exit
-        );
-
-        _mainGame.Initialize();
-
-        // Base initialization
-        base.Initialize();
-    }
-
-    /// <summary>
-    /// Loads the game content.
-    /// </summary>
-    protected override void LoadContent()
-    {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        // Load title screen content
-        _titleScreen.LoadTitleScreen();
-    }
-
-    /// <summary>
-    /// Updates the game.
-    /// </summary>
-    /// <param name="gameTime">The game time information.</param>
-    protected override void Update(GameTime gameTime)
-    {
-        switch (State)
-        {
-            case FactoryGameState.MainGame:
-                _mainGame.Update(gameTime);
-                break;
-            case FactoryGameState.TitleScreen:
-                _titleScreen.Update(gameTime);
-                break;
-        }
-
-        base.Update(gameTime);
-    }
-
-    /// <summary>
-    /// Draws the game.
-    /// </summary>
-    /// <param name="gameTime">The game time information.</param>
+    /// <param name="gameTime">The game time object providing timing information for the current frame.</param>
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.SkyBlue);
-
-        _spriteBatch.Begin();
-
-        // Draw the current game state
-        switch (State)
-        {
-            case FactoryGameState.MainGame:
-                _mainGame.Draw(gameTime);
-                break;
-            case FactoryGameState.TitleScreen:
-                _titleScreen.Draw(gameTime);
-                break;
-        }
-
-        _spriteBatch.End();
-
         base.Draw(gameTime);
     }
 }

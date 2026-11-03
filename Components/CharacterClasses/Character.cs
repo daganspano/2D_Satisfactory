@@ -1,214 +1,185 @@
-using System;
-using System.Collections.Generic;
+using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace _2D_Satisfactory.Components.CharacterClasses;
 
 /// <summary>
-/// Represents a character in the game, handling its position, animation, and rendering.
+/// Represents a character in the game, handling its movement, animation, and rendering.
 /// </summary>
-public class Character
+public abstract class Character : DrawableGameComponent
 {
-    // Timer Fields
-    private double _animationTimer;
-    private double _animationSpeed;
-    private double _soundTimer;
-    private double _soundSpeed;
+    #region Private Fields
 
-    // Sprite Fields
+    private SpriteBatch _spriteBatch;
     private Texture2D _texture;
+    private Rectangle _sourceRectangle;
     private readonly Point _character;
     private int _speed;
+    private AnimationFrame _animationFrame;
+    private DirectionFrame _directionFrame;
+    private AnimationFrame _previousAnimationFrame;
+    private double _animationTimer;
+    private double _animationSpeed;
 
-    // Frame Fields
-    private readonly Point _spriteSize;
-    private Point _frame;
-    private int _previousAnimationFrame;
-    private Vector2 _previousDirection;
-    private Rectangle _sourceRectangle;
-    private Vector2 _position;
+    #endregion
 
-    // Sound Effect Fields
-    private SoundEffect _walkingSoundEffect;
-    private readonly bool _disableWalkingSound;
+    #region Protected Fields
 
     /// <summary>
-    /// The hit box of the character based on its current position and sprite size.
+    /// Gets or sets the position of the character in the game world. This property is used to determine where the character is drawn on the screen and can be modified to move the character around the game environment.
     /// </summary>
-    public Rectangle HitBox => new Rectangle(_position.ToPoint(), _spriteSize);
+    protected Vector2 Position { get; set;}
 
     /// <summary>
-    /// The current facing direction of the character based on its movement.
+    /// Gets or sets the current animation frame of the character. This property is used to determine which frame of the character's animation should be displayed, allowing for smooth transitions between different states such as running, walking, or standing still.
     /// </summary>
-    public DirectionFrame FacingDirection { get; private set; }
+    protected DirectionFrame DirectionFrame
+    {
+        get => _directionFrame;
+        set => _directionFrame = value;
+    }
 
     /// <summary>
-    /// The Speed of the Character
+    /// Gets or sets a value indicating whether the character is currently moving. This property is used to control the character's animation and behavior, allowing for different animations to be played when the character is in motion versus when it is stationary.
+    /// </summary>
+    protected bool IsMoving { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the character was moving in the previous update cycle. This property is used to determine if the character has just started or stopped moving, which can trigger specific animations or behaviors based on changes in movement state.
+    /// </summary>
+    protected bool WasMoving { get; set; }
+
+    /// <summary>
+    /// Gets or sets the speed of the character. This property controls how fast the character moves within the game world and can be adjusted to create different movement dynamics. Changing the speed also affects the animation speed, ensuring that the character's visual representation matches its movement rate.
     /// </summary>
     public int Speed
     {
-        set => _speed = value;
+        get => _speed;
+        set 
+        {
+            _speed = value;
+            _animationSpeed = 0.2 * 100 / 140 * Math.Sqrt(140.0 / _speed);
+        }
     }
+
+    #endregion
+
+    #region Constructor
 
     /// <summary>
-    /// The Position of the Character
+    /// Initializes a new instance of the Character class with the specified game context and character index. This constructor sets up the character's initial state, including its position, animation frame, direction, and speed. It also calculates the animation speed based on the character's movement speed to ensure smooth animations during gameplay.
     /// </summary>
-    public Vector2 Position
+    /// <param name="game">The game instance that this character belongs to.</param>
+    /// <param name="character">The index of the character, used to determine its initial frame and position.</param>
+    protected Character(Game game, int character) : base(game)
     {
-        get => _position;
-        set => _position = value;
-    }
-
-    public Character(Vector2 initialPosition, int character, int speed, bool? disableWalkingSound = false)
-    {
-        _position = initialPosition;
-        _spriteSize = new Point(16, 23);
-        _sourceRectangle = new Rectangle(Point.Zero, _spriteSize);
-        _speed = speed;
+        _sourceRectangle = new Rectangle(Point.Zero, GameData.PlayerHitBox.Size);
         _character = new Point(character % 4, character / 4);
-        _frame = new Point((int)AnimationFrame.Stationary, (int)DirectionFrame.Down);
+        _animationFrame = AnimationFrame.Stationary;
+        _directionFrame = DirectionFrame.Down;
         _animationTimer = 0;
         _animationSpeed = 0.2 * 100 / 140 * Math.Sqrt(140.0 / _speed);
-        _soundTimer = 0;
-        _soundSpeed = 2 * _animationSpeed;
-        _previousAnimationFrame = 0;
-        _disableWalkingSound = disableWalkingSound ?? false;
+    }
+
+    #endregion
+
+    #region Override Methods
+
+    /// <summary>
+    /// Loads the content required for rendering the character, including the sprite batch, texture, and sound effect. This method initializes the necessary resources for drawing the character on the screen and playing walking sounds.
+    /// </summary>
+    protected override void LoadContent()
+    {
+        _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+        _texture = Game.Content.Load<Texture2D>("construction_workers");
     }
 
     /// <summary>
-    /// Loads the content for the running sprite.
+    /// Updates the character's state, including its animation frame and source rectangle, based on the elapsed game time. This method is called during the game's update phase and handles the logic for animating the character's movement and updating its visual representation on the screen.
     /// </summary>
-    /// <param name="content">The content manager used to load the sprite texture.</param>
-    public void LoadContent(ContentManager content)
+    /// <param name="gameTime">The current game time.</param>
+    public override void Update(GameTime gameTime)
     {
-        _texture = content.Load<Texture2D>("construction_workers");
-        _walkingSoundEffect = content.Load<SoundEffect>("grassFootSteps");
-    }
-
-    /// <summary>
-    /// Updates the character's position, animation frame, and source rectangle based on the elapsed game time and the provided direction vector.
-    /// </summary>
-    /// <param name="gameTime">The game time object containing the elapsed time since the last update.</param>
-    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
-    public void Update(GameTime gameTime, Vector2 direction)
-    {
-        // Play walking sound effect
-        PlayWalkingSound(gameTime, direction);
-
         // Update frame for the animation and direction based on the current direction vector
-        UpdateFrame(gameTime, direction);
+        UpdateFrame(gameTime);
 
         // Update the source rectangle based on the current frame and character
         UpdateSourceRectangle();
-            
-        // Update the position and direction frame
-        _position += direction * _speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
     /// <summary>
-    /// Draws the running sprite on the screen using the provided sprite batch.
+    /// Draws the character on the screen using the internal SpriteBatch. This method is called during the game's draw phase and handles rendering the character sprite at its current position, applying the appropriate source rectangle for the character's frame and orientation. The draw offset is applied to ensure the character is rendered correctly relative to the game world.
     /// </summary>
-    /// <param name="spriteBatch">The sprite batch used to draw the running sprite.</param>
-    public void Draw(SpriteBatch spriteBatch)
+    /// <param name="gameTime">The current game time.</param>
+    public override void Draw(GameTime gameTime)
     {
-        spriteBatch.Draw(_texture, _position, _sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+        _spriteBatch.Begin();
+
+        // // HitBox
+        // var pixel = new Texture2D(Game.GraphicsDevice, 1, 1);
+        // pixel.SetData([ Color.White ]);
+        // _spriteBatch.Draw(pixel, new Rectangle(Position.ToPoint(), GameData.PlayerHitBox.Size), new Color(255, 0, 0, 50));
+
+        // Character
+        _spriteBatch.Draw(_texture, Position, _sourceRectangle, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+
+        _spriteBatch.End();
     }
 
+    #endregion
+    
+    #region Private Methods
+    
     /// <summary>
-    /// Checks for collisions with the edges of the game screen based on the character's hit box and the provided direction vector.
+    /// Updates the animation frame of the character based on its movement state and elapsed game time. This method handles the logic for transitioning between different animation frames, ensuring that the character's visual representation reflects its current movement status. It also manages the timing of frame changes to create smooth animations during gameplay.
     /// </summary>
-    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
-    /// <returns>A list of strings representing the edges with which the character is colliding.</returns>
-    public List<string> CheckEdgeCollisions(Vector2 direction)
-    {
-        // return Collision.CheckEdgeCollisions(GetHitBox(), direction);
-        return Collision.CheckEdgeCollisions(HitBox, direction);
-    }
- 
-    /// <summary>
-    /// Updates the animation frame of the running sprite based on the current frame and previous animation frame.
-    /// </summary>
-    /// <param name="gameTime">The game time object containing the elapsed time since the last update.</param>
-    /// <param name="direction">The direction vector indicating the character's movement direction.</param>
-    private void UpdateFrame(GameTime gameTime, Vector2 direction)
+    /// <param name="gameTime">The current game time.</param>
+    private void UpdateFrame(GameTime gameTime)
     {
         // Update the animation timer
         _animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
 
-        if (direction == Vector2.Zero)
+        if (!IsMoving)
         {
-            _frame.X = (int)AnimationFrame.Stationary;
+            _animationFrame = AnimationFrame.Stationary;
             _animationTimer = 0;
-            _previousDirection = Vector2.Zero;
             return;
         }
 
         // Start the running animation immediately when the character starts moving
-        if (_previousDirection == Vector2.Zero) _animationTimer = _animationSpeed;
+        if (!WasMoving) _animationTimer = _animationSpeed;
 
         // Update the animation
         if (_animationTimer > _animationSpeed)
         {
-            switch (_frame.X)
+            switch (_animationFrame)
             {
-                case (int)AnimationFrame.Running1:
-                case (int)AnimationFrame.Running2:
-                    _frame.X = (int)AnimationFrame.Stationary;
+                case AnimationFrame.Running1:
+                case AnimationFrame.Running2:
+                    _animationFrame = AnimationFrame.Stationary;
                     break;
-                case (int)AnimationFrame.Stationary:
-                    _frame.X = _previousAnimationFrame == (int)AnimationFrame.Running1 ? (int)AnimationFrame.Running2 : (int)AnimationFrame.Running1;
-                    _previousAnimationFrame = _frame.X;
+                case AnimationFrame.Stationary:
+                    _animationFrame = _previousAnimationFrame == AnimationFrame.Running1 ? AnimationFrame.Running2 : AnimationFrame.Running1;
+                    _previousAnimationFrame = _animationFrame;
                     break;
             }
             _animationTimer -= _animationSpeed;
         }
-        
-        // Update the direction
-        if (Math.Abs(direction.X) > Math.Abs(direction.Y)) _frame.Y = direction.X > 0 ? (int)DirectionFrame.Right : (int)DirectionFrame.Left;
-        else _frame.Y = direction.Y > 0 ? (int)DirectionFrame.Down : (int)DirectionFrame.Up;
-        
-        FacingDirection = (DirectionFrame)_frame.Y;
-        _previousDirection = direction;
     }
 
     /// <summary>
-    /// Updates the source rectangle of the running sprite based on the current frame, character, and texture properties.
+    /// Updates the source rectangle of the character sprite based on the current animation frame, character index, and texture properties.
     /// </summary>
     private void UpdateSourceRectangle()
     {
-        Point startPoint = new Point(1, 2);
-        Point characterOffset = new Point(126, 104);
-        Point frameOffset = new Point(18, 26);
+        Point start = new Point(1, 2);
+        Point character = new Point(126, 104) * _character;
+        Point frame = new Point(18 * (int)_animationFrame, 26 * (int)_directionFrame);
 
-        // Start point + character position + frame position
-        _sourceRectangle.Location = startPoint + _character * characterOffset + _frame * frameOffset;
+        _sourceRectangle.Location = start + character + frame;
     }
-
-    private void PlayWalkingSound(GameTime gameTime, Vector2 direction)
-    {   
-        if (!_disableWalkingSound) 
-        {
-            // Update the sound timer
-            _soundTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (direction == Vector2.Zero)
-            {
-                _soundTimer = 0;
-                return;
-            }
-
-            // Start the walking sound immediately when the character starts moving
-            if (_previousDirection == Vector2.Zero) _soundTimer = _soundSpeed;
-
-            // Play the sound effect
-            if (_soundTimer > _soundSpeed)
-            {
-                _walkingSoundEffect.Play(volume: 0.25f, pitch: -0.125f, pan: 0f);
-                _soundTimer -= 2 * _animationSpeed;
-            }
-        }
-    }
+    
+    #endregion
 }

@@ -1,24 +1,24 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Components.ButtonClasses;
 
 /// <summary>
 /// Represents a group of buttons, allowing navigation and selection using mouse, keyboard, or gamepad input.
 /// </summary>
-public class ButtonGroup
+public class ButtonGroup : DrawableGameComponent
 {
+    private static SpriteBatch _spriteBatch;
     private readonly List<Button> _buttons;
     private int _selectedButtonIndex;
     private bool _wasPreviouslyDown;
     private bool _wasPreviouslyUp;
     private Point _previousMousePosition;
 
-    public ButtonGroup(Dictionary<string, Action> labelsAndActions, float yPosition)
+    public ButtonGroup(Game game, Dictionary<string, Action> labelsAndActions, float yPosition) : base(game)
     {
         _selectedButtonIndex = -1;
 
@@ -36,18 +36,34 @@ public class ButtonGroup
     }
 
     /// <summary>
+    /// Calculates the total height of the button group based on the number of buttons, their scaled height, and padding between them.
+    /// </summary>
+    /// <param name="numberOfButtons">The number of buttons in the group.</param>
+    /// <returns>The total height of the button group.</returns>
+    public static float GetHeight(int numberOfButtons)
+    {
+        float buttonScale = 0.7f;
+        float buttonHeightScaled = 88 * buttonScale;
+        int buttonPadding = 8;
+
+        return numberOfButtons * (buttonHeightScaled + buttonPadding) - buttonPadding;
+    }
+
+    /// <summary>
     /// Loads the content for all buttons in the group.
     /// </summary>
     /// <param name="content">The content manager used to load the button textures and fonts.</param>
-    public void LoadContent(ContentManager content)
+    protected override void LoadContent()
     {
-        foreach (var button in _buttons) button.LoadContent(content);
+        _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+
+        foreach (var button in _buttons) button.LoadContent(Game.Content);
     }
 
     /// <summary>
     /// Updates the state of the button group, handling input from mouse, keyboard, and gamepad to navigate and select buttons.
     /// </summary>
-    public void Update()
+    public override void Update(GameTime gameTime)
     {
         Point currentMousePosition = Mouse.GetState().Position;
 
@@ -63,9 +79,11 @@ public class ButtonGroup
     /// Draws all buttons in the group to the specified sprite batch.
     /// </summary>
     /// <param name="spriteBatch">The sprite batch used to draw the buttons.</param>
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(GameTime gameTime)
     {
-        foreach (var button in _buttons) button.Draw(spriteBatch);
+        _spriteBatch.Begin();
+        foreach (var button in _buttons) button.Draw(_spriteBatch);
+        _spriteBatch.End();
     }
 
     /// <summary>

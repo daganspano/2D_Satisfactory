@@ -1,0 +1,10 @@
+{
+  "Character": 12,
+  "PlayerSpeed": 200,
+  "PlayerPosition": {
+    "X": 400,
+    "Y": 240
+  },
+  "PlayerDirection": 0,
+  "PlayerInventory": {}
+}

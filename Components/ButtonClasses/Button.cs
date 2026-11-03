@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
+using _2D_Satisfactory.Screens.MainGame;
 
 namespace _2D_Satisfactory.Components.ButtonClasses;
 
@@ -55,11 +56,12 @@ public class Button
         _buttonScale = buttonScale;
         _onClick = onClick;
         _isClicked = false;
+        _wasPreviouslyPressed = true;
         _buttonWidthRaw = 320;
         _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
         _buttonHeightRaw = 88;
         _buttonHeightScaled = _buttonHeightRaw * _buttonScale;
-        _buttonPosition = new Vector2((GameDimensions.Width - _buttonWidthScaled) / 2, yPosition);
+        _buttonPosition = new Vector2((GameData.ScreenSize.X - _buttonWidthScaled) / 2, yPosition);
     }
 
     /// <summary>
@@ -85,11 +87,10 @@ public class Button
         Color newTextColor = new Color(0x96, 0x52, 0x14);
 
         // Check current input state
-        bool isCurrentlyPressed = isSelected && (
+        bool isCurrentlyPressed =
             Mouse.GetState().LeftButton == ButtonState.Pressed || 
             Keyboard.GetState().IsKeyDown(Keys.Enter) || 
-            GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A)
-        );
+            GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.A);
 
         if (_isClicked)
         {
