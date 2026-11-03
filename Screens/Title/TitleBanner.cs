@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _2D_Satisfactory.Screens.Title;
 
+/// <summary>
+/// Represents the title banner displayed on the title screen of the game.
+/// </summary>
 public class TitleBanner : DrawableGameComponent
 {
     private SpriteBatch _spriteBatch;

@@ -1,18 +1,29 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace _2D_Satisfactory.Screens.Title;
 
+/// <summary>
+/// Handles collision detection and response between TitleCharacter sprites in the title screen.
+/// </summary>
 public class SpriteCollisionHandler : GameComponent
 {
     private readonly List<TitleCharacter> _characters;
 
+    /// <summary>
+    /// Initializes a new instance of the SpriteCollisionHandler class with the specified game and list of TitleCharacter sprites.
+    /// </summary>
+    /// <param name="game">The game instance to which the collision handler belongs.</param>
+    /// <param name="characters">The list of TitleCharacter sprites to be managed for collisions.</param>
     public SpriteCollisionHandler(Game game, List<TitleCharacter> characters) : base(game)
     {
         _characters = characters;
     }
 
+    /// <summary>
+    /// Updates the collision detection and response for the TitleCharacter sprites. This method checks for collisions between each pair of characters and applies a bounce effect based on their speed ratios.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public override void Update(GameTime gameTime)
     {
         for (int i = 0; i < _characters.Count; i++)

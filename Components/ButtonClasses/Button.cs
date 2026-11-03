@@ -56,7 +56,6 @@ public class Button
         _buttonScale = buttonScale;
         _onClick = onClick;
         _isClicked = false;
-        // Assume input is held initially so a button must see a release before it can be clicked
         _wasPreviouslyPressed = true;
         _buttonWidthRaw = 320;
         _buttonWidthScaled = _buttonWidthRaw * _buttonScale;
@@ -87,7 +86,7 @@ public class Button
         int startX = 0;
         Color newTextColor = new Color(0x96, 0x52, 0x14);
 
-        // Check current input state (independent of selection so held input can't trigger a newly selected button)
+        // Check current input state
         bool isCurrentlyPressed =
             Mouse.GetState().LeftButton == ButtonState.Pressed || 
             Keyboard.GetState().IsKeyDown(Keys.Enter) || 

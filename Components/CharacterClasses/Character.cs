@@ -1,11 +1,13 @@
 using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace _2D_Satisfactory.Components.CharacterClasses;
 
+/// <summary>
+/// Represents a character in the game, handling its movement, animation, and rendering.
+/// </summary>
 public abstract class Character : DrawableGameComponent
 {
     #region Private Fields
@@ -25,17 +27,33 @@ public abstract class Character : DrawableGameComponent
 
     #region Protected Fields
 
+    /// <summary>
+    /// Gets or sets the position of the character in the game world. This property is used to determine where the character is drawn on the screen and can be modified to move the character around the game environment.
+    /// </summary>
     protected Vector2 Position { get; set;}
 
+    /// <summary>
+    /// Gets or sets the current animation frame of the character. This property is used to determine which frame of the character's animation should be displayed, allowing for smooth transitions between different states such as running, walking, or standing still.
+    /// </summary>
     protected DirectionFrame DirectionFrame
     {
         get => _directionFrame;
         set => _directionFrame = value;
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the character is currently moving. This property is used to control the character's animation and behavior, allowing for different animations to be played when the character is in motion versus when it is stationary.
+    /// </summary>
     protected bool IsMoving { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the character was moving in the previous update cycle. This property is used to determine if the character has just started or stopped moving, which can trigger specific animations or behaviors based on changes in movement state.
+    /// </summary>
     protected bool WasMoving { get; set; }
 
+    /// <summary>
+    /// Gets or sets the speed of the character. This property controls how fast the character moves within the game world and can be adjusted to create different movement dynamics. Changing the speed also affects the animation speed, ensuring that the character's visual representation matches its movement rate.
+    /// </summary>
     public int Speed
     {
         get => _speed;
@@ -50,6 +68,11 @@ public abstract class Character : DrawableGameComponent
 
     #region Constructor
 
+    /// <summary>
+    /// Initializes a new instance of the Character class with the specified game context and character index. This constructor sets up the character's initial state, including its position, animation frame, direction, and speed. It also calculates the animation speed based on the character's movement speed to ensure smooth animations during gameplay.
+    /// </summary>
+    /// <param name="game">The game instance that this character belongs to.</param>
+    /// <param name="character">The index of the character, used to determine its initial frame and position.</param>
     protected Character(Game game, int character) : base(game)
     {
         _sourceRectangle = new Rectangle(Point.Zero, GameData.PlayerHitBox.Size);
@@ -73,6 +96,10 @@ public abstract class Character : DrawableGameComponent
         _texture = Game.Content.Load<Texture2D>("construction_workers");
     }
 
+    /// <summary>
+    /// Updates the character's state, including its animation frame and source rectangle, based on the elapsed game time. This method is called during the game's update phase and handles the logic for animating the character's movement and updating its visual representation on the screen.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Update(GameTime gameTime)
     {
         // Update frame for the animation and direction based on the current direction vector
@@ -105,6 +132,10 @@ public abstract class Character : DrawableGameComponent
     
     #region Private Methods
     
+    /// <summary>
+    /// Updates the animation frame of the character based on its movement state and elapsed game time. This method handles the logic for transitioning between different animation frames, ensuring that the character's visual representation reflects its current movement status. It also manages the timing of frame changes to create smooth animations during gameplay.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     private void UpdateFrame(GameTime gameTime)
     {
         // Update the animation timer
@@ -139,7 +170,7 @@ public abstract class Character : DrawableGameComponent
     }
 
     /// <summary>
-    /// Updates the source rectangle of the running sprite based on the current frame, character, and texture properties.
+    /// Updates the source rectangle of the character sprite based on the current animation frame, character index, and texture properties.
     /// </summary>
     private void UpdateSourceRectangle()
     {

@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Media;
 
 namespace _2D_Satisfactory;
 
+/// <summary>
+/// Represents the different states of the game for music playback purposes.
+/// </summary>
 public enum SongState
 {
     TitleScreen,
@@ -41,6 +44,10 @@ public class MusicPlayer : GameComponent
         MediaPlayer.Play(_titleScreenMusic);
     }
 
+    /// <summary>
+    /// Sets the current state of the game, which determines which music to play.
+    /// </summary>
+    /// <param name="state">The new state of the game.</param>
     public void SetState(SongState state)
     {
         _currentState = state;

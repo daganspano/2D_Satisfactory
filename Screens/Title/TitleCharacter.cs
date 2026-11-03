@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using _2D_Satisfactory.Components.CharacterClasses;
 using _2D_Satisfactory.Screens.MainGame;
-using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 
 namespace _2D_Satisfactory.Screens.Title;
 
+/// <summary>
+/// Represents a character that moves around the title screen, bouncing off edges and changing direction at intervals.
+/// </summary>
 public class TitleCharacter : Character
 {
     #region Private Fields
@@ -19,12 +21,19 @@ public class TitleCharacter : Character
 
     #region Public Properties
 
+    /// <summary>
+    /// Gets the hitbox of the character, which is used for collision detection.
+    /// </summary>
     public Rectangle HitBox => new Rectangle(Position.ToPoint(), GameData.SpriteSize);
 
     #endregion
 
     #region Constructor
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TitleCharacter"/> class with a random position and speed, and sets up its movement behavior.
+    /// </summary>
+    /// <param name="game">The game instance to which the character belongs.</param>
     public TitleCharacter(Game game) : base(game, GetCharacter())
     {
         _directionTimer = 2;
@@ -45,6 +54,10 @@ public class TitleCharacter : Character
 
     #region Public Methods
 
+    /// <summary>
+    /// Bounces the character in the opposite direction of the provided overlap vector, normalizing the direction if it's not zero.
+    /// </summary>
+    /// <param name="overlap">The vector representing the overlap with another character, used to determine the bounce direction.</param>
     public void Bounce(Vector2 overlap)
     {
         _direction = overlap;
@@ -57,6 +70,10 @@ public class TitleCharacter : Character
 
     #region Override Methods
 
+    /// <summary>
+    /// Updates the character's movement and direction based on elapsed game time, including changing direction at intervals and bouncing off screen edges.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public override void Update(GameTime gameTime)
     {
         UpdateMovement(gameTime);
@@ -68,8 +85,16 @@ public class TitleCharacter : Character
     
     #region Private Methods
     
+    /// <summary>
+    /// Generates a random character index between 0 and 15, which is used to select a character sprite for the title screen.
+    /// </summary>
+    /// <returns>A random integer between 0 and 15, representing the character index.</returns>
     private static int GetCharacter() => new Random().Next(0, 16);
 
+    /// <summary>
+    /// Updates the character's movement based on elapsed game time, including changing direction at set intervals and bouncing off the edges of the screen.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     private void UpdateMovement(GameTime gameTime)
     {
         // Update the frame timers

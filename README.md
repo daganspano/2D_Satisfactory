@@ -40,6 +40,80 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 
 ---
 
+## 0.5.0 (Game Project 4)
+
+### Classes Modified / Added / Removed
+
+During this project. Significant restructuring was done to improve maintainability and extensibility.
+
+- `CollisionHandler.cs` (Modified):
+  - Has been moved and renamed (Previously `Collision.cs`).
+  - Unused functions were removed.
+- `FactoryGame.cs` (Modified): Now has `ScreenManager`, which has most of the previous logic.
+- `FactoryGameState.cs` (Removed)
+- `FileManager.cs` (Added): Provides functionality for saving and loading game state to and from a JSON file.
+- `GameDimensions.cs` (Removed)
+- `Map.cs` (Removed)
+- `MusicPlayer.cs` (Modified): Now has its own state for what songs to play.
+
+#### Components
+
+- `ButtonClasses/ButtonGroup.cs` (Modified):
+  - Is now a `DrawableGameComponent`.
+  - Now provides functionality to get the height for the number of buttons.
+- `CharacterClasses/Character.cs` (Modified):
+  - Is now an abstract `DrawableGameComponent` (Other character classes now inherit correctly).
+  - Had a complete structural overhaul, along with child classes.
+- `Tilemap.cs` (Modified): Moved and now contains contents of removed `Map.cs`.
+
+#### Screens
+
+- `MainGame/ControlsDisplay.cs` (Added): Displays the current controls available to the player in the game.
+- `MainGame/GameData.cs` (Added): Holds game-related data and properties.
+- `MainGame/GameScreen.cs` (Added): Manages the game's components and their interactions.
+- `MainGame/InputHandler.cs` (Added): Handles player input for movement and interactions within the game.
+- `MainGame/InventoryDisplay.cs` (Added): Displays the current inventory of the player in the game.
+- `MainGame/Player.cs` (Modified):
+  - Has been renamed (Previously `GameCharacter.cs`)
+  - Now has functionality for a player controlled character and leaves the rest to the parent.
+- `Title/SpriteCollisionHandler.cs` (Added): Handles collision detection and response between TitleCharacter sprites in the title screen.
+- `Title/TitleBanner.cs` (Added): Represents the title banner displayed on the title screen of the game.
+- `Title/TitleCharacter.cs` (Modified):
+  - Has been moved and renamed (Previously `GameCharacter.cs`)
+  - Now has functionality for a player controlled character and leaves the rest to the parent.
+- `Title/TitleScreen.cs` (Modified):
+  - Has been moved.
+  - Now has functionality for a title screen character and leaves the rest to the parent.
+- `PauseScreen.cs` (Added): Displays a `ButtonGroup` to resume or exit.
+- `Screen.cs` (Added): Represents a screen in the game, managing its state and components.
+- `ScreenManager.cs` (Added): Manages the different screens in the game, handling transitions and updates between them.
+- `ScreenState.cs` (Added): Represents the state of a screen in the game.
+
+#### Additional Classes Removed from file reorganization.
+
+- `MainGame.cs`
+- `MainGameState.cs`
+- `TitleScreen.cs`
+
+### UI Modifications
+
+### Title Screen
+
+- Buttons are now:
+  - `"Continue"`: Only shown if there is a save file. Will open the save a continue the game.
+  - `"Start"` / `"Restart"`: Will create a new save file (removing the old one if it existed).
+  - `"Exit"`: Exits the game.
+
+### Game Screen
+
+- Additional Controls are shown.
+
+### Pause Screen
+
+- Removed Options button (Will be added back when a options screen is added).
+
+---
+
 ## 0.4.0 (Game Project 3)
 
 ### Assets Added / Removed

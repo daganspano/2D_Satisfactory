@@ -6,17 +6,19 @@ using Microsoft.Xna.Framework.Graphics;
 namespace _2D_Satisfactory;
 
 /// <summary>
-/// Represents the main game class for the 2D Satisfactory game, responsible for initializing the game, managing the graphics device, and handling the game's main loop. This class extends the Game class from the MonoGame framework and provides methods for drawing the game screen and managing game components.
+/// Represents the main game class for the 2D Satisfactory game, responsible for 
+/// initializing and managing the game's graphics, content, and screens.
 /// </summary>
 public class FactoryGame : Game
 {
     /// <summary>
-    /// The graphics device manager responsible for managing the graphics settings and device for the game. It is used to configure the game's display properties, such as resolution and fullscreen mode.
+    /// The graphics device manager used to manage the graphics settings and device for the game.
     /// </summary>
     private GraphicsDeviceManager _graphics;
 
     /// <summary>
-    /// Initializes a new instance of the FactoryGame class, setting up the graphics device manager, content root directory, and adding the ScreenManager component to manage game screens.
+    /// Initializes a new instance of the <see cref="FactoryGame"/> class, setting up the 
+    /// graphics device manager, content root directory, and game components.
     /// </summary>
     public FactoryGame()
     {
@@ -33,9 +35,9 @@ public class FactoryGame : Game
     }
 
     /// <summary>
-    /// Called when the game should draw a frame. Draws the DrawableGameComponent instances attached to this game.
+    /// Draws the game screen, clearing it with a sky blue color before rendering the game's components.
     /// </summary>
-    /// <param name="gameTime">The game time.</param>
+    /// <param name="gameTime">The game time object providing timing information for the current frame.</param>
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.SkyBlue);

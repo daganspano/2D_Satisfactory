@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens.MainGame;
 
+/// <summary>
+/// Represents a static class that holds game-related data and properties.
+/// </summary>
 public static class GameData
 {
     #region Game Properties
@@ -53,8 +56,14 @@ public static class GameData
         );
     }
 
+    /// <summary>
+    /// The direction the player is facing, represented by a DirectionFrame enum value.
+    /// </summary>
     public static DirectionFrame PlayerDirection { get; set; } = DirectionFrame.Down;
 
+    /// <summary>
+    /// The player's inventory, represented as a dictionary where the key is the item name and the value is the quantity of that item. This property allows for tracking and managing the items the player has collected during gameplay.
+    /// </summary>
     public static Dictionary<string, int> PlayerInventory {get; set;} = new Dictionary<string, int>();
 
     /// <summary>
@@ -62,6 +71,9 @@ public static class GameData
     /// </summary>
     public static bool IsPlayerMoving { get; set; } = false;
 
+    /// <summary>
+    /// The current interaction state of the player, represented as a string. This property is used to determine what actions the player can perform in the game, such as mining resources or interacting with objects. The value of this property is updated based on the player's actions and context within the game world.
+    /// </summary>
     public static string PlayerInteraction { get; set; } = string.Empty;
 
     #endregion
@@ -77,6 +89,9 @@ public static class GameData
 
     #region Storage Methods
 
+    /// <summary>
+    /// Initializes a new game by setting default values for the player's character, speed, position, direction, and inventory. This method creates a new SaveData object with these default values and saves it using the FileManager. It is typically called when starting a new game to ensure that the player begins with a clean state and predefined settings.
+    /// </summary>
     public static void NewGame()
     {
         Character = 12;
@@ -97,6 +112,9 @@ public static class GameData
         FileManager.SaveGame(defaultData);
     }
 
+    /// <summary>
+    /// Loads the game state from a saved file using the FileManager. This method retrieves the saved data, including the player's character, speed, position, direction, and inventory, and updates the corresponding properties in the GameData class. It is typically called when resuming a previously saved game to restore the player's progress and settings.
+    /// </summary>
     public static void LoadGame()
     {
         SaveData saveData = FileManager.LoadGame();
@@ -108,6 +126,9 @@ public static class GameData
         PlayerInventory = saveData.PlayerInventory;
     }
 
+    /// <summary>
+    /// Saves the current game state to a file using the FileManager. This method creates a SaveData object containing the player's current character, speed, position, direction, and inventory, and then saves it to a file. It is typically called when the player chooses to save their progress in the game, ensuring that their current state can be restored later.
+    /// </summary>
     public static void SaveGame()
     {
         SaveData saveData = new SaveData()

@@ -2,7 +2,7 @@ using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _2D_Satisfactory;
+namespace _2D_Satisfactory.Components;
 
 /// <summary>
 /// Represents a tilemap component in the game, responsible for rendering the map's tiles and handling interactions with specific tile types, such as iron ore deposits. This class extends DrawableGameComponent and provides methods to load the map, update its offset, and draw the tiles on the screen.
@@ -48,27 +48,9 @@ public class Tilemap: DrawableGameComponent
     }
 
     /// <summary>
-    /// Draws the tilemap on the screen using the internal SpriteBatch. This method is called during the game's draw phase and handles rendering the map's tiles with the current offset applied. It begins a new sprite batch, iterates through the map's tile data, and draws each tile at its corresponding position, then ends the sprite batch.
+    /// Updates the tilemap's state, checking for interactions between the player and specific tile types, such as iron ore deposits. If the player's hitbox intersects with an iron ore deposit tile, the player's interaction state is updated accordingly. This method is called during the game's update phase to handle game logic related to the tilemap.
     /// </summary>
-    /// <param name="gameTime">The current game time.</param>
-    public override void Draw(GameTime gameTime)
-    {
-        if (_includeOffset) _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(GameData.DrawOffset.X, GameData.DrawOffset.Y, 0f));
-        else _spriteBatch.Begin();
-
-        for (int y = 0; y < _mapSize.Y; y++)
-        {
-            for (int x = 0; x < _mapSize.X; x++)
-            {
-                Vector2 position = new Vector2(x * _tileSize.X, y * _tileSize.Y);
-                int index = _map[y][x];
-                _spriteBatch.Draw(_atlas, position, _tiles[index], Color.White);
-            }
-        }
-                
-        _spriteBatch.End();
-    }
-
+    /// <param name="gameTime"></param>
     public override void Update(GameTime gameTime)
     {
         for (int y = 0; y < _mapSize.Y; y++)
@@ -88,6 +70,28 @@ public class Tilemap: DrawableGameComponent
         }
         GameData.PlayerInteraction = string.Empty;
         return;
+    }
+
+    /// <summary>
+    /// Draws the tilemap on the screen using the internal SpriteBatch. This method is called during the game's draw phase and handles rendering the map's tiles with the current offset applied. It begins a new sprite batch, iterates through the map's tile data, and draws each tile at its corresponding position, then ends the sprite batch.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
+    public override void Draw(GameTime gameTime)
+    {
+        if (_includeOffset) _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(GameData.DrawOffset.X, GameData.DrawOffset.Y, 0f));
+        else _spriteBatch.Begin();
+
+        for (int y = 0; y < _mapSize.Y; y++)
+        {
+            for (int x = 0; x < _mapSize.X; x++)
+            {
+                Vector2 position = new Vector2(x * _tileSize.X, y * _tileSize.Y);
+                int index = _map[y][x];
+                _spriteBatch.Draw(_atlas, position, _tiles[index], Color.White);
+            }
+        }
+                
+        _spriteBatch.End();
     }
 
     /// <summary>
@@ -114,6 +118,9 @@ public class Tilemap: DrawableGameComponent
         return false;
     }
 
+    /// <summary>
+    /// Sets the internal map data for the tilemap, defining the layout of tiles in a 2D array. Each integer value in the array corresponds to a specific tile type, with 0 representing empty space and 4 representing iron ore deposits. This method initializes the map data used for rendering and interaction within the game.
+    /// </summary>
     private void setMap()
     {
         _map = 

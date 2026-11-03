@@ -7,12 +7,20 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens.MainGame;
 
+/// <summary>
+/// Handles player input for movement and interactions within the game.
+/// </summary>
 public class InputHandler : GameComponent
 {
     private double _interactionTimer;
     private double _miningSpeed;
     private HandMiningParticleSystem _miningParticles;
 
+    /// <summary>
+    /// Initializes a new instance of the InputHandler class.
+    /// </summary>
+    /// <param name="game">The game instance to which this input handler belongs.</param>
+    /// <param name="miningParticles">The particle system used for hand mining effects.</param>
     public InputHandler(Game game, HandMiningParticleSystem miningParticles) : base(game)
     {
         _interactionTimer = 0f;
@@ -20,6 +28,10 @@ public class InputHandler : GameComponent
         _miningParticles = miningParticles;
     }
 
+    /// <summary>
+    /// Updates the input handler, processing player movement and interactions based on keyboard and gamepad input.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     public override void Update(GameTime gameTime)
     {
         if (Game.IsActive)
@@ -30,6 +42,10 @@ public class InputHandler : GameComponent
         base.Update(gameTime);
     }
 
+    /// <summary>
+    /// Handles player movement based on keyboard and gamepad input, updating the player's position and direction accordingly. It also checks for edge collisions to prevent the player from moving outside the game boundaries.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     private void HandleMovement(GameTime gameTime)
     {
         // Get Keyboard Input
@@ -67,6 +83,10 @@ public class InputHandler : GameComponent
         }
     }
 
+    /// <summary>
+    /// Handles player interactions based on keyboard and gamepad input, allowing the player to perform actions such as mining. The method checks for specific interaction keys and updates the player's inventory and particle effects accordingly.
+    /// </summary>
+    /// <param name="gameTime">Provides a snapshot of timing values.</param>
     private void HandleInteraction(GameTime gameTime)
     {
         if (Keyboard.GetState().IsKeyDown(Keys.E) || GamePad.GetState(PlayerIndex.One).IsButtonDown(Buttons.X))
