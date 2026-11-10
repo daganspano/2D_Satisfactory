@@ -10,6 +10,15 @@ namespace _2D_Satisfactory;
 /// </summary>
 public static class CollisionHandler
 {
+    public static List<string> CheckCollisions(Rectangle hitBox, Vector2 direction)
+    {
+        return
+        [
+            .. CheckEdgeCollisions(hitBox, direction),
+            .. CheckObjectCollisions(hitBox, direction),
+        ];
+    }
+
     /// <summary>
     /// Checks for collisions between a character's hit box and the edges of the game screen based on the provided direction vector.
     /// </summary>
@@ -32,6 +41,38 @@ public static class CollisionHandler
             (hitBox.Bottom >= GameData.ScreenSize.Y && direction.Y > 0)
         ) 
             collisions.Add("y");
+
+        return collisions;
+    }
+
+    public static List<string> CheckObjectCollisions(Rectangle hitBox, Vector2 direction)
+    {
+        List<string> collisions = new List<string>();
+        Rectangle movedHitBox = hitBox;
+        movedHitBox.Location += direction.ToPoint();
+
+        foreach (Rectangle objectHitBox in GameData.ObjectHitBoxes)
+        {
+            if (!movedHitBox.Intersects(objectHitBox)) continue;
+
+            // The axis with the smaller overlap is the side being collided with
+            Rectangle overlap = Rectangle.Intersect(movedHitBox, objectHitBox);
+
+            // Only block movement toward the object so the player can always move away
+            if (overlap.Width <= overlap.Height &&
+                ((direction.X > 0 && hitBox.Center.X < objectHitBox.Center.X) ||
+                 (direction.X < 0 && hitBox.Center.X > objectHitBox.Center.X)) &&
+                !collisions.Contains("x"))
+                collisions.Add("x");
+
+            if (overlap.Height <= overlap.Width &&
+                ((direction.Y > 0 && hitBox.Center.Y < objectHitBox.Center.Y) ||
+                 (direction.Y < 0 && hitBox.Center.Y > objectHitBox.Center.Y)) &&
+                !collisions.Contains("y"))
+                collisions.Add("y");
+
+            if (collisions.Count == 2) break;
+        }
 
         return collisions;
     }

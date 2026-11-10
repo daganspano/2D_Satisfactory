@@ -1,3 +1,4 @@
+using _2D_Satisfactory.Screens.Crafting;
 using _2D_Satisfactory.Screens.MainGame;
 using _2D_Satisfactory.Screens.Title;
 using Microsoft.Xna.Framework;
@@ -6,11 +7,13 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens;
 
+public delegate void PlayGameDelegate(bool isNew = false);
+
 /// <summary>
-/// Manages the different screens in the game, handling transitions and updates between them.
+/// Delegate for handling exiting from the game.
 /// </summary>
-/// <param name="state">The new state of the music player.</param>
-public delegate void setMusicPlayerStateDelegate(SongState state);
+/// <param name="toDesktop">Indicates whether to exit to the desktop (true) or to the menu (false).</param>
+public delegate void ExitGameDelegate(bool toDesktop);
 
 /// <summary>
 /// Manages the different screens in the game, handling transitions and updates between them.
@@ -31,8 +34,9 @@ public class ScreenManager : DrawableGameComponent
         _screens = new Dictionary<string, Screen>()
         { 
             { "TitleScreen", new TitleScreen(game, HandleStart, hasContinue: FileManager.GameExists()) },
-            { "GameScreen", new GameScreen(game) },
-            { "PauseScreen", new PauseScreen(game, onResume: HandleTogglePause, onExit: HandleExitGame) }
+            { "GameScreen", new GameScreen(game, onOpenCraftingMenu: HandleToggleCraftingMenu) },
+            { "PauseScreen", new PauseScreen(game, onResume: HandleTogglePause, onExit: HandleExitGame) },
+            { "CraftingScreen", new CraftingScreen(game, onClose: HandleToggleCraftingMenu) }
         };
         
         _setMusicPlayerState = setMusicPlayerState;
@@ -40,6 +44,7 @@ public class ScreenManager : DrawableGameComponent
         _screens["TitleScreen"].ScreenState = ScreenState.Active;
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
         _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
+        _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
     }
 
     /// <summary>
@@ -65,7 +70,8 @@ public class ScreenManager : DrawableGameComponent
 
         if (isEscDown && !_wasEscDown)
         {
-            HandleTogglePause();
+            if (_screens["CraftingScreen"].ScreenState == ScreenState.Active) HandleToggleCraftingMenu();
+            else HandleTogglePause();
         }
 
         _wasEscDown = isEscDown;
@@ -111,13 +117,12 @@ public class ScreenManager : DrawableGameComponent
     /// </summary>
     private void HandleTogglePause()
     {
-        if (_screens["GameScreen"].ScreenState == ScreenState.Active && _screens["PauseScreen"].ScreenState == ScreenState.Inactive)
+        if (_screens["PauseScreen"].ScreenState == ScreenState.Inactive)
         {
             _screens["GameScreen"].ScreenState = ScreenState.Paused;
             _screens["PauseScreen"].ScreenState = ScreenState.Active;
         }
-        else if (_screens["GameScreen"].ScreenState == ScreenState.Paused 
-                 && _screens["PauseScreen"].ScreenState == ScreenState.Active)
+        else
         {
             _screens["GameScreen"].ScreenState = ScreenState.Active;
             _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
@@ -137,5 +142,19 @@ public class ScreenManager : DrawableGameComponent
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
         _screens["TitleScreen"].ScreenState = ScreenState.Active;
         _setMusicPlayerState(SongState.TitleScreen);
+    }
+
+    private void HandleToggleCraftingMenu()
+    {
+        if (_screens["CraftingScreen"].ScreenState == ScreenState.Inactive)
+        {
+            _screens["GameScreen"].ScreenState = ScreenState.Paused;
+            _screens["CraftingScreen"].ScreenState = ScreenState.Active;
+        }
+        else
+        {
+            _screens["GameScreen"].ScreenState = ScreenState.Active;
+            _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
+        }
     }
 }

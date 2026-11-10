@@ -101,17 +101,11 @@ public class Button
         }
         else if (isSelected)
         {
-            // Only trigger click on transition from unpressed to pressed
-            if (isCurrentlyPressed && !_wasPreviouslyPressed)
+            if (isCurrentlyPressed)
             {
                 startX = 2;
                 newTextColor = new Color(0x6E, 0x3C, 0x12);
-                _isClicked = true;
-            }
-            else if (isCurrentlyPressed)
-            {
-                startX = 2;
-                newTextColor = new Color(0x6E, 0x3C, 0x12);
+                if (!_wasPreviouslyPressed) _isClicked = true;
             }
             else 
             {

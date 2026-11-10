@@ -39,6 +39,9 @@ public class ControlsDisplay : DrawableGameComponent
             case "handMineIronOre":
                 _controlTexts.Add("Mine: E");
                 break;
+            case "openCraftingMenu":
+                _controlTexts.Add("Open Crafting Menu: E");
+                break;
         }
     }
 

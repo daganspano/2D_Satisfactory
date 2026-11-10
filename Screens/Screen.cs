@@ -17,7 +17,7 @@ public abstract class Screen
     /// <summary>
     /// Gets or sets the current state of the screen.
     /// </summary>
-    public ScreenState ScreenState { get; set; }
+    public virtual ScreenState ScreenState { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Screen"/> class with the specified initial state.
