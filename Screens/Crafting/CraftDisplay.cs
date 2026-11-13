@@ -24,6 +24,7 @@ public class CraftDisplay : DrawableGameComponent
     private List<Item> _outputItems;
     private int _hitsRequired;
     private int _hitsCompleted;
+    private IronIngot _ironIngot;
 
     public CraftDisplay(Game game) : base(game)
     {
@@ -53,6 +54,9 @@ public class CraftDisplay : DrawableGameComponent
         _labelFont = Game.Content.Load<SpriteFont>("Orbitron-Regular");
         Vector2 _labelSize = _labelFont.MeasureString("Iron Ingots");
         _labelPosition = new Vector2(_backgroundBounds.Center.X - _labelSize.X / 2, _backgroundBounds.Top + 10);
+
+        // Initialize the iron ingot.
+        _ironIngot = new IronIngot(Game, _resultBounds);
     }
 
     public override void Draw(GameTime gameTime)
@@ -88,8 +92,7 @@ public class CraftDisplay : DrawableGameComponent
                 _resultBounds.Y,
                 _resultBounds.Width,
                 _resultBounds.Height
-            ), Color.Purple);
-            _spriteBatch.DrawString(_labelFont, _outputItems[i].Name, new Vector2(_resultBounds.X + (_resultBounds.Width + 10) * i, _resultBounds.Y), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
+            ), Color.DarkGreen * 0.6f);
         }
 
 
@@ -104,6 +107,7 @@ public class CraftDisplay : DrawableGameComponent
 
         _spriteBatch.End();
 
+        _ironIngot.Draw(); // Temporary draw call for the iron ingot.
     }
 
     private void LoadBounds()

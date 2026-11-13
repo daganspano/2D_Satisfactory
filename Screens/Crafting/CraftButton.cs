@@ -11,7 +11,8 @@ public class CraftButton : DrawableGameComponent
     private readonly Action _toggleCrafting;
     private SpriteBatch _spriteBatch;
     private Rectangle _hitBox;
-    private Color _hitBoxColor;
+    private SpriteFont _labelFont;
+    private Vector2 _labelPosition;
     private bool _wasPressed;
 
     public CraftButton(Game game, Action toggleCrafting) : base(game)
@@ -22,12 +23,16 @@ public class CraftButton : DrawableGameComponent
         var x = ((int)GameData.ScreenSize.X - width) / 2;
         var y = (int)GameData.ScreenSize.Y / 2 + 75;
         _hitBox = new Rectangle(x, y, width, height);
-        _hitBoxColor = new Color(255, 255, 0);
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
+        
+        // Initialize the label font and position.
+        _labelFont = Game.Content.Load<SpriteFont>("Orbitron-Bold");
+        Vector2 _labelSize = _labelFont.MeasureString("CRAFT");
+        _labelPosition = new Vector2(_hitBox.Center.X - _labelSize.X / 2, _hitBox.Center.Y - _labelSize.Y / 2);
     }
 
     public override void Update(GameTime gameTime)
@@ -52,6 +57,7 @@ public class CraftButton : DrawableGameComponent
 
         _spriteBatch.Begin();
         _spriteBatch.Draw(pixel, _hitBox, new Color(200, 200, 0));
+        _spriteBatch.DrawString(_labelFont, "CRAFT", _labelPosition, Color.Black);
         _spriteBatch.End();
     }
 }

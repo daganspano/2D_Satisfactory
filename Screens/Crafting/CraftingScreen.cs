@@ -14,16 +14,6 @@ public class CraftingScreen : Screen
     Rectangle _backgroundBounds;
     CraftButton _craftButton;
 
-    public override ScreenState ScreenState
-    {
-        get => base.ScreenState;
-        set
-        {
-            if (value == ScreenState.Inactive) _craftButton?.TurnOffCrafting();
-            base.ScreenState = value;
-        }
-    }
-
     public CraftingScreen(Game game, Action onClose) : base(ScreenState.Inactive)
     {
         _game = game;
