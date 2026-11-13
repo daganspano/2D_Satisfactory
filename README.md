@@ -48,7 +48,7 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 
 ---
 
-## 0.5.0 (Game Project 4)
+## 0.6.0 (Game Project 5)
 
 ### Classes Modified / Added / Removed
 
