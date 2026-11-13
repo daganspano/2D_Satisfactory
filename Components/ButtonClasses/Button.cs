@@ -50,6 +50,13 @@ public class Button
     /// </summary>
     public float ButtonHeightScaled => _buttonHeightScaled;
     
+    /// <summary>
+    /// Initializes a new instance of the Button class with the specified text, scale, vertical position, and click action.
+    /// </summary>
+    /// <param name="text">The text to display on the button.</param>
+    /// <param name="buttonScale">The scale factor for the button size.</param>
+    /// <param name="yPosition">The vertical position of the button on the screen.</param>
+    /// <param name="onClick">The action to perform when the button is clicked.</param>
     public Button(string text, float buttonScale, float yPosition, System.Action onClick)
     {
         _text = text;

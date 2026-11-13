@@ -2,9 +2,9 @@
   "Character": 12,
   "PlayerSpeed": 200,
   "PlayerPosition": {
-    "X": 672,
-    "Y": 260
+    "X": 400,
+    "Y": 240
   },
-  "PlayerDirection": 2,
+  "PlayerDirection": 0,
   "PlayerInventory": {}
 }

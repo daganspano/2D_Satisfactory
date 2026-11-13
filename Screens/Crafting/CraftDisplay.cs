@@ -5,8 +5,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace _2D_Satisfactory.Screens.Crafting;
 
+/// <summary>
+/// Delegate for updating the display information in the crafting screen. This delegate is used to pass the input items, output items, hits required, and hits completed to the CraftDisplay component, allowing it to update its visual representation based on the current crafting state.
+/// </summary>
+/// <param name="inputItems">The list of input items required for crafting.</param>
+/// <param name="outputItems">The list of output items produced by crafting.</param>
+/// <param name="hitsRequired">The number of hits required to complete the crafting.</param>
+/// <param name="hitsCompleted">The number of hits completed so far.</param>
 public delegate void UpdateDisplayInfoDelegate(List<Item> inputItems, List<Item> outputItems, int hitsRequired, int hitsCompleted);
 
+/// <summary>
+/// Represents the display component in the crafting screen that shows the input items, output items, and progress of the crafting process. This class handles the rendering of the crafting interface, including the background, labels, ingredient and result slots, and progress bar. It also manages the state of the crafting process by updating the display based on the provided input and output items, as well as the hits required and completed.
+/// </summary>
 public class CraftDisplay : DrawableGameComponent
 {
     private SpriteBatch _spriteBatch;
@@ -19,25 +29,38 @@ public class CraftDisplay : DrawableGameComponent
     private Rectangle _progressBarBounds;
     private SpriteFont _labelFont;
     private Vector2 _labelPosition;
-
     private List<Item> _inputItems;
     private List<Item> _outputItems;
     private int _hitsRequired;
     private int _hitsCompleted;
     private IronIngot _ironIngot;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CraftDisplay"/> class with the specified game. The constructor sets up the necessary properties for the crafting display, including initializing the input and output item lists, hits required, and hits completed. It also prepares the display for rendering by setting up the background, arrow, ingredient, result, and progress bar bounds.
+    /// </summary>
+    /// <param name="game">The game instance that this craft display belongs to.</param>
     public CraftDisplay(Game game) : base(game)
     {
     }
 
-    public void UpdateDisplayInfo(List<Item> inputItem, List<Item> outputItem, int hitsRequired, int hitsCompleted)
+    /// <summary>
+    /// Updates the display information for the crafting screen, including the input items, output items, hits required, and hits completed. This method is called to refresh the visual representation of the crafting process based on the current state of the crafting system. It allows the CraftDisplay component to reflect changes in the crafting state and provide feedback to the player.
+    /// </summary>
+    /// <param name="inputItems">The list of input items required for crafting.</param>
+    /// <param name="outputItems">The list of output items produced by crafting.</param>
+    /// <param name="hitsRequired">The number of hits required to complete the crafting.</param>
+    /// <param name="hitsCompleted">The number of hits completed so far.</param>
+    public void UpdateDisplayInfo(List<Item> inputItems, List<Item> outputItems, int hitsRequired, int hitsCompleted)
     {
-        _inputItems = inputItem;
-        _outputItems = outputItem;
+        _inputItems = inputItems;
+        _outputItems = outputItems;
         _hitsRequired = hitsRequired;
         _hitsCompleted = hitsCompleted;
     }
 
+    /// <summary>
+    /// Loads the content for the crafting display, including initializing the bounds for the display elements, creating the SpriteBatch, loading the pixel texture, loading the arrow texture, and setting up the label font and position. This method is called when the component is added to the game and is responsible for preparing the visual elements of the crafting display for rendering.
+    /// </summary>
     protected override void LoadContent()
     {
         LoadBounds(); // Initialize the bounds for the display elements.
@@ -59,6 +82,10 @@ public class CraftDisplay : DrawableGameComponent
         _ironIngot = new IronIngot(Game, _resultBounds);
     }
 
+    /// <summary>
+    /// Draws the crafting display on the screen, including the background, labels, ingredient and result slots, progress bar, and any other visual elements associated with the crafting process. This method is called during the game's draw cycle and is responsible for rendering the current state of the crafting display based on the provided input and output items, as well as the hits required and completed. It ensures that the player can visually track their progress in crafting items.
+    /// </summary>
+    /// <param name="gameTime">The current game time.</param>
     public override void Draw(GameTime gameTime)
     {
         _spriteBatch.Begin();
@@ -79,6 +106,7 @@ public class CraftDisplay : DrawableGameComponent
                 _ingredientBounds.Height
             ), Color.Blue);
             _spriteBatch.DrawString(_labelFont, _inputItems[i].Name, new Vector2(_ingredientBounds.X - (_ingredientBounds.Width + 10) * i, _ingredientBounds.Y), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
+            _spriteBatch.DrawString(_labelFont, _inputItems[i].QuantityAvailable.ToString() + "/" + _inputItems[i].QuantityRequired.ToString(), new Vector2(_ingredientBounds.X - (_ingredientBounds.Width + 10) * i + 2, _ingredientBounds.Y + _ingredientBounds.Height - 14), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
         }
 
         // Arrow
@@ -93,6 +121,7 @@ public class CraftDisplay : DrawableGameComponent
                 _resultBounds.Width,
                 _resultBounds.Height
             ), Color.DarkGreen * 0.6f);
+            _spriteBatch.DrawString(_labelFont, _outputItems[i].QuantityRequired.ToString(), new Vector2(_resultBounds.X + (_resultBounds.Width + 10) * i + 2, _resultBounds.Y + _resultBounds.Height - 14), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
         }
 
 
@@ -110,6 +139,9 @@ public class CraftDisplay : DrawableGameComponent
         _ironIngot.Draw(); // Temporary draw call for the iron ingot.
     }
 
+    /// <summary>
+    /// Loads the bounds for the crafting display elements, including the background, ingredient slot, arrow, result slot, and progress bar. This method calculates the positions and sizes of these elements based on the screen size and sets up the corresponding rectangles for rendering. It ensures that the crafting display is properly aligned and visually organized on the screen.
+    /// </summary>
     private void LoadBounds()
     {
         int backgroundWidth = 300;
@@ -140,6 +172,9 @@ public class CraftDisplay : DrawableGameComponent
         _progressBarBounds = new Rectangle(progressX, progressY, progressWidth, progressHeight);
     }
 
+    /// <summary>
+    /// Loads the arrow texture used in the crafting display. This method generates a simple arrow shape by creating a texture with a gradient effect, where the arrow is white and the surrounding area is transparent. The arrow is drawn in the center of the crafting display to indicate the direction of crafting from input items to output items. The generated texture is then assigned to the _arrow field for rendering during the Draw method.
+    /// </summary>
     private void LoadArrow()
     {
         var data = new Color[_arrowBounds.Width * _arrowBounds.Height];

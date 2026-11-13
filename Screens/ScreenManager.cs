@@ -7,6 +7,10 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens;
 
+/// <summary>
+/// Delegate for handling the start of a new game or loading an existing game.
+/// </summary>
+/// <param name="isNew">Indicates whether to start a new game (true) or load an existing game (false).</param>
 public delegate void PlayGameDelegate(bool isNew = false);
 
 /// <summary>
@@ -36,7 +40,7 @@ public class ScreenManager : DrawableGameComponent
             { "TitleScreen", new TitleScreen(game, HandleStart, hasContinue: FileManager.GameExists()) },
             { "GameScreen", new GameScreen(game, onOpenCraftingMenu: HandleToggleCraftingMenu) },
             { "PauseScreen", new PauseScreen(game, onResume: HandleTogglePause, onExit: HandleExitGame) },
-            { "CraftingScreen", new CraftingScreen(game, onClose: HandleToggleCraftingMenu) }
+            { "CraftingScreen", new CraftingScreen(game) }
         };
         
         _setMusicPlayerState = setMusicPlayerState;
@@ -144,6 +148,9 @@ public class ScreenManager : DrawableGameComponent
         _setMusicPlayerState(SongState.TitleScreen);
     }
 
+    /// <summary>
+    /// Toggles the crafting menu, switching between the GameScreen and CraftingScreen based on their current states. When the crafting menu is opened, the game is paused, and when it is closed, the game resumes.
+    /// </summary>
     private void HandleToggleCraftingMenu()
     {
         if (_screens["CraftingScreen"].ScreenState == ScreenState.Inactive)
