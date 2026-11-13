@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace _2D_Satisfactory;
@@ -11,6 +12,12 @@ public enum SongState
     TitleScreen,
     MainGame
 }
+
+/// <summary>
+/// Manages the different screens in the game, handling transitions and updates between them.
+/// </summary>
+/// <param name="state">The new state of the music player.</param>
+public delegate void setMusicPlayerStateDelegate(SongState state);
 
 /// <summary>
 /// A game component that manages background music for the game.
@@ -59,7 +66,11 @@ public class MusicPlayer : GameComponent
     /// <param name="gameTime">The current game time.</param>
     public override void Update(GameTime gameTime)
     {
-        if (_currentState != _previousState)
+        if (Keyboard.GetState().IsKeyDown(Keys.F10))
+        {
+            MediaPlayer.Stop();
+        }
+        else if (_currentState != _previousState)
         {
             switch (_currentState)
             {

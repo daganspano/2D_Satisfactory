@@ -16,16 +16,19 @@ public class InputHandler : GameComponent
     private double _miningSpeed;
     private HandMiningParticleSystem _miningParticles;
 
+    private Action _handleOpenCraftingMenu;
+
     /// <summary>
     /// Initializes a new instance of the InputHandler class.
     /// </summary>
     /// <param name="game">The game instance to which this input handler belongs.</param>
     /// <param name="miningParticles">The particle system used for hand mining effects.</param>
-    public InputHandler(Game game, HandMiningParticleSystem miningParticles) : base(game)
+    public InputHandler(Game game, HandMiningParticleSystem miningParticles, Action onOpenCraftingMenu) : base(game)
     {
         _interactionTimer = 0f;
         _miningSpeed = 0.5f;
         _miningParticles = miningParticles;
+        _handleOpenCraftingMenu = onOpenCraftingMenu;
     }
 
     /// <summary>
@@ -64,7 +67,7 @@ public class InputHandler : GameComponent
         Vector2 characterDirection = Vector2.Clamp(leftThumbStick + keyboardMovement, new Vector2(-1, -1), new Vector2(1, 1));
 
         // Adjust for edges
-        List<string> collisions = CollisionHandler.CheckEdgeCollisions(GameData.PlayerHitBox, characterDirection);
+        List<string> collisions = CollisionHandler.CheckCollisions(GameData.PlayerHitBox, characterDirection);
         if (collisions.Contains("x")) characterDirection.X = 0;
         if (collisions.Contains("y")) characterDirection.Y = 0;
         
@@ -99,8 +102,8 @@ public class InputHandler : GameComponent
                     if (_interactionTimer >= _miningSpeed)
                     {
                         // Add iron ore to inventory
-                        if (!GameData.PlayerInventory.ContainsKey("Iron Ore")) GameData.PlayerInventory["Iron Ore"] = 0;
-                        GameData.PlayerInventory["Iron Ore"]++;
+                        if (!GameData.PlayerInventory.ContainsKey("ironOre")) GameData.PlayerInventory["ironOre"] = 0;
+                        GameData.PlayerInventory["ironOre"]++;
                         _interactionTimer -= _miningSpeed;
 
                         // Emit mining particles
@@ -113,6 +116,9 @@ public class InputHandler : GameComponent
                         };
                         _miningParticles.PlaceParticles(GameData.PlayerHitBox.Center.ToVector2() + particleDisplacement);
                     }
+                    break;
+                case "openCraftingMenu":
+                    _handleOpenCraftingMenu();
                     break;
                 default:
                     _interactionTimer = 0;

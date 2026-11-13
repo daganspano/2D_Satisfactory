@@ -17,6 +17,8 @@ public static class GameData
     /// </summary>
     public static Vector2 ScreenSize { get; set; } = Vector2.Zero;
 
+    public static List<Rectangle> ObjectHitBoxes { get; set; } = new List<Rectangle>();
+
     #endregion
 
     #region Player Properties
@@ -83,7 +85,9 @@ public static class GameData
     /// <summary>
     /// The draw offset for rendering the game world based on the player's position.
     /// </summary>
-    public static Vector2 DrawOffset => (0.5f * ScreenSize) - PlayerHitBox.Location.ToVector2();
+    public static Vector2 DrawOffset => Vector2.Floor(0.5f * (ScreenSize - PlayerHitBox.Size.ToVector2())) - PlayerHitBox.Location.ToVector2();
+
+    public static Matrix TransformMatrix => Matrix.CreateTranslation(DrawOffset.X, DrawOffset.Y, 0f);
 
     #endregion
 

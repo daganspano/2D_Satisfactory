@@ -39,7 +39,7 @@ public class InventoryDisplay : DrawableGameComponent
             if (item.Value > 0)
             {
                 inventoryPosition.Y += 30;
-                _spriteBatch.DrawString(_font, $"   {item.Key}: {item.Value}", inventoryPosition, Color.White);
+                _spriteBatch.DrawString(_font, $"   {Data.GetItem(item.Key).Name}: {item.Value}", inventoryPosition, Color.White);
             }
         }
 

@@ -31,7 +31,7 @@ public class Player : Character
         _soundSpeed = 0.4 * 100 / 140 * Math.Sqrt(140.0 / GameData.PlayerSpeed);
 
         // Parent Fields
-        Position = (GameData.ScreenSize - GameData.PlayerHitBox.Size.ToVector2()) / 2;
+        Position = Vector2.Floor((GameData.ScreenSize - GameData.PlayerHitBox.Size.ToVector2()) / 2);
         DirectionFrame = GameData.PlayerDirection;
         IsMoving = false;
         WasMoving = false;

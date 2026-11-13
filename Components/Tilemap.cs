@@ -78,7 +78,7 @@ public class Tilemap: DrawableGameComponent
     /// <param name="gameTime">The current game time.</param>
     public override void Draw(GameTime gameTime)
     {
-        if (_includeOffset) _spriteBatch.Begin(transformMatrix: Matrix.CreateTranslation(GameData.DrawOffset.X, GameData.DrawOffset.Y, 0f));
+        if (_includeOffset) _spriteBatch.Begin(transformMatrix: GameData.TransformMatrix);
         else _spriteBatch.Begin();
 
         for (int y = 0; y < _mapSize.Y; y++)

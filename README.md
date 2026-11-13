@@ -20,7 +20,13 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 
 - Move the `GameCharacter` with WASD or the arrow keys on the keyboard, or use the left joystick on the gamepad.
 - Stand on the iron ore deposit and hold "E" on keyboard or "X" on the gamepad to collect iron ore.
+- Stand in the crafting bench interaction hitbox (blue) and press `E` (keyboard) or `X` (gamepad) to open the crafting menu.
 - Press "Esc" on the keyboard or "Start" on the gamepad to open and close the pause menu.
+
+### Crafting Screen
+
+- Left Click the button (mouse), press `Space` (keyboard), or press `X` (gamepad) to toggle starting and stopping crafting (will not work if there isn't enough iron ore in the players inventory).
+- Press `Esc` on the keyboard or `Start` on the gamepad to close.
 
 ### Pause Menu
 
@@ -39,6 +45,40 @@ As Satisfactory is a 3D rendition of Factorio, it has some differing game mechan
 | Cycle up   | Hovering Over | Tab              | Left Stick Up or D-Pad Up     |
 | Cycle down | Hovering Over | Left-Shift + Tab | Left Stick Down or D-Pad Down |
 | Click      | Left Click    | Enter            | A                             |
+
+---
+
+## 0.6.0 (Game Project 5)
+
+### Classes Modified / Added / Removed
+
+- `CollisionHandler.cs` (Modified):
+- `Data.cs` (Added):
+- `MusicPlayer.cs` (Modified):
+
+#### Components
+
+- `CraftingBench.cs` (Added): Represents a crafting bench in the game, allowing players to interact with it for crafting purposes. It is currently just the interaction (blue) and collision (red) hitboxes.
+
+#### Screens
+
+- `Crafting/CraftButton.cs` (Added): Represents a button in the crafting screen that allows players to initiate crafting actions. This class handles the rendering and interaction logic for the craft button, enabling players to trigger crafting when the button is pressed. It is currently the interaction hitbox (yellow).
+- `Crafting/CraftDisplay.cs` (Added): Represents the display component in the crafting screen that shows the input items, output items, and progress of the crafting process.
+- `Crafting/CraftHandler.cs` (Added): Handles the crafting logic for the game, including managing recipes, tracking crafting progress, and updating the display with relevant information.
+- `Crafting/CraftingScreen.cs` (Added): Represents the crafting screen in the game.
+- `Crafting/IronIngot.cs` (Added): A class representing an iron ingot (a rectangle composed of two triangles).
+- `MainGame/ControlsDisplay.cs` (Modified): Added a case for opening the crafting menu.
+- `MainGame/GameData.cs` (Modified): Added a list of object hit boxes (currently contains the crafting bench).
+- `MainGame/GameScreen.cs` (Modified): Now has a `CraftingBench` in it's components list.
+- `MainGame/InputHandler.cs` (Modified): Now has functionality for taking player input for opening the crafting menu.
+- `ScreenManager.cs` (Modified): Now has a `CrafingScreen` and functionality to navigate to and from it.
+
+### UI Modifications
+
+- In the game screen, there is a crafting bench's interaction (blue) and collision (red) hitboxes. Overlapping the interaction hitbox will allow the player to press `E` to open the crafting menu.
+- In the crafting menu, there is the following below. Pressing `Esc` will exit the crafting menu.
+  - A display of the craft currently happening (only Iron Ingots for now). A progress bar shows the progress of the craft.
+  - A button to craft. Clicking it or pressing space will toggle starting and stopping crafting.
 
 ---
 

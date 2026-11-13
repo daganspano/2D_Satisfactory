@@ -7,11 +7,9 @@ using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens.Title;
 
-public delegate void PlayDelegate(bool isNew = false);
-
 public class TitleScreen : Screen
 {
-    public TitleScreen(Game game, PlayDelegate handlePlay, bool hasContinue) : base(ScreenState.Active)
+    public TitleScreen(Game game, PlayGameDelegate handlePlay, bool hasContinue) : base(ScreenState.Active)
     {
         float titleHeight = TitleBanner.GetHeight() + 8 + ButtonGroup.GetHeight(3);
         float bannerYPosition = (GameData.ScreenSize.Y - titleHeight) / 2;
