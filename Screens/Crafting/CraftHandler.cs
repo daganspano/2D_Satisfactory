@@ -26,8 +26,7 @@ public class CraftHandler : GameComponent
     public CraftHandler(Game game, UpdateDisplayInfoDelegate updateDisplayInfo) : base(game)
     {
         _updateDisplayInfo = updateDisplayInfo;
-        var allRecipes = Data.GetRecipes();
-        _recipes = allRecipes.FindAll(r => r.MachineId == "bench");
+        _recipes = Data.GetRecipesForMachine("bench");
         _selectedRecipe = _recipes[0];
         _hitsCompleted = 0;
     }
