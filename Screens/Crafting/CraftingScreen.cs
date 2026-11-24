@@ -23,7 +23,7 @@ public class CraftingScreen : Screen
     public CraftingScreen(Game game) : base(ScreenState.Inactive)
     {
         _game = game;
-        var width = 600;
+        var width = 1000;
         var height = 400;
         var x = ((int)GameData.ScreenSize.X - width) / 2;
         var y = ((int)GameData.ScreenSize.Y - height) / 2;
@@ -34,6 +34,7 @@ public class CraftingScreen : Screen
         Components.Add(_craftButton);
         Components.Add(craftDisplay);
         Components.Add(craftHandler);
+        Components.Add(new RecipeSelector(game, new Rectangle(_backgroundBounds.X + 8, _backgroundBounds.Y + 8, 300, _backgroundBounds.Height - 16)));
     }
 
     /// <summary>
