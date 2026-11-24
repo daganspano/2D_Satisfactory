@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
@@ -19,21 +20,42 @@ public delegate void UpdateDisplayInfoDelegate(List<Item> inputItems, List<Item>
 /// </summary>
 public class CraftDisplay : DrawableGameComponent
 {
+    #region Private Fields
+
+    // sprite batch for rendering the crafting display
     private SpriteBatch _spriteBatch;
+
+    // background fields
     private Texture2D _pixel;
-    private Texture2D _arrow;
     private Rectangle _backgroundBounds;
+
+    // arrow fields
+    private Texture2D _arrow;
     private Rectangle _arrowBounds;
-    private Rectangle _ingredientBounds;
-    private Rectangle _resultBounds;
-    private Rectangle _progressBarBounds;
-    private SpriteFont _labelFont;
-    private Vector2 _labelPosition;
-    private List<Item> _inputItems;
-    private List<Item> _outputItems;
+
+    // ingredient/result fields
+    private Texture2D _itemAtlas;
+    private List<Item> _inputItems = new List<Item>();
+    private List<Item> _outputItems = new List<Item>();
+    private List<Rectangle> _ingredientsBounds;
+    private List<Vector2> _ingredientsItemPositions;
+    private List<Vector2> _ingredientsLabelPositions;
+    private List<Rectangle> _resultsBounds;
+    private List<Vector2> _resultsItemPositions;
+    private List<Vector2> _resultsLabelPositions;
+
+    // progress bar fields
     private int _hitsRequired;
     private int _hitsCompleted;
-    private IronIngot _ironIngot;
+    private Rectangle _progressBarBounds;
+
+    // label fields
+    private SpriteFont _labelFont;
+    private Vector2 _labelPosition;
+
+    #endregion
+
+    #region Constructor
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CraftDisplay"/> class with the specified game. The constructor sets up the necessary properties for the crafting display, including initializing the input and output item lists, hits required, and hits completed. It also prepares the display for rendering by setting up the background, arrow, ingredient, result, and progress bar bounds.
@@ -41,7 +63,12 @@ public class CraftDisplay : DrawableGameComponent
     /// <param name="game">The game instance that this craft display belongs to.</param>
     public CraftDisplay(Game game) : base(game)
     {
+        SetBounds();
     }
+
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// Updates the display information for the crafting screen, including the input items, output items, hits required, and hits completed. This method is called to refresh the visual representation of the crafting process based on the current state of the crafting system. It allows the CraftDisplay component to reflect changes in the crafting state and provide feedback to the player.
@@ -52,34 +79,41 @@ public class CraftDisplay : DrawableGameComponent
     /// <param name="hitsCompleted">The number of hits completed so far.</param>
     public void UpdateDisplayInfo(List<Item> inputItems, List<Item> outputItems, int hitsRequired, int hitsCompleted)
     {
+        bool layoutChanged = inputItems.Count != _inputItems.Count || outputItems.Count != _outputItems.Count;
+
         _inputItems = inputItems;
         _outputItems = outputItems;
         _hitsRequired = hitsRequired;
         _hitsCompleted = hitsCompleted;
+
+        if (layoutChanged) SetItemBounds();
     }
+
+    #endregion
+
+    #region Override Methods
 
     /// <summary>
     /// Loads the content for the crafting display, including initializing the bounds for the display elements, creating the SpriteBatch, loading the pixel texture, loading the arrow texture, and setting up the label font and position. This method is called when the component is added to the game and is responsible for preparing the visual elements of the crafting display for rendering.
     /// </summary>
     protected override void LoadContent()
     {
-        LoadBounds(); // Initialize the bounds for the display elements.
-
-        _spriteBatch = new SpriteBatch(Game.GraphicsDevice); // Initialize the SpriteBatch
+        // Initialize the SpriteBatch
+        _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
         // Initialize the pixel texture.
         _pixel = new Texture2D(Game.GraphicsDevice, 1, 1);
         _pixel.SetData([Color.White]);
 
-        LoadArrow(); // Initialize the arrow texture.
+        LoadArrow();
+
+        // Load the item atlas texture.
+        _itemAtlas = Game.Content.Load<Texture2D>("items_atlas");
         
-        // Initialize the label font and position.
+        // Initialize the label.
         _labelFont = Game.Content.Load<SpriteFont>("Orbitron-Regular");
         Vector2 _labelSize = _labelFont.MeasureString("Iron Ingots");
         _labelPosition = new Vector2(_backgroundBounds.Center.X - _labelSize.X / 2, _backgroundBounds.Top + 10);
-
-        // Initialize the iron ingot.
-        _ironIngot = new IronIngot(Game, _resultBounds);
     }
 
     /// <summary>
@@ -90,87 +124,94 @@ public class CraftDisplay : DrawableGameComponent
     {
         _spriteBatch.Begin();
 
-        // Background
+        // Draw Background
         _spriteBatch.Draw(_pixel, _backgroundBounds, Color.Black * 0.8f);
 
-        // Name
+        // Draw Recipe Name
         _spriteBatch.DrawString(_labelFont, "Iron Ingots", _labelPosition, Color.White);
         
-        // Ingredient
-        for (int i = 0; i < _inputItems.Count; i++)
-        {
-            _spriteBatch.Draw(_pixel, new Rectangle(
-                _ingredientBounds.X - (_ingredientBounds.Width + 10) * i, 
-                _ingredientBounds.Y, 
-                _ingredientBounds.Width, 
-                _ingredientBounds.Height
-            ), Color.Blue);
-            _spriteBatch.DrawString(_labelFont, _inputItems[i].Name, new Vector2(_ingredientBounds.X - (_ingredientBounds.Width + 10) * i, _ingredientBounds.Y), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
-            _spriteBatch.DrawString(_labelFont, _inputItems[i].QuantityAvailable.ToString() + "/" + _inputItems[i].QuantityRequired.ToString(), new Vector2(_ingredientBounds.X - (_ingredientBounds.Width + 10) * i + 2, _ingredientBounds.Y + _ingredientBounds.Height - 14), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
-        }
+        DrawIngredients();
 
-        // Arrow
+        // Draw Arrow
         _spriteBatch.Draw(_arrow, _arrowBounds, Color.White * 0.6f);
 
-        // Result
-        for (int i = 0; i < _outputItems.Count; i++)
-        {
-            _spriteBatch.Draw(_pixel, new Rectangle(
-                _resultBounds.X + (_resultBounds.Width + 10) * i,
-                _resultBounds.Y,
-                _resultBounds.Width,
-                _resultBounds.Height
-            ), Color.DarkGreen * 0.6f);
-            _spriteBatch.DrawString(_labelFont, _outputItems[i].QuantityRequired.ToString(), new Vector2(_resultBounds.X + (_resultBounds.Width + 10) * i + 2, _resultBounds.Y + _resultBounds.Height - 14), Color.White, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
-        }
+        DrawResults();
 
-
-        // Progress bar
-        _spriteBatch.Draw(_pixel, _progressBarBounds, Color.White * 0.5f);
-        _spriteBatch.Draw(_pixel, new Rectangle(
-            _progressBarBounds.Left,
-            _progressBarBounds.Top,
-            _progressBarBounds.Width * _hitsCompleted / _hitsRequired,
-            _progressBarBounds.Height
-        ), Color.DarkOrange);
+        DrawProgressBar();
 
         _spriteBatch.End();
-
-        _ironIngot.Draw(); // Temporary draw call for the iron ingot.
     }
+
+    #endregion
+
+    #region Private Methods
 
     /// <summary>
     /// Loads the bounds for the crafting display elements, including the background, ingredient slot, arrow, result slot, and progress bar. This method calculates the positions and sizes of these elements based on the screen size and sets up the corresponding rectangles for rendering. It ensures that the crafting display is properly aligned and visually organized on the screen.
     /// </summary>
-    private void LoadBounds()
+    private void SetBounds()
     {
+        // Set the background bounds to be centered on the screen
         int backgroundWidth = 300;
         int backgroundHeight = 200;
         int backgroundX = ((int)GameData.ScreenSize.X - backgroundWidth) / 2;
         int backgroundY = ((int)GameData.ScreenSize.Y - backgroundHeight) / 2 - 75;
         _backgroundBounds = new Rectangle(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
 
-        int ingredientSize = 40;
-        int ingredientX = _backgroundBounds.Center.X - ingredientSize - 24;
-        int ingredientY = _backgroundBounds.Center.Y - ingredientSize / 2;
-        _ingredientBounds = new Rectangle(ingredientX, ingredientY, ingredientSize, ingredientSize);
+        SetItemBounds();
 
-        int arrowSize = 10;
-        int arrowX = _backgroundBounds.Center.X - arrowSize / 2;
-        int arrowY = _backgroundBounds.Center.Y - arrowSize / 2;
-        _arrowBounds = new Rectangle(arrowX, arrowY, arrowSize, arrowSize);
-
-        int resultSize = 60;
-        int resultX = _backgroundBounds.Center.X + 24;
-        int resultY = _backgroundBounds.Center.Y - resultSize / 2;
-        _resultBounds = new Rectangle(resultX, resultY, resultSize, resultSize);
-
+        // Set the progress bar bounds
         int progressWidth = _backgroundBounds.Width - 40;
         int progressHeight = 10;
         int progressX = _backgroundBounds.Left + 20;
         int progressY = _backgroundBounds.Bottom - 30;
         _progressBarBounds = new Rectangle(progressX, progressY, progressWidth, progressHeight);
     }
+
+    private void SetItemBounds() 
+    {
+        // Set the padding and sizes, and get the total width of the items to center them
+        int padding = 16;
+        Point ingredientSize = new Point(40, 40);
+        Point arrowSize = new Point(10, 10);
+        Point resultSize = new Point(60, 60);
+        int itemsWidth = (ingredientSize.X + padding) * _inputItems.Count + arrowSize.X + padding 
+            + (resultSize.X + padding) * _outputItems.Count - padding;
+
+        // Set the ingredient bounds
+        Point location = new Point(_backgroundBounds.Center.X - itemsWidth / 2, _backgroundBounds.Center.Y - ingredientSize.Y / 2);
+        _ingredientsBounds = new List<Rectangle>();
+        _ingredientsItemPositions = new List<Vector2>();
+        _ingredientsLabelPositions = new List<Vector2>();
+        for (int i = 0; i < _inputItems.Count; i++)
+        {
+            Rectangle ingredientBounds = new Rectangle(location, ingredientSize);
+            _ingredientsBounds.Add(ingredientBounds);
+            _ingredientsItemPositions.Add(ingredientBounds.Center.ToVector2() - new Vector2(16, 16));
+            _ingredientsLabelPositions.Add(new Vector2(ingredientBounds.Left + 2, ingredientBounds.Bottom - 14));
+            location.X += ingredientSize.X + padding;
+        }
+
+        // Set the arrow bounds
+        location.Y = _backgroundBounds.Center.Y - arrowSize.Y / 2;
+        _arrowBounds = new Rectangle(location, arrowSize);
+        location.X += arrowSize.X + padding;
+
+        // Set the result bounds
+        location.Y = _backgroundBounds.Center.Y - resultSize.Y / 2;
+        _resultsBounds = new List<Rectangle>();
+        _resultsItemPositions = new List<Vector2>();
+        _resultsLabelPositions = new List<Vector2>();
+        for (int i = 0; i < _outputItems.Count; i++)
+        {
+            Rectangle resultBounds = new Rectangle(location, resultSize);
+            _resultsBounds.Add(resultBounds);
+            _resultsItemPositions.Add(resultBounds.Center.ToVector2() - new Vector2(24, 24));
+            _resultsLabelPositions.Add(new Vector2(resultBounds.Left + 2, resultBounds.Bottom - 14));
+
+            location.X += resultSize.X + padding;
+        }
+  }
 
     /// <summary>
     /// Loads the arrow texture used in the crafting display. This method generates a simple arrow shape by creating a texture with a gradient effect, where the arrow is white and the surrounding area is transparent. The arrow is drawn in the center of the crafting display to indicate the direction of crafting from input items to output items. The generated texture is then assigned to the _arrow field for rendering during the Draw method.
@@ -190,4 +231,54 @@ public class CraftDisplay : DrawableGameComponent
         _arrow = new Texture2D(Game.GraphicsDevice, _arrowBounds.Width, _arrowBounds.Height);
         _arrow.SetData(data);
     }
+
+    /// <summary>
+    /// Draws the input ingredients for the crafting process on the screen.
+    /// </summary>
+    private void DrawIngredients()
+    {
+        for (int i = 0; i < _inputItems.Count; i++)
+        {
+            // Draw Background
+            _spriteBatch.Draw(_pixel, _ingredientsBounds[i], Color.LightGray);
+            
+            // Draw Ingredient Icon
+            _spriteBatch.Draw(_itemAtlas, _ingredientsItemPositions[i], new Rectangle(_inputItems[i].IconIndex * 32, 0, 32, 32), Color.White);
+
+            // Draw Quantity Available / Quantity Required
+            _spriteBatch.DrawString(_labelFont, _inputItems[i].QuantityAvailable.ToString() + "/" + _inputItems[i].QuantityRequired.ToString(), _ingredientsLabelPositions[i], Color.Black, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
+        }
+    }
+
+    /// <summary>
+    /// Draws the output results for the crafting process on the screen.
+    /// </summary>
+    private void DrawResults()
+    {
+        for (int i = 0; i < _outputItems.Count; i++)
+        {
+            // Draw Background
+            _spriteBatch.Draw(_pixel, _resultsBounds[i], Color.LightGray);
+
+            // Draw Result Icon
+            _spriteBatch.Draw(_itemAtlas, _resultsItemPositions[i], new Rectangle(_outputItems[i].IconIndex * 32, 0, 32, 32), Color.White, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
+
+            // Draw Output Amount
+            _spriteBatch.DrawString(_labelFont, _outputItems[i].QuantityRequired.ToString(), _resultsLabelPositions[i], Color.Black, rotation: 0f, origin: Vector2.Zero, scale: 0.5f, effects: SpriteEffects.None, layerDepth: 0f);
+        }
+    }
+
+    private void DrawProgressBar()
+    {
+        _spriteBatch.Draw(_pixel, _progressBarBounds, Color.White * 0.5f);
+        if (_hitsRequired <= 0) return;
+        _spriteBatch.Draw(_pixel, new Rectangle(
+            _progressBarBounds.Left,
+            _progressBarBounds.Top,
+            _progressBarBounds.Width * _hitsCompleted / _hitsRequired,
+            _progressBarBounds.Height
+        ), Color.DarkOrange);
+    }
+
+    #endregion
 }

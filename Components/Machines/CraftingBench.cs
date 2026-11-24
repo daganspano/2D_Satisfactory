@@ -3,7 +3,7 @@ using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _2D_Satisfactory.Components;
+namespace _2D_Satisfactory.Components.Machines;
 
 /// <summary>
 /// Represents a crafting bench in the game, allowing players to interact with it for crafting purposes.

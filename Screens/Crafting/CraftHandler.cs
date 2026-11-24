@@ -5,11 +5,15 @@ using Microsoft.Xna.Framework;
 
 namespace _2D_Satisfactory.Screens.Crafting;
 
+public delegate void SetSelectedRecipeDelegate(int recipeIndex);
+
 /// <summary>
 /// Handles the crafting logic for the game, including managing recipes, tracking crafting progress, and updating the display with relevant information.
 /// </summary>
 public class CraftHandler : GameComponent
 {
+    #region Private Fields
+
     private UpdateDisplayInfoDelegate _updateDisplayInfo;
     private List<Recipe> _recipes;
     private Recipe _selectedRecipe;
@@ -17,6 +21,16 @@ public class CraftHandler : GameComponent
     private int _hitsCompleted;
     private double _hitTimer;
     private static double _hitSpeed = 0.25;
+
+    #endregion
+
+    #region Public Properties
+
+    public List<Recipe> Recipes => _recipes;
+
+    #endregion
+
+    #region Constructor
 
     /// <summary>
     /// Initializes a new instance of the CraftHandler class with the specified game and display update delegate.
@@ -30,6 +44,10 @@ public class CraftHandler : GameComponent
         _selectedRecipe = _recipes[0];
         _hitsCompleted = 0;
     }
+
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// Toggles the crafting state. If crafting is currently active, it will stop crafting; if it is inactive, it will start crafting. Validates the availability of required items before toggling.
@@ -51,6 +69,18 @@ public class CraftHandler : GameComponent
         _hitsCompleted = 0;
     }
 
+    public void SetSelectedRecipe(int recipeIndex)
+    {
+        if (recipeIndex < 0 || recipeIndex >= _recipes.Count) throw new ArgumentOutOfRangeException(nameof(recipeIndex), "Invalid recipe index.");
+        _selectedRecipe = _recipes[recipeIndex];
+        _hitsCompleted = 0;
+        UpdateDisplay();
+    }
+
+    #endregion
+
+    #region Override Methods
+
     /// <summary>
     /// Updates the crafting process based on the elapsed game time. If crafting is active, it checks for item availability, increments the hit timer, and processes completed hits to update the player's inventory accordingly.
     /// </summary>
@@ -58,8 +88,6 @@ public class CraftHandler : GameComponent
     /// <exception cref="InvalidOperationException">Thrown if the required items for crafting are not available.</exception>
     public override void Update(GameTime gameTime)
     {
-        UpdateDisplay();
-
         if (_isCrafting)
         {
             try
@@ -99,7 +127,13 @@ public class CraftHandler : GameComponent
                 }
             }
         }
+        
+        UpdateDisplay();
     }
+
+    #endregion
+
+    #region Private Methods
 
     /// <summary>
     /// Updates the display with the current input and output items, their quantities, and the crafting progress. This method retrieves the necessary item information from the data source and prepares it for display.
@@ -115,7 +149,7 @@ public class CraftHandler : GameComponent
                 Id = item.Id,
                 Name = item.Name,
                 Plural = item.Plural,
-                Icon = item.Icon,
+                IconIndex = item.IconIndex,
                 QuantityRequired = recipeItem.QuantityRequired,
                 QuantityAvailable = GameData.PlayerInventory.ContainsKey(item.Id) ? GameData.PlayerInventory[item.Id] : 0
             });
@@ -130,7 +164,7 @@ public class CraftHandler : GameComponent
                 Id = item.Id,
                 Name = item.Name,
                 Plural = item.Plural,
-                Icon = item.Icon,
+                IconIndex = item.IconIndex,
                 QuantityRequired = recipeItem.QuantityRequired,
             });
         }
@@ -154,4 +188,6 @@ public class CraftHandler : GameComponent
             }
         }
     }
+
+    #endregion
 }

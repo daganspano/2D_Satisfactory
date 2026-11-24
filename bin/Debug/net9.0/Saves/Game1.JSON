@@ -2,9 +2,17 @@
   "Character": 12,
   "PlayerSpeed": 200,
   "PlayerPosition": {
-    "X": 668,
-    "Y": 250
+    "X": 686,
+    "Y": 286
   },
-  "PlayerDirection": 2,
-  "PlayerInventory": {}
+  "PlayerDirection": 3,
+  "PlayerInventory": {
+    "ironOre": 0,
+    "ironIngot": 3,
+    "ironRod": 0,
+    "screws": 15,
+    "rotor": 1,
+    "ironPlate": 0,
+    "reinforcedIronPlate": 1
+  }
 }

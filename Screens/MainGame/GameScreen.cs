@@ -1,5 +1,6 @@
 using System;
 using _2D_Satisfactory.Components;
+using _2D_Satisfactory.Components.Machines;
 using _2D_Satisfactory.ParticleClasses;
 using Microsoft.Xna.Framework;
 

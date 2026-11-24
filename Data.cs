@@ -8,7 +8,7 @@ public class Item
     public string Id { get; init; }
     public string Name { get; init; }
     public string Plural { get; init; }
-    public string Icon { get; init; }
+    public int IconIndex { get; init; }
     public int? QuantityRequired { get; init; }
     public int? QuantityAvailable { get; init; }
 }
@@ -45,49 +45,49 @@ public static class Data
             Id = "ironOre", 
             Name = "Iron Ore", 
             Plural = "Iron Ore", 
-            Icon = "iron_ore_icon.png", 
+            IconIndex = 0, 
         },
         new Item { 
             Id = "ironIngot", 
             Name = "Iron Ingot", 
             Plural = "Iron Ingots", 
-            Icon = "iron_ingot_icon.png", 
+            IconIndex = 1, 
         },
         new Item { 
             Id = "ironPlate", 
             Name = "Iron Plate", 
             Plural = "Iron Plates", 
-            Icon = "iron_plate_icon.png",
+            IconIndex = 2,
         },
         new Item { 
             Id = "ironRod",
             Name = "Iron Rod", 
             Plural = "Iron Rods", 
-            Icon = "iron_rod_icon.png",
+            IconIndex = 3,
         },
         new Item { 
             Id = "screws",
             Name = "Screws", 
             Plural = "Screws", 
-            Icon = "screws_icon.png",
+            IconIndex = 4,
         },
         new Item { 
             Id = "reinforcedIronPlate",
             Name = "Reinforced Iron Plate", 
             Plural = "Reinforced Iron Plates", 
-            Icon = "reinforced_iron_plate_icon.png",
+            IconIndex = 5,
         },
         new Item { 
             Id = "rotor",
             Name = "Rotor", 
             Plural = "Rotors", 
-            Icon = "rotor_icon.png",
+            IconIndex = 6,
         },
         new Item { 
             Id = "smartPlating",
             Name = "Smart Plating", 
             Plural = "Smart Platings", 
-            Icon = "smart_plating_icon.png",
+            IconIndex = 7,
         },
     ];
 
@@ -298,4 +298,16 @@ public static class Data
 
     public static Recipe GetRecipe(string id) => _recipes.Find(r => r.Id == id);
     public static Recipe GetRecipe(int index) => _recipes[index];
+
+    public static int GetRecipeImageIndex(Recipe recipe)
+    {
+        if (recipe.Output.Count > 0)
+        {
+            string outputItemId = recipe.Output[0].Id;
+            Item outputItem = GetItem(outputItemId);
+            return outputItem.IconIndex;
+        }
+        return -1; // Return -1 if no output item is found
+    }
+    public static int GetRecipeImageIndex(string recipeId) => GetRecipeImageIndex(GetRecipe(recipeId));
 }
