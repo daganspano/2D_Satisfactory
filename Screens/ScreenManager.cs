@@ -1,6 +1,7 @@
 using _2D_Satisfactory.Screens.Crafting;
 using _2D_Satisfactory.Screens.MainGame;
 using _2D_Satisfactory.Screens.Title;
+using _2D_Satisfactory.Screens.WinScreenClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -37,10 +38,28 @@ public class ScreenManager : DrawableGameComponent
     {
         _screens = new Dictionary<string, Screen>()
         { 
-            { "TitleScreen", new TitleScreen(game, HandleStart, hasContinue: FileManager.GameExists()) },
-            { "GameScreen", new GameScreen(game, onOpenCraftingMenu: HandleToggleCraftingMenu) },
-            { "PauseScreen", new PauseScreen(game, onResume: HandleTogglePause, onExit: HandleExitGame) },
-            { "CraftingScreen", new CraftingScreen(game) }
+            { "TitleScreen", new TitleScreen(
+                game, 
+                onStart: HandleStart, 
+                hasContinue: FileManager.GameExists()
+            ) },
+            { "GameScreen", new GameScreen(
+                game, 
+                onOpenCraftingMenu: HandleToggleCraftingMenu
+            ) },
+            { "PauseScreen", new PauseScreen(
+                game, 
+                onResume: HandleTogglePause, 
+                onExit: HandleExitGame
+            ) },
+            { "CraftingScreen", new CraftingScreen(
+                game
+            ) },
+            { "WinScreen", new WinScreen(
+                game, 
+                onRestart: () => HandleStart(isNew: true), 
+                onExit: HandleExitGame
+            ) }
         };
         
         _setMusicPlayerState = setMusicPlayerState;
@@ -49,6 +68,7 @@ public class ScreenManager : DrawableGameComponent
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
         _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
         _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
+        _screens["WinScreen"].ScreenState = ScreenState.Inactive;
     }
 
     /// <summary>
@@ -113,6 +133,7 @@ public class ScreenManager : DrawableGameComponent
 
         _screens["TitleScreen"].ScreenState = ScreenState.Inactive;
         _screens["GameScreen"].ScreenState = ScreenState.Active;
+        _screens["WinScreen"].ScreenState = ScreenState.Active;
         _setMusicPlayerState(SongState.MainGame);
     }
 
@@ -124,11 +145,13 @@ public class ScreenManager : DrawableGameComponent
         if (_screens["PauseScreen"].ScreenState == ScreenState.Inactive)
         {
             _screens["GameScreen"].ScreenState = ScreenState.Paused;
+            _screens["WinScreen"].ScreenState = ScreenState.Inactive;
             _screens["PauseScreen"].ScreenState = ScreenState.Active;
         }
         else
         {
             _screens["GameScreen"].ScreenState = ScreenState.Active;
+            _screens["WinScreen"].ScreenState = ScreenState.Active;
             _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
         }
     }
@@ -144,6 +167,7 @@ public class ScreenManager : DrawableGameComponent
 
         _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
+        _screens["WinScreen"].ScreenState = ScreenState.Inactive;
         _screens["TitleScreen"].ScreenState = ScreenState.Active;
         _setMusicPlayerState(SongState.TitleScreen);
     }
@@ -156,11 +180,13 @@ public class ScreenManager : DrawableGameComponent
         if (_screens["CraftingScreen"].ScreenState == ScreenState.Inactive)
         {
             _screens["GameScreen"].ScreenState = ScreenState.Paused;
+            _screens["WinScreen"].ScreenState = ScreenState.Inactive;
             _screens["CraftingScreen"].ScreenState = ScreenState.Active;
         }
         else
         {
             _screens["GameScreen"].ScreenState = ScreenState.Active;
+            _screens["WinScreen"].ScreenState = ScreenState.Active;
             _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
         }
     }

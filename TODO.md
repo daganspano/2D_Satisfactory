@@ -2,16 +2,6 @@
 
 ## Necessary
 
-### Win Screen
-
-Refer to [ScreenManager.cs](Screens\ScreenManager.cs), [ScreenState.cs](Screens\ScreenState.cs), and [Screen.cs](Screens\Screen.cs).
-
-Add a win screen with the 3 states:
-
-- Inactive: Nothing shows.
-- Incomplete: Shows a progress bar at the top for the progress to 50 smart plates (in inventory for now).
-- Complete: Shows a popup display for when 50 smart plates are gathered with options to `Continue`, `Restart`, `Exit to Menu`, and `Exit to Desktop`.
-
 ### [Tilemap](Components\Tilemap.cs)
 
 - Use for loops for map tilemap creation.
@@ -62,6 +52,11 @@ Refer to [ScreenManager.cs](Screens\ScreenManager.cs), [ScreenState.cs](Screens\
   - Adjust colors.
   - Adjust spacing.
   - ...
+- Add new controls to [`ControlDisplay`](Screens\MainGame\ControlsDisplay.cs) if applicable.
+
+### [Win Screen](Screens/WinScreen/WinScreen.cs)
+
+- Improve UI/UX.
 - Add new controls to [`ControlDisplay`](Screens\MainGame\ControlsDisplay.cs) if applicable.
 
 ### New Content

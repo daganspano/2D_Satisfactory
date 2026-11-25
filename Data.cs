@@ -84,9 +84,9 @@ public static class Data
             IconIndex = 6,
         },
         new Item { 
-            Id = "smartPlating",
-            Name = "Smart Plating", 
-            Plural = "Smart Platings", 
+            Id = "smartPlate",
+            Name = "Smart Plate", 
+            Plural = "Smart Plates", 
             IconIndex = 7,
         },
     ];

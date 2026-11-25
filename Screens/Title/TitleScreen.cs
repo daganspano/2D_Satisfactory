@@ -9,7 +9,7 @@ namespace _2D_Satisfactory.Screens.Title;
 
 public class TitleScreen : Screen
 {
-    public TitleScreen(Game game, PlayGameDelegate handlePlay, bool hasContinue) : base(ScreenState.Active)
+    public TitleScreen(Game game, PlayGameDelegate onStart, bool hasContinue) : base(ScreenState.Active)
     {
         float titleHeight = TitleBanner.GetHeight() + 8 + ButtonGroup.GetHeight(3);
         float bannerYPosition = (GameData.ScreenSize.Y - titleHeight) / 2;
@@ -24,12 +24,12 @@ public class TitleScreen : Screen
         };
         Dictionary<string, Action> buttons = hasContinue ? new Dictionary<string, Action>
         {
-            { "Continue", () => handlePlay(isNew: false) },
-            { "Restart", () => handlePlay(isNew: true) },
+            { "Continue", () => onStart(isNew: false) },
+            { "Restart", () => onStart(isNew: true) },
             { "Exit", game.Exit }
         } : new Dictionary<string, Action>
         {
-            { "Start", () => handlePlay(isNew: true) },
+            { "Start", () => onStart(isNew: true) },
             { "Exit", game.Exit }
         };
 

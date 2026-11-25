@@ -65,6 +65,8 @@ public class ButtonGroup : DrawableGameComponent
     /// </summary>
     public override void Update(GameTime gameTime)
     {
+        if (!Visible) return;
+
         Point currentMousePosition = Mouse.GetState().Position;
 
         if (currentMousePosition != _previousMousePosition) UpdateSelectedButtonWithMouse(currentMousePosition);
@@ -81,6 +83,8 @@ public class ButtonGroup : DrawableGameComponent
     /// <param name="spriteBatch">The sprite batch used to draw the buttons.</param>
     public override void Draw(GameTime gameTime)
     {
+        if (!Visible) return;
+        
         _spriteBatch.Begin();
         foreach (var button in _buttons) button.Draw(_spriteBatch);
         _spriteBatch.End();

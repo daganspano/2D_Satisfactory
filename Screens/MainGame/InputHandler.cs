@@ -41,6 +41,11 @@ public class InputHandler : GameComponent
         {
             HandleMovement(gameTime);
             HandleInteraction(gameTime);
+            if (Keyboard.GetState().IsKeyDown(Keys.Y))
+            {
+                if (!GameData.PlayerInventory.ContainsKey("smartPlate")) GameData.PlayerInventory["smartPlate"] = 0;
+                GameData.PlayerInventory["smartPlate"]++;
+            }
         }
         base.Update(gameTime);
     }
