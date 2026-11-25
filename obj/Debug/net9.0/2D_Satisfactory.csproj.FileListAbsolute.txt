@@ -110,3 +110,4 @@ C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/ConveyorDaw
 /home/daganspano/Documents/GithubRepos/2D_Satisfactory/bin/Debug/net9.0/Content/particle.xnb
 C:/Users/ds032/source/repos/2D_Satisfactory/bin/Debug/net9.0/Content/items_atlas.xnb
 /home/daganspano/Documents/GithubRepos/2D_Satisfactory/bin/Debug/net9.0/Content/items_atlas.xnb
+/home/daganspano/Documents/GithubRepos/2D_Satisfactory/bin/Debug/net9.0/Components/map.csv
