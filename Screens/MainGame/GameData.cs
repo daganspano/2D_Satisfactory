@@ -1,6 +1,7 @@
 
 using _2D_Satisfactory.Components.CharacterClasses;
 using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace _2D_Satisfactory.Screens.MainGame;
@@ -18,6 +19,8 @@ public static class GameData
     public static Vector2 ScreenSize { get; set; } = Vector2.Zero;
 
     public static List<Rectangle> ObjectHitBoxes { get; set; } = new List<Rectangle>();
+
+    public static Dictionary<string, Building> Buildings { get; set; } = new Dictionary<string, Building>();
 
     #endregion
 
@@ -103,15 +106,29 @@ public static class GameData
         PlayerPosition = (0.5f * ScreenSize).ToPoint();
         PlayerDirection = DirectionFrame.Down;
         PlayerInventory = new Dictionary<string, int>();
-
-        SaveData defaultData = new SaveData()
+        Buildings = new Dictionary<string, Building>
         {
-            Character = Character,
-            PlayerSpeed = PlayerSpeed,
-            PlayerPosition = PlayerPosition,
-            PlayerDirection = PlayerDirection,
-            PlayerInventory = PlayerInventory
+            { 
+                Guid.NewGuid().ToString(), 
+                new Building(Guid.NewGuid().ToString(), Point.Zero, "vertical") },
+            { 
+                Guid.NewGuid().ToString(), new MachineBuilding(
+                    Guid.NewGuid().ToString(), 
+                    Point.Zero, 
+                    Data.GetRecipesForMachine("assembler")[0], 
+                    "horizontal"
+                )
+            }
         };
+
+        SaveData defaultData = new SaveData(
+            Character,
+            PlayerSpeed,
+            PlayerPosition,
+            PlayerDirection,
+            PlayerInventory,
+            Buildings
+        );
         
         FileManager.SaveGame(defaultData);
     }
@@ -127,7 +144,9 @@ public static class GameData
         PlayerSpeed = saveData.PlayerSpeed;
         PlayerPosition = saveData.PlayerPosition;
         PlayerDirection = saveData.PlayerDirection;
-        PlayerInventory = saveData.PlayerInventory;
+        // Saves written before a field existed deserialize it as null.
+        PlayerInventory = saveData.PlayerInventory ?? new Dictionary<string, int>();
+        Buildings = saveData.Buildings ?? new Dictionary<string, Building>();
     }
 
     /// <summary>
@@ -135,14 +154,14 @@ public static class GameData
     /// </summary>
     public static void SaveGame()
     {
-        SaveData saveData = new SaveData()
-        {
-            Character = Character,
-            PlayerSpeed = PlayerSpeed,
-            PlayerPosition = PlayerPosition,
-            PlayerDirection = PlayerDirection,
-            PlayerInventory = PlayerInventory
-        };
+        SaveData saveData = new SaveData(
+            Character,
+            PlayerSpeed,
+            PlayerPosition,
+            PlayerDirection,
+            PlayerInventory,
+            Buildings
+        );
 
         FileManager.SaveGame(saveData);
     }

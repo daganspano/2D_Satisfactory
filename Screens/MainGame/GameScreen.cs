@@ -15,19 +15,23 @@ public class GameScreen : Screen
     /// Initializes a new instance of the GameScreen class, setting up the necessary components for the main game screen.
     /// </summary>
     /// <param name="game">The game instance to which this screen belongs.</param>
-    public GameScreen(Game game, Action onOpenCraftingMenu) : base(ScreenState.Inactive)
+    public GameScreen(Game game, Action<string> onOpenMenu) : base(ScreenState.Inactive)
     {
         HandMiningParticleSystem miningParticles = new HandMiningParticleSystem(game, 100);
-        CraftingBench craftingBench = new CraftingBench(game, location: new Point(43, 15), orientation: "vertical");
+        CraftingBench craftingBench = new CraftingBench(game, location: new Point(30, 15), orientation: "vertical");
+        Assembler assembler = new Assembler(game, tileLocation: new Point(40, 5), orientation: "horizontal");
 
         GameData.ObjectHitBoxes.Add(craftingBench.HitBox);
+        GameData.ObjectHitBoxes.Add(assembler.HitBox);
 
         Components.Add(new Tilemap(game));
         Components.Add(craftingBench);
-        Components.Add(new InputHandler(game, miningParticles, onOpenCraftingMenu));
+        Components.Add(assembler);
+        Components.Add(new InputHandler(game, miningParticles, onOpenMenu));
         Components.Add(miningParticles);
         Components.Add(new Player(game));
         Components.Add(new ControlsDisplay(game));
         Components.Add(new InventoryDisplay(game));
+        Components.Add(new ProcessHandler(game));
     }
 }

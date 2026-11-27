@@ -5,8 +5,6 @@ using Microsoft.Xna.Framework;
 
 namespace _2D_Satisfactory.Screens.Crafting;
 
-public delegate void SetSelectedRecipeDelegate(int recipeIndex);
-
 /// <summary>
 /// Handles the crafting logic for the game, including managing recipes, tracking crafting progress, and updating the display with relevant information.
 /// </summary>
@@ -14,9 +12,10 @@ public class CraftHandler : GameComponent
 {
     #region Private Fields
 
-    private UpdateDisplayInfoDelegate _updateDisplayInfo;
     private List<Recipe> _recipes;
     private Recipe _selectedRecipe;
+    private List<Item> _inputItems;
+    private List<Item> _outputItems;
     private bool _isCrafting;
     private int _hitsCompleted;
     private double _hitTimer;
@@ -37,11 +36,13 @@ public class CraftHandler : GameComponent
     /// </summary>
     /// <param name="game">The game instance.</param>
     /// <param name="updateDisplayInfo">The delegate used to update the crafting display.</param>
-    public CraftHandler(Game game, UpdateDisplayInfoDelegate updateDisplayInfo) : base(game)
+    public CraftHandler(Game game) : base(game)
     {
-        _updateDisplayInfo = updateDisplayInfo;
         _recipes = Data.GetRecipesForMachine("bench");
         _selectedRecipe = _recipes[0];
+        _inputItems = new List<Item>();
+        _outputItems = new List<Item>();
+        SetRecipeItems();
         _hitsCompleted = 0;
     }
 
@@ -72,9 +73,19 @@ public class CraftHandler : GameComponent
     public void SetSelectedRecipe(int recipeIndex)
     {
         if (recipeIndex < 0 || recipeIndex >= _recipes.Count) throw new ArgumentOutOfRangeException(nameof(recipeIndex), "Invalid recipe index.");
+        if (_selectedRecipe == _recipes[recipeIndex]) return;
         _selectedRecipe = _recipes[recipeIndex];
+        SetRecipeItems();
+        _isCrafting = false;
         _hitsCompleted = 0;
-        UpdateDisplay();
+    }
+
+    public (List<Item> inputItems, List<Item> outputItems, float progress) GetCraftingInfo()
+    {
+        int hits = _hitsCompleted;
+        if (_isCrafting) hits++;
+        float progress = hits / (_selectedRecipe.Hits ?? 1f);
+        return (_inputItems, _outputItems, progress);
     }
 
     #endregion
@@ -127,49 +138,45 @@ public class CraftHandler : GameComponent
                 }
             }
         }
-        
-        UpdateDisplay();
     }
 
     #endregion
 
     #region Private Methods
 
-    /// <summary>
-    /// Updates the display with the current input and output items, their quantities, and the crafting progress. This method retrieves the necessary item information from the data source and prepares it for display.
-    /// </summary>
-    private void UpdateDisplay()
+    private void SetRecipeItems()
     {
-        List<Item> inputItems = new List<Item>();
+        // Set input items
+        _inputItems.Clear();
         foreach (Recipe.Item recipeItem in _selectedRecipe.Input)
         {
             Item item = Data.GetItem(recipeItem.Id);
-            inputItems.Add(new Item
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Plural = item.Plural,
-                IconIndex = item.IconIndex,
-                QuantityRequired = recipeItem.QuantityRequired,
-                QuantityAvailable = GameData.PlayerInventory.ContainsKey(item.Id) ? GameData.PlayerInventory[item.Id] : 0
-            });
+            _inputItems.Add(new Item
+            (
+                item.Id,
+                item.Name,
+                item.Plural,
+                item.IconIndex,
+                recipeItem.QuantityRequired,
+                GameData.PlayerInventory.ContainsKey(item.Id) ? GameData.PlayerInventory[item.Id] : 0
+            ));
         }
 
-        List<Item> outputItems = new List<Item>();
+        // Set output items
+        _outputItems.Clear();
         foreach (Recipe.Item recipeItem in _selectedRecipe.Output)
         {
             Item item = Data.GetItem(recipeItem.Id);
-            outputItems.Add(new Item
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Plural = item.Plural,
-                IconIndex = item.IconIndex,
-                QuantityRequired = recipeItem.QuantityRequired,
-            });
+            _outputItems.Add(new Item
+            (
+                item.Id,
+                item.Name,
+                item.Plural,
+                item.IconIndex,
+                recipeItem.QuantityRequired,
+                GameData.PlayerInventory.ContainsKey(item.Id) ? GameData.PlayerInventory[item.Id] : 0
+            ));
         }
-        
-        _updateDisplayInfo(inputItems, outputItems, _selectedRecipe.Hits ?? 0, _hitsCompleted);
     }
 
     /// <summary>

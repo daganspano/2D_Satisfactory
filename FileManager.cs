@@ -4,38 +4,63 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace _2D_Satisfactory;
 
 /// <summary>
 /// Represents the data structure for saving and loading game state.
 /// </summary>
-public class SaveData
+public struct SaveData
 {
     /// <summary>
     /// The character selected by the player, represented as an integer identifier.
     /// </summary>
-    public int Character { get; init; }
+    public int Character { get; }
 
     /// <summary>
     /// The speed of the player character, represented as an integer value.
     /// </summary>
-    public int PlayerSpeed { get; init; }
+    public int PlayerSpeed { get; }
 
     /// <summary>
     /// The position of the player character in the game world, represented as a Point structure.
     /// </summary>
-    public Point PlayerPosition { get; init; }
+    public Point PlayerPosition { get; }
 
     /// <summary>
     /// The direction the player character is facing, represented as a DirectionFrame enumeration.
     /// </summary>
-    public DirectionFrame PlayerDirection { get; init; }
+    public DirectionFrame PlayerDirection { get; }
 
     /// <summary>
     /// The inventory of the player character, represented as a dictionary mapping item names to their respective quantities.
     /// </summary>
-    public Dictionary<string, int> PlayerInventory { get; init; }
+    public Dictionary<string, int> PlayerInventory { get; }
+
+    /// <summary>
+    /// The list of buildings present in the game world, represented as a list of Building structures.
+    /// </summary>
+    public Dictionary<string, Building> Buildings { get; }
+
+    // Structs always have a parameterless constructor, which System.Text.Json prefers unless told otherwise.
+    [JsonConstructor]
+    public SaveData(
+        int character,
+        int playerSpeed,
+        Point playerPosition,
+        DirectionFrame playerDirection,
+        Dictionary<string, int> playerInventory,
+        Dictionary<string, Building> buildings
+    )
+    {
+        Character = character;
+        PlayerSpeed = playerSpeed;
+        PlayerPosition = playerPosition;
+        PlayerDirection = playerDirection;
+        PlayerInventory = playerInventory;
+        Buildings = buildings;
+    }
 }
 
 /// <summary>
@@ -67,11 +92,11 @@ public static class FileManager
     {
         if (!File.Exists(SavePath)) throw new FileNotFoundException($"Save file not found at {SavePath}");
 
-        var saveData = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SavePath), JsonOptions);
+        SaveData? saveData = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SavePath), JsonOptions);
         
         if (saveData is null) throw new InvalidOperationException("Failed to deserialize save data.");
 
-        return saveData;
+        return (SaveData)saveData;
     }
 
     /// <summary>

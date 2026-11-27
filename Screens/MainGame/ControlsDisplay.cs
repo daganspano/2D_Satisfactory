@@ -42,6 +42,9 @@ public class ControlsDisplay : DrawableGameComponent
             case "openCraftingMenu":
                 _controlTexts.Add("Open Crafting Menu: E");
                 break;
+            case "openAssemblerMenu":
+                _controlTexts.Add("Open Assembler Menu: E");
+                break;
         }
     }
 

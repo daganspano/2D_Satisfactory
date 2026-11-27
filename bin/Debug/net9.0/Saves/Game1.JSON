@@ -2,9 +2,84 @@
   "Character": 12,
   "PlayerSpeed": 200,
   "PlayerPosition": {
-    "X": 640,
-    "Y": 360
+    "X": 649,
+    "Y": 143
   },
-  "PlayerDirection": 0,
-  "PlayerInventory": {}
+  "PlayerDirection": 3,
+  "PlayerInventory": {
+    "ironOre": 0,
+    "ironIngot": 4,
+    "ironRod": 6
+  },
+  "Buildings": {
+    "7d89d249-7cb1-4307-a9d8-0c9bcccaa8b4": {
+      "Id": "c7b27db6-4339-4e4f-a8eb-e189d635bbd5",
+      "Location": {
+        "X": 0,
+        "Y": 0
+      },
+      "Orientation": "vertical"
+    },
+    "b79cd212-d177-476d-95b7-5e6fe25c8b6a": {
+      "$type": "machine",
+      "Recipe": {
+        "Id": "reinforcedIronPlate_assembler",
+        "Name": "Reinforced Iron Plate",
+        "MachineId": "assembler",
+        "Input": [
+          {
+            "Id": "ironPlate",
+            "QuantityRequired": 6
+          },
+          {
+            "Id": "screws",
+            "QuantityRequired": 12
+          }
+        ],
+        "Output": [
+          {
+            "Id": "reinforcedIronPlate",
+            "QuantityRequired": 1
+          }
+        ],
+        "Hits": null,
+        "Time": 12
+      },
+      "Input": [
+        {
+          "Id": "ironPlate",
+          "Name": "Iron Plate",
+          "Plural": "Iron Plates",
+          "IconIndex": 2,
+          "QuantityRequired": 6,
+          "QuantityAvailable": null
+        },
+        {
+          "Id": "screws",
+          "Name": "Screws",
+          "Plural": "Screws",
+          "IconIndex": 4,
+          "QuantityRequired": 12,
+          "QuantityAvailable": null
+        }
+      ],
+      "Output": [
+        {
+          "Id": "reinforcedIronPlate",
+          "Name": "Reinforced Iron Plate",
+          "Plural": "Reinforced Iron Plates",
+          "IconIndex": 5,
+          "QuantityRequired": 1,
+          "QuantityAvailable": 3
+        }
+      ],
+      "Progress": 0.24305344,
+      "Id": "7868973e-f800-4451-9a45-f623130e680e",
+      "Location": {
+        "X": 0,
+        "Y": 0
+      },
+      "Orientation": "horizontal"
+    }
+  }
 }

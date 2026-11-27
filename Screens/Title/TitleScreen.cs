@@ -9,6 +9,9 @@ namespace _2D_Satisfactory.Screens.Title;
 
 public class TitleScreen : Screen
 {
+    private Dictionary<string, Action> _buttonsWithContinue;
+    private ButtonGroup _buttonGroup;
+
     public TitleScreen(Game game, PlayGameDelegate onStart, bool hasContinue) : base(ScreenState.Active)
     {
         float titleHeight = TitleBanner.GetHeight() + 8 + ButtonGroup.GetHeight(3);
@@ -22,16 +25,18 @@ public class TitleScreen : Screen
             new TitleCharacter(game),
             new TitleCharacter(game),
         };
-        Dictionary<string, Action> buttons = hasContinue ? new Dictionary<string, Action>
+        _buttonsWithContinue = new Dictionary<string, Action>
         {
             { "Continue", () => onStart(isNew: false) },
             { "Restart", () => onStart(isNew: true) },
             { "Exit", game.Exit }
-        } : new Dictionary<string, Action>
+        };
+        Dictionary<string, Action> buttons = hasContinue ? _buttonsWithContinue : new Dictionary<string, Action>
         {
             { "Start", () => onStart(isNew: true) },
             { "Exit", game.Exit }
         };
+        _buttonGroup = new ButtonGroup(game, buttons, buttonGroupYPosition);
 
         // components
         Components.Add(new SpriteCollisionHandler(game, characters));
@@ -40,6 +45,11 @@ public class TitleScreen : Screen
         Components.Add(new Tilemap(game, disableOffset: true));
         foreach (var character in characters) Components.Add(character);
         Components.Add(new TitleBanner(game, bannerYPosition));
-        Components.Add(new ButtonGroup(game, buttons, buttonGroupYPosition));
+        Components.Add(_buttonGroup);
+    }
+
+    public void UpdateButtonsWithContinue()
+    {
+        _buttonGroup.SetButtons(_buttonsWithContinue);
     }
 }

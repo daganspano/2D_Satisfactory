@@ -12,15 +12,18 @@ namespace _2D_Satisfactory.Components.ButtonClasses;
 public class ButtonGroup : DrawableGameComponent
 {
     private static SpriteBatch _spriteBatch;
-    private readonly List<Button> _buttons;
+    private List<Button> _buttons;
     private int _selectedButtonIndex;
     private bool _wasPreviouslyDown;
     private bool _wasPreviouslyUp;
     private Point _previousMousePosition;
+    private float _yPosition; 
+    private bool _isContentLoaded;
 
     public ButtonGroup(Game game, Dictionary<string, Action> labelsAndActions, float yPosition) : base(game)
     {
         _selectedButtonIndex = -1;
+        _yPosition = yPosition;
 
         float buttonScale = 0.7f;
         float buttonHeightScaled = 88 * buttonScale;
@@ -49,6 +52,26 @@ public class ButtonGroup : DrawableGameComponent
         return numberOfButtons * (buttonHeightScaled + buttonPadding) - buttonPadding;
     }
 
+    public void SetButtons(Dictionary<string, Action> labelsAndActions)
+    {
+        float buttonScale = 0.7f;
+        float buttonHeightScaled = 88 * buttonScale;
+        int buttonPadding = 8;
+
+        _buttons = new List<Button>();
+        int i = 0;
+        foreach (var label in labelsAndActions.Keys)
+        {
+            _buttons.Add(new Button(label, buttonScale, _yPosition + i * (buttonPadding + buttonHeightScaled), labelsAndActions[label]));
+            i++;
+        }
+
+        if (_isContentLoaded)
+            foreach (var button in _buttons) button.LoadContent(Game.Content);
+
+        _selectedButtonIndex = -1;
+    }
+
     /// <summary>
     /// Loads the content for all buttons in the group.
     /// </summary>
@@ -58,6 +81,8 @@ public class ButtonGroup : DrawableGameComponent
         _spriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
         foreach (var button in _buttons) button.LoadContent(Game.Content);
+
+        _isContentLoaded = true;
     }
 
     /// <summary>

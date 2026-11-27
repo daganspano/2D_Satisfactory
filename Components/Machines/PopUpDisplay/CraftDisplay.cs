@@ -4,7 +4,7 @@ using _2D_Satisfactory.Screens.MainGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace _2D_Satisfactory.Screens.Crafting;
+namespace _2D_Satisfactory.Components.Machines.PopUpDisplay;
 
 /// <summary>
 /// Delegate for updating the display information in the crafting screen. This delegate is used to pass the input items, output items, hits required, and hits completed to the CraftDisplay component, allowing it to update its visual representation based on the current crafting state.
@@ -21,6 +21,9 @@ public delegate void UpdateDisplayInfoDelegate(List<Item> inputItems, List<Item>
 public class CraftDisplay : DrawableGameComponent
 {
     #region Private Fields
+
+    // delegate for getting the current crafting information
+    private GetCraftingInfoDelegate _getCraftingInfo;
 
     // sprite batch for rendering the crafting display
     private SpriteBatch _spriteBatch;
@@ -45,8 +48,7 @@ public class CraftDisplay : DrawableGameComponent
     private List<Vector2> _resultsLabelPositions;
 
     // progress bar fields
-    private int _hitsRequired;
-    private int _hitsCompleted;
+    private float _progress;
     private Rectangle _progressBarBounds;
 
     // label fields
@@ -61,32 +63,10 @@ public class CraftDisplay : DrawableGameComponent
     /// Initializes a new instance of the <see cref="CraftDisplay"/> class with the specified game. The constructor sets up the necessary properties for the crafting display, including initializing the input and output item lists, hits required, and hits completed. It also prepares the display for rendering by setting up the background, arrow, ingredient, result, and progress bar bounds.
     /// </summary>
     /// <param name="game">The game instance that this craft display belongs to.</param>
-    public CraftDisplay(Game game) : base(game)
+    public CraftDisplay(Game game, GetCraftingInfoDelegate getCraftingInfo) : base(game)
     {
+        _getCraftingInfo = getCraftingInfo;
         SetBounds();
-    }
-
-    #endregion
-
-    #region Public Methods
-
-    /// <summary>
-    /// Updates the display information for the crafting screen, including the input items, output items, hits required, and hits completed. This method is called to refresh the visual representation of the crafting process based on the current state of the crafting system. It allows the CraftDisplay component to reflect changes in the crafting state and provide feedback to the player.
-    /// </summary>
-    /// <param name="inputItems">The list of input items required for crafting.</param>
-    /// <param name="outputItems">The list of output items produced by crafting.</param>
-    /// <param name="hitsRequired">The number of hits required to complete the crafting.</param>
-    /// <param name="hitsCompleted">The number of hits completed so far.</param>
-    public void UpdateDisplayInfo(List<Item> inputItems, List<Item> outputItems, int hitsRequired, int hitsCompleted)
-    {
-        bool layoutChanged = inputItems.Count != _inputItems.Count || outputItems.Count != _outputItems.Count;
-
-        _inputItems = inputItems;
-        _outputItems = outputItems;
-        _hitsRequired = hitsRequired;
-        _hitsCompleted = hitsCompleted;
-
-        if (layoutChanged) SetItemBounds();
     }
 
     #endregion
@@ -114,6 +94,23 @@ public class CraftDisplay : DrawableGameComponent
         _labelFont = Game.Content.Load<SpriteFont>("Orbitron-Regular");
         Vector2 _labelSize = _labelFont.MeasureString("Iron Ingots");
         _labelPosition = new Vector2(_backgroundBounds.Center.X - _labelSize.X / 2, _backgroundBounds.Top + 10);
+    }
+
+    public override void Update(GameTime gameTime)
+    {
+        // Get the updated crafting information from the delegate
+        var (inputItems, outputItems, progress) = _getCraftingInfo();
+
+        // Check if the layout of input or output items has changed
+        bool layoutChanged = inputItems.Count != _inputItems.Count || outputItems.Count != _outputItems.Count;
+
+        // Update the display information with the new crafting data
+        _inputItems = inputItems;
+        _outputItems = outputItems;
+        _progress = progress;
+
+        // If the layout has changed, recalculate the item bounds
+        if (layoutChanged) SetItemBounds();
     }
 
     /// <summary>
@@ -271,11 +268,11 @@ public class CraftDisplay : DrawableGameComponent
     private void DrawProgressBar()
     {
         _spriteBatch.Draw(_pixel, _progressBarBounds, Color.White * 0.5f);
-        if (_hitsRequired <= 0) return;
+        if (_progress <= 0) return;
         _spriteBatch.Draw(_pixel, new Rectangle(
             _progressBarBounds.Left,
             _progressBarBounds.Top,
-            _progressBarBounds.Width * _hitsCompleted / _hitsRequired,
+            (int)(_progressBarBounds.Width * _progress),
             _progressBarBounds.Height
         ), Color.DarkOrange);
     }

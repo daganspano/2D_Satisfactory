@@ -1,7 +1,7 @@
 using _2D_Satisfactory.Components.ButtonClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using _2D_Satisfactory.Screens.MainGame;
 
 namespace _2D_Satisfactory.Screens.WinScreenClasses;
 
@@ -21,11 +21,10 @@ public class WinDisplay : DrawableGameComponent
 
     public WinDisplay(Game game) : base(game)
     {
-        var gameWidth = Game.GraphicsDevice.Viewport.Width;
-        var gameHeight = Game.GraphicsDevice.Viewport.Height;
+        var screenSize = GameData.ScreenSize.ToPoint();
 
-        var location = new Point(gameWidth / 4, (int)(gameHeight * 0.1f));
-        var size = new Point(gameWidth / 2, (int)(gameHeight * 0.8f));
+        var location = new Point(screenSize.X / 4, (int)(screenSize.Y * 0.1f));
+        var size = new Point(screenSize.X / 2, (int)(screenSize.Y * 0.8f));
         _backgroundBounds = new Rectangle(location, size);
         _text = "You Win!";
     }
@@ -39,7 +38,7 @@ public class WinDisplay : DrawableGameComponent
         Vector2 textSize = Game.Content.Load<SpriteFont>("Orbitron-Regular").MeasureString("You Win!");
         int padding = 16;
         int displayHeight = (int)(textSize.Y + padding + ButtonGroup.GetHeight(4));
-        int yPosition = (Game.GraphicsDevice.Viewport.Height - displayHeight) / 2 + (int)textSize.Y + padding;
+        int yPosition = ((int)GameData.ScreenSize.Y - displayHeight) / 2 + (int)textSize.Y + padding;
         return yPosition;
     }
 

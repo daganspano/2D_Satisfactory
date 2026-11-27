@@ -2,11 +2,6 @@
 
 ## Necessary
 
-### [Tilemap](Components\Tilemap.cs)
-
-- Use for loops for map tilemap creation.
-- Increase size to 1280 x 720 pixels (80 x 45 tiles).
-
 ### Machines
 
 Refer to [CraftingBench.cs](Components\Machines\CraftingBench.cs), [ScreenManager.cs](Screens\ScreenManager.cs), [ScreenState.cs](Screens\ScreenState.cs), and [Screen.cs](Screens\Screen.cs).
@@ -22,6 +17,10 @@ Refer to [CraftingBench.cs](Components\Machines\CraftingBench.cs), [ScreenManage
 ### Improvements
 
 ---
+
+### Clean-up
+
+Go through each file cleaning up the code to create a more organized view when making improvements.
 
 ### Controls
 

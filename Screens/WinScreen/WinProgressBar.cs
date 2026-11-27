@@ -25,7 +25,7 @@ public class WinProgressBar : DrawableGameComponent
 
     public WinProgressBar(Game game) : base(game)
     {
-        var gameWidth = Game.GraphicsDevice.Viewport.Width;
+        var gameWidth = (int)GameData.ScreenSize.X;
         var location = new Point(gameWidth / 4, 16);
         var size = new Point(gameWidth / 2, 30);
         _outlineBounds = new Rectangle(location, size);

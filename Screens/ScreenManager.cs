@@ -1,10 +1,12 @@
-using _2D_Satisfactory.Screens.Crafting;
 using _2D_Satisfactory.Screens.MainGame;
 using _2D_Satisfactory.Screens.Title;
 using _2D_Satisfactory.Screens.WinScreenClasses;
+using _2D_Satisfactory.Screens.Crafting;
+using _2D_Satisfactory.Screens.AssemblerClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace _2D_Satisfactory.Screens;
 
@@ -45,7 +47,7 @@ public class ScreenManager : DrawableGameComponent
             ) },
             { "GameScreen", new GameScreen(
                 game, 
-                onOpenCraftingMenu: HandleToggleCraftingMenu
+                onOpenMenu: HandleOpenMenu
             ) },
             { "PauseScreen", new PauseScreen(
                 game, 
@@ -54,6 +56,10 @@ public class ScreenManager : DrawableGameComponent
             ) },
             { "CraftingScreen", new CraftingScreen(
                 game
+            ) },
+            { "AssemblerScreen", new AssemblerScreen(
+                game,
+                getMachine: () => GameData.Buildings?.Values.OfType<MachineBuilding>().LastOrDefault()
             ) },
             { "WinScreen", new WinScreen(
                 game, 
@@ -68,6 +74,7 @@ public class ScreenManager : DrawableGameComponent
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
         _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
         _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
+        _screens["AssemblerScreen"].ScreenState = ScreenState.Inactive;
         _screens["WinScreen"].ScreenState = ScreenState.Inactive;
     }
 
@@ -94,7 +101,7 @@ public class ScreenManager : DrawableGameComponent
 
         if (isEscDown && !_wasEscDown)
         {
-            if (_screens["CraftingScreen"].ScreenState == ScreenState.Active) HandleToggleCraftingMenu();
+            if (_screens["GameScreen"].ScreenState == ScreenState.Paused && _screens["PauseScreen"].ScreenState == ScreenState.Inactive) CloseMenu();
             else HandleTogglePause();
         }
 
@@ -164,6 +171,7 @@ public class ScreenManager : DrawableGameComponent
     {
         GameData.SaveGame();
         if (toDesktop) Game.Exit();
+        (_screens["TitleScreen"] as TitleScreen).UpdateButtonsWithContinue();
 
         _screens["PauseScreen"].ScreenState = ScreenState.Inactive;
         _screens["GameScreen"].ScreenState = ScreenState.Inactive;
@@ -189,5 +197,31 @@ public class ScreenManager : DrawableGameComponent
             _screens["WinScreen"].ScreenState = ScreenState.Active;
             _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
         }
+    }
+
+    private void HandleOpenMenu(string machine)
+    {
+        // Pause the game and hide the win screen
+        _screens["GameScreen"].ScreenState = ScreenState.Paused;
+        _screens["WinScreen"].ScreenState = ScreenState.Inactive;
+
+        // Open the screen for the specified machine
+        switch (machine)
+        {
+            case "craftingBench":
+                _screens["CraftingScreen"].ScreenState = ScreenState.Active;
+                break;
+            case "assembler":
+                _screens["AssemblerScreen"].ScreenState = ScreenState.Active;
+                break;
+        }
+    }
+
+    private void CloseMenu()
+    {
+        _screens["GameScreen"].ScreenState = ScreenState.Active;
+        _screens["WinScreen"].ScreenState = ScreenState.Active;
+        _screens["CraftingScreen"].ScreenState = ScreenState.Inactive;
+        _screens["AssemblerScreen"].ScreenState = ScreenState.Inactive;
     }
 }

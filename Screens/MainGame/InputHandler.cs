@@ -16,19 +16,19 @@ public class InputHandler : GameComponent
     private double _miningSpeed;
     private HandMiningParticleSystem _miningParticles;
 
-    private Action _handleOpenCraftingMenu;
+    private Action<string> _handleOpenMenu;
 
     /// <summary>
     /// Initializes a new instance of the InputHandler class.
     /// </summary>
     /// <param name="game">The game instance to which this input handler belongs.</param>
     /// <param name="miningParticles">The particle system used for hand mining effects.</param>
-    public InputHandler(Game game, HandMiningParticleSystem miningParticles, Action onOpenCraftingMenu) : base(game)
+    public InputHandler(Game game, HandMiningParticleSystem miningParticles, Action<string> onOpenMenu) : base(game)
     {
         _interactionTimer = 0f;
         _miningSpeed = 0.5f;
         _miningParticles = miningParticles;
-        _handleOpenCraftingMenu = onOpenCraftingMenu;
+        _handleOpenMenu = onOpenMenu;
     }
 
     /// <summary>
@@ -123,7 +123,10 @@ public class InputHandler : GameComponent
                     }
                     break;
                 case "openCraftingMenu":
-                    _handleOpenCraftingMenu();
+                    _handleOpenMenu("craftingBench");
+                    break;
+                case "openAssemblerMenu":
+                    _handleOpenMenu("assembler");
                     break;
                 default:
                     _interactionTimer = 0;

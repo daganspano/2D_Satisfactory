@@ -13,7 +13,7 @@ public class CraftingBench : DrawableGameComponent
     private SpriteBatch _spriteBatch;
     private Texture2D _pixel;
     private Rectangle _hitBox;
-    private Rectangle _interactionBounds = new Rectangle(42 * 16, 14 * 16, 4 * 16, 5 * 16);
+    private Rectangle _interactionBounds;
 
     /// <summary>
     /// Gets the hit box of the crafting bench, which defines the area it occupies in the game world. This property is used for collision detection and interaction with the player character.
@@ -70,8 +70,10 @@ public class CraftingBench : DrawableGameComponent
     public override void Draw(GameTime gameTime)
     {
         _spriteBatch.Begin(transformMatrix: GameData.TransformMatrix);
+
         _spriteBatch.Draw(_pixel, _hitBox, Color.Red);
         _spriteBatch.Draw(_pixel, _interactionBounds, Color.Blue * 0.4f);
+
         _spriteBatch.End();
     }
 }
